@@ -59,12 +59,34 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
       + Es sollten dann ziemlich zeitig Werte reinkommen. Wenn ihr alles aufklappt sieht es ungefähr so aus:
 
         ![grafik](https://github.com/z-master42/solarflow/assets/66380371/cb2d9c67-40ce-4bcb-bd18-054219adf43d)
-        Unter der Broker-Adresse erscheint ein Eintrag der wie euer `appKey` lautet (alles in 🔴). Darunter gibt es drei weitere Einträge; `switch`, `sensor`, und ein weiterer Eintrag der euren SolarFlo bezeichnet. Wir nennen ihn daher ab jetzt `deviceID` (alles in 🔵).
+        Unter der Broker-Adresse erscheint ein Eintrag der wie euer `appKey` lautet (alles in 🔴). Darunter gibt es drei weitere Einträge; `switch`, `sensor`, und einen der euren SolarFlo bezeichnet. Wir nennen ihn daher ab jetzt `deviceID` (alles in 🔵).
+        + `switch` enthält als Einträge die Bauanleitungen für die bisher verfügbaren Schalter
+        + `sensor` enthält als Einträge die Bauanleitungen für die bisher verfügbaren Sensoren
+        + `deviceID` enthält als Eintrag die Status der Sensoren, jedoch immer nur diejenigen, deren Wert sich geändert hat
+          
+        Aktuell verfügbar sind folgende Sensoren und Schalter
+
+          | Field | Description | device_class |
+          | -------- | ------- | ------- |
+          | electricLevel | Device battery percentage | sensor |
+          | remainOutTime | Remaining discharge time | sensor |
+          | remainInputTime | Remaining charging time | sensor |
+          | socSet | Charge Capacity Limitation | sensor |
+          | inputLimit | input limit | sensor |
+          | outputLimit | output limit | sensor |
+          | solarInputPower | solar input power | sensor |
+          | packInputPower | pack input power | sensor |
+          | outputPackPower | output pack power | sensor |
+          | outputHomePower | output home power | sensor |
+          | packNum | pack num | sensor |
+          | packState | pack state(0:standby 1:input 2:output) | sensor |
+          | buzzerSwitch | buzzer switch | switch |
+          | masterSwitch | master switch | switch |
 
 
-   3. **Gleicher Start**
+   2. **Gleicher Start**
       + Der Anfang ist bei beiden Möglichkeiten gleich
-      + Zunächst muss die Brücke zum Zendure-Broker aufgebaut werden. Hiefür müsst ihr auf das `share`-Verzeichnis eures Home Assistant zugreifen. Über das File Editor-Addon ist dies z. B. nicht möglich. Über dieses habt ihr nämlich nur Zugriff auf das `config`-Verzeichnis. Ich bin daher den Weg über das Samba-Addon gegangen. Möglich ist auch der Weg über SSH, hierfür gibt es auch Addons, und dann das direkte Anlegen über z. B. _nano_
+      + Zunächst muss die Brücke zum Zendure-Broker aufgebaut werden. Hiefür müsst ihr auf das `share`-Verzeichnis eures Home Assistant zugreifen. Über das File Editor-Addon ist dies z. B. nicht möglich. Über dieses habt ihr nämlich nur Zugriff auf das `config`-Verzeichnis. Ich bin daher den Weg über das Samba-Addon gegangen. Möglich ist auch der Weg über SSH, hierfür gibt es auch Addons, und dann das direkte Anlegen über z. B. den Editor _nano_
       + Erstellt im Verzeichnis eine Datei und nennt diese `zendure.conf`
       + Fügt folgenden Inhalt ein
         ```
@@ -79,4 +101,6 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
       + In der Konfiguration des Mosquitto-Addons überprüft ihr jetzt noch ob unter _Customize_ `active` auf `true` gesetzt ist.
       + Abschließend ist das Addon neu zu starten.
       + Im Log sollte dann ein Eintrag ähnlich `Connecting bridge external-bridge (mqtt.zen-iot.com:1883)` auftauchen. Ggf. müsst ihr das Log mehrmals aktualisieren (Geduld). Sollte hingehen irgendwas mit Timeout oder so kommen, einfach das Addon noch mal neu starten.
+   3. **Automatische Einfügung**
+   4. **Manuelle Einfügung**
 
