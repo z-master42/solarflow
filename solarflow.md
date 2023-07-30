@@ -12,6 +12,7 @@ Ich habe zum Abruf das Kommandozeilen-Tool _curl_ verwendet.
 + Öffnet mit `Windows-Taste + R` die Eingabeaufforderung.
 + Gebt `cmd` ein.
 + Gebt folgenden Befehl in der Kommandozeile ein:
+  
   ```
   curl -i -v --json "{'snNumber': 'EureHubSeriennummer', 'account': 'EureEmailadresse'}" https://app.zendure.tech/v2/developer/api/apply
   ```
@@ -20,6 +21,7 @@ Ich habe zum Abruf das Kommandozeilen-Tool _curl_ verwendet.
 **Vorgehen auf einem Linux Betriebssystem**
 + Öffnet mit `Strg+Alt+T` ein Terminalfenster.
 + Gebt folgenden Befehl in der Kommandozeile ein:
+  
   ```
   curl -i -X POST -H 'Content-Type: application/json' -d '{"snNumber": "EureHubSeriennummer", "account": "EureEmailadresse"}' https://app.zendure.tech/v2/developer/api/apply
   ```
@@ -89,6 +91,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
       + Zunächst muss die Brücke zum Zendure-Broker aufgebaut werden. Hiefür müsst ihr auf das `share`-Verzeichnis eures Home Assistant zugreifen. Über das File Editor-Addon ist dies z. B. nicht möglich. Über dieses habt ihr nämlich nur Zugriff auf das `config`-Verzeichnis. Ich bin daher den Weg über das Samba-Addon gegangen. Möglich ist auch der Weg über SSH, hierfür gibt es auch Addons, und dann das direkte Anlegen über z. B. den Editor _nano_.
       + Erstellt im Verzeichnis eine Datei und nennt diese `zendure.conf`.
       + Fügt folgenden Inhalt ein:
+        
         ```
         connection external-bridge
         address mqtt.zen-iot.com:1883
@@ -104,111 +107,125 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
    3. **Automatische Einfügung**
       
       Damit Home Assistant die Sensoren und Schalter automatisch erstellt, muss es wissen wie diese aufgebaut sind. Zudem gibt es seitens Home Assistant Vorgaben, wie die Topics aussehen müssen damit dies funktioniert.
-      Ergänzt hiezu in euer zendure.conf einfach noch eine Zeile mit:
+      Ergänzt hierzu in euer `zendure.conf` einfach noch eine Zeile mit:
+      
       ```
       topic # in 0 homeassistant/sensor/<appKey>/ <appKey>/sensor/device/
       ```
       Nun könnt ihr das Addon neustarten.
    5. **Manuelle Einfügung**
 
-      Das manuelle, also händische, Anlegen von Emtitäten erfolgt in Home Assistant über die configuration.yaml. Diese liegt im config-Verzeichnis. Auf dieses könnt ihr ebenso via Samba zugreifen. Genau so gut ist aber der Weg über das File Editor Addon. In diesem wird der eingefügte Code zur besseren Lesbarkeit farblich markiert und sollten Formatierungs- oder Syntaxfehler vorliegen wird dies direkt angezeigt. An für sich könnt ihr alles in die configuration.yaml schreiben. Mit der Zeit wird dies aber etwas unübersichtlich, da alles untereinander in einer quasi Textdatei steht. Schöner ist es hier, entsprechende Konfigurationen in neue Dateien auszulagern.
-      + Öffnet eure configuration.yaml.
-      + Ergänzt unter dem nachstehenden Block, welcher sich ziemlich am Anfang der Datei befindet eine neue Zeile mit mqtt: !include mqtt.yaml.
+      Das manuelle, also händische, Anlegen von Emtitäten erfolgt in Home Assistant über die `configuration.yaml`. Diese liegt im `config`-Verzeichnis. Auf dieses könnt ihr ebenso via Samba zugreifen. Genau so gut ist aber der Weg über das File Editor Addon. In diesem wird der eingefügte Code zur besseren Lesbarkeit farblich markiert und sollten Formatierungs- oder Syntaxfehler vorliegen wird dies direkt angezeigt. An für sich könnt ihr alles in die `configuration.yaml` schreiben. Mit der Zeit wird diese dann aber etwas unübersichtlich, da alles untereinander in einer quasi Textdatei steht. Schöner ist es hier, entsprechende Konfigurationen in neue Dateien auszulagern.
+      + Öffnet eure `configuration.yaml`.
+      + Ergänzt unter dem nachstehenden Block, welcher sich ziemlich am Anfang der Datei befindet eine neue Zeile mit `mqtt: !include mqtt.yaml`.
+        
         ```yaml
         group: !include groups.yaml
         automation: !include automations.yaml
         script: !include scripts.yaml
         scene: !include scenes.yaml
         ```
-      + Erstellt eine neue Datei mqtt.yaml und fügt nachstehenden Inhalt ein.
-        ```yaml
-          sensor:
-        - name: "SolarFlow Hub State"
-          unique_id: "deviceIDhubState"
-          state_topic: "appKey/deviceID/state"
-          value_template: "{{ value_json.hubState | int }}"
-
-        - name: "SolarFlow Solar Input Power"
-          unique_id: "deviceIDsolarInputPower"
-          state_topic: "appKey/deviceID/state"
-          unit_of_measurement: "W"
-          device_class: "power"
-          value_template: "{{ value_json.solarInputPower | int(0) }}"
-          state_class: "measurement"
-      
-        - name: "SolarFlow Pack Input Power"
-          unique_id: "deviceIDpackInputPower"
-          state_topic: "appKey/deviceID/state"
-          unit_of_measurement: "W"
-          device_class: "power"
-          value_template: "{{ value_json.packInputPower | int(0) }}"
-          state_class: "measurement"
-      
-        - name: "SolarFlow Output Pack Power"
-          unique_id: "deviceIDoutputPackPower"
-          state_topic: "appKey/deviceID/state"
-          unit_of_measurement: "W"
-          device_class: "power"
-          value_template: "{{ value_json.outputPackPower | int(0) }}"
-          state_class: "measurement"
-      
-        - name: "SolarFlow Output Home Power"
-          unique_id: "deviceIDoutputHomePower"
-          state_topic: "appKey/deviceID/state"
-          unit_of_measurement: "W"
-          device_class: "power"
-          value_template: "{{ value_json.outputHomePower | int(0) }}"
-          state_class: "measurement"
-      
-        - name: "SolarFlow Output Limit"
-          unique_id: "deviceIDoutputLimit"
-          state_topic: "appKey/deviceID/state"
-          value_template: "{{ value_json.outputLimit | int }}"
-          unit_of_measurement: "W"
-    
-        - name: "SolarFlow Input Limit"
-          unique_id: "deviceIDinputLimit"
-          state_topic: "appKey/deviceID/state"
-          value_template: "{{ value_json.inputLimit | int }}"
-          unit_of_measurement: "W"
-    
-        - name: "SolarFlow Remain Out Time"
-          unique_id: "deviceIDremainOutTime"
-          state_topic: "appKey/deviceID/state"
-          value_template: "{{ value_json.remainOutTime | int }}"
-          device_class: "duration"
-          unit_of_measurement: "min"
-    
-        - name: "SolarFlow Remain Input Time"
-          unique_id: "deviceIDremainInputTime"
-          state_topic: "appKey/deviceID/state"
-          value_template: "{{ value_json.remainInputTime | int }}"
-          device_class: "duration"
-          unit_of_measurement: "min"
-    
-        - name: "SolarFlow Pack State"
-          unique_id: "deviceIDpackState"
-          state_topic: "appKey/deviceID/state"
-          value_template: "{{ value_json.packState | int }}"
-    
-        - name: "SolarFlow Pack Num"
-          unique_id: "deviceIDpackNum"
-          state_topic: "appKey/deviceID/state"
-          value_template: "{{ value_json.packNum | int }}"
-    
-        - name: "SolarFlow Electric Level"
-          unique_id: "deviceIDelectricLevel"
-          state_topic: "appKey/deviceID/state"
-          unit_of_measurement: "%"
-          device_class: "battery"
-          value_template: "{{ value_json.electricLevel | int }}"
-    
-        - name: "SolarFlow SOC Set"
-          unique_id: "deviceIDsocSet"
-          state_topic: "appKey/deviceID/state"
-          unit_of_measurement: "%"
-          value_template: "{{ value_json.socSet | int / 10 }}"
-        ```
+      + Erstellt eine neue Datei `mqtt.yaml` und fügt nachstehenden Inhalt ein.
         
+        ```yaml
+           sensor:
+         - name: "SolarFlow Hub State"
+           unique_id: "<deviceID>hubState"
+           state_topic: "<appKey>/<deviceID>/state"
+           value_template: "{{ value_json.hubState | int }}"
+
+         - name: "SolarFlow Solar Input Power"
+           unique_id: "<deviceID>solarInputPower"
+           state_topic: "<appKey>/<deviceID>/state"
+           unit_of_measurement: "W"
+           device_class: "power"
+           value_template: "{{ value_json.solarInputPower | int(0) }}"
+           state_class: "measurement"
+      
+         - name: "SolarFlow Pack Input Power"
+           unique_id: "<deviceID>packInputPower"
+           state_topic: "<appKey>/<deviceID>/state"
+           unit_of_measurement: "W"
+           device_class: "power"
+           value_template: "{{ value_json.packInputPower | int(0) }}"
+           state_class: "measurement"
+      
+         - name: "SolarFlow Output Pack Power"
+           unique_id: "<deviceID>outputPackPower"
+           state_topic: "<appKey>/<deviceID>/state"
+           unit_of_measurement: "W"
+           device_class: "power"
+           value_template: "{{ value_json.outputPackPower | int(0) }}"
+           state_class: "measurement"
+      
+         - name: "SolarFlow Output Home Power"
+           unique_id: "<deviceID>outputHomePower"
+           state_topic: "<appKey>/<deviceID>/state"
+           unit_of_measurement: "W"
+           device_class: "power"
+           value_template: "{{ value_json.outputHomePower | int(0) }}"
+           state_class: "measurement"
+      
+         - name: "SolarFlow Output Limit"
+           unique_id: "<deviceID>outputLimit"
+           state_topic: "<appKey>/<deviceID>/state"
+           value_template: "{{ value_json.outputLimit | int }}"
+           unit_of_measurement: "W"
+    
+         - name: "SolarFlow Input Limit"
+           unique_id: "<deviceID>inputLimit"
+           state_topic: "<appKey>/<deviceID>/state"
+           value_template: "{{ value_json.inputLimit | int }}"
+           unit_of_measurement: "W"
+    
+         - name: "SolarFlow Remain Out Time"
+           unique_id: "<deviceID>remainOutTime"
+           state_topic: "<appKey>/<deviceID>/state"
+           value_template: "{{ value_json.remainOutTime | int }}"
+           device_class: "duration"
+           unit_of_measurement: "min"
+    
+         - name: "SolarFlow Remain Input Time"
+           unique_id: "<deviceID>remainInputTime"
+           state_topic: "<appKey>/<deviceID>/state"
+           value_template: "{{ value_json.remainInputTime | int }}"
+           device_class: "duration"
+           unit_of_measurement: "min"
+    
+         - name: "SolarFlow Pack State"
+           unique_id: "<deviceID>packState"
+           state_topic: "<appKey>/<deviceID>/state"
+           value_template: "{{ value_json.packState | int }}"
+    
+         - name: "SolarFlow Pack Num"
+           unique_id: "<deviceID>packNum"
+           state_topic: "<appKey>/<deviceID>/state"
+           value_template: "{{ value_json.packNum | int }}"
+    
+         - name: "SolarFlow Electric Level"
+           unique_id: "<deviceID>electricLevel"
+           state_topic: "<appKey>/<deviceID>/state"
+           unit_of_measurement: "%"
+           device_class: "battery"
+           value_template: "{{ value_json.electricLevel | int }}"
+    
+         - name: "SolarFlow SOC Set"
+           unique_id: "<deviceID>socSet"
+           state_topic: "<appKey>/<deviceID>/state"
+           unit_of_measurement: "%"
+           value_template: "{{ value_json.socSet | int / 10 }}"
+        ```
+      + Speichert die Datei.
+      + Öffnet die Entwicklerwerkzeuge und überprüft, ob eure Konfiguration fehlerfrei ist, danach startet Home Assistant neu.
+        
+        ![grafik](https://github.com/z-master42/solarflow/assets/66380371/ac61106b-200e-44ab-bce8-e9c7fc3ff0ef)
+      + Nun solltet ihr unter den o. a. Namen die entsprechenden Sensoren findet. Die wenigsten werden von vorne herein bereits einen Wert haben, da wie abfänglich erwähnt der Zendure-Broker nur Werteänderungen ausspielt, wenn sich der jeweilige Wert im Vergleich zu seinem vorherigen Status geändert hat.
+      + Abschließend noch ein paar Einlassungen zu den von mir gemachten Anpassungen, in Ergänzung zu der Zendure Sensorbauanleitung:
+        + Ich habe alle Sensoren um einen Default-Wert in der `value_template`-Zeile ergänzt. Durch den Umstand, dass nur Werteänderungen übermittelt werden, schreibt euch Home Assistant für jeden Sensor bei dem beim letzten Datenaustausch kein Wert mit dabei war eine Warning (fehlendes `dict_obj`) in euer Log, da seitens Home Assistant die Erwartung vorhanden ist zu jedem Sensor einen Wert zu erhalten. Alle Power-Sensoren habe ich mit dem Default-Wert `int(0)` versehen, denn Rest nur mit `int`. Dies sorgt dafür, dass Home Assistant weiterhin den letzten Wert angezeigt, bis ein neuer übermittelt wird bzw., dass ein Sensor auch auf 0 gesetzt wird, wenn er nicht mehr aktualisiert wird, z.B. wenn die Batterie von laden auf entladen wechselt.
+        + _Solar Input Power_, _Pack Input Power_, _Output Pack Power_ und _Output Home Power_ habe ich um `state_class: measurement` ergänzt, damit Home Assistant mit diesen auch rechnen kann. Ob das wirklich nötig ist weiß ich gerade gar nicht. Um die Werte aber im Energie Dashboard nutzen zu können müssen sie noch zu einem Verbrauchswert (Leistung mal Zeit) integriert werden. Dafür gibt es in der Helfersektion von Home Assistant den _Riemann Summenintegralsensor_. Die Methode habe ich auf Trapezregel gelassen und das metrische Präfix auf `kilo` gestellt. Wenn dann ein paar Werte durchgelaufen sind könnt ihr diese dann im Energie Dashboard verwenden.
+        + _Output Limit_ und _Input Limit_ haben die `unit_of_measurement: "W"` erhalten.
+        + _Remain Input Time_ und _Remain Out Time_ haben die `device_class: "duration"` bekommen. Der übermittelte Wert ist die jeweilige Dauer in Minuten, sodass die `unit_of_measurement: "min"` ist. Durch die `device_class` rechnet Home Assistant das automatisch in eine Zeitangabe in h:min:s um.
+        + _SOC Set_ ist von Zendure schon mit `unit_of_measurement: "%"` angegeben, allerdings liefert der Sensor dann z.B. 1000 %, wenn die obere Ladegrenze 100 % ist. Keine Ahnung warum das so sein soll. Ich habe den Wert entsprechend noch durch 10 geteilt.
+
 
 
