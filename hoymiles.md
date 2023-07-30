@@ -145,4 +145,9 @@ sequence:
 mode: single
 icon: phu:huawei-solar-inverter
 ```
+### Anmerkungen
+Neben dem "eigentlichen" Skript zur Anpassung des Wechselrichterlimits an den aktuellen Verbrauch habe ich noch ein paar Bausteine ergänzt:
++ Ist der Akku voll und übersteigt die aktuelle Photovoltaikleistung die meines Wechselrichters, wird das Limit auf 100 % gesetzt. Ist das aktuelle Limit kleiner als die verfügbare Photovoltaikleistung wird das Limit auf diese erhöht.
++ Ist der Ladestand des Akkus kleiner als 10 % erfolgt eine Begrenzung des Wechselrichterlimits auf 50 W um so erstmal den Akku ein wenig zu laden. Bzw. folgt so auch eine Begrenzung beim Entladen wenn die 10 % wieder unterchritten werden und keine Sonne mehr scheint. Beträgt die Uhrzeit dabei noch zwischen 04:00 Uhr und 12:00 Uhr wird sogar auf 12 W gedrosselt. Dies soll verhindern, dass der PV-Hub, sobald der Akku ein bisschen geladen ist, diesen direkt wieder entleert.
++ In der SolarFlow-App ist kein Energieplan eingestellt. PV-Hub Ausgangsleistung und akzeptable Wechselrichtereingangsleistung stehen auf dem was der Wechselrichter maximal kann.
 [^1]: Das Skript basiert auf der Arbeit von Peter F. aus H., welcher die Nulleinspeisung als Python-Skript realisiert hat: https://gitlab.com/p3605/hoymiles-tarnkappe/-/blob/main/hoymiles_setlimiter.py?ref_type=heads
