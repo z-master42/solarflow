@@ -1,0 +1,5 @@
+  logger:
+  default: info
+  filters:
+    homeassistant.helpers.template:
+      - "Template variable warning: 'dict object' has no attribute"
