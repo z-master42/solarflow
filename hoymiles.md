@@ -1,4 +1,148 @@
 ## Nulleinspeisung mit einem Hoymiles-Wechselrichter
+Die Nulleinspeisung habe ich für mich als [Skript](script.yaml)[^1] in Home Assistant realisiert, welches über eine [Automatisierung](automation.yaml) automatisch gestartet wird, wenn ich den Home Assistant mal neustarten musste.
 ```yaml
-
+alias: Anpassung Wechselrichter Leistung
+sequence:
+  - repeat:
+      while: []
+      sequence:
+        - if:
+            - condition: state
+              entity_id: binary_sensor.hoymiles_hm_600_reachable
+              state: "on"
+              alias: Wechselrichter erreichbar
+          alias: "-"
+          then:
+            - variables:
+                altes_limit: >-
+                  {{
+                  states('number.hoymiles_hm_600_limit_nonpersistent_absolute')
+                  | float(1) }}
+                grid_sum: >-
+                  {{ states('sensor.stromzahler_aktuelle_leistung') | float(1)
+                  }}
+                maximum_wr: "{{ 600 | float(1) }}"
+                minimum_wr: "{{ 50 | float(1) }}"
+                minimum_pack: "{{ 10 | int(1) }}"
+                maximum_pack: "{{ 100 | int (1) }}"
+                lower_limit_wr: "{{ 12 | float(1) }}"
+                pack_level: "{{ states('sensor.solarflow_electric_level') | int(1) }}"
+                solar_input: "{{ states('sensor.solarflow_solar_input_power') | float(1) }}"
+              alias: Variablen definieren
+            - if:
+                - condition: template
+                  value_template: "{{ pack_level == maximum_pack}}"
+                  alias: Akkustand = 100 %
+              then:
+                - if:
+                    - condition: template
+                      value_template: "{{ solar_input > maximum_wr }}"
+                      alias: Solarleistung > maximale Wechselrichterleistung
+                  then:
+                    - service: number.set_value
+                      data:
+                        value: "{{ maximum_wr }}"
+                      target:
+                        entity_id: number.hoymiles_hm_600_limit_nonpersistent_absolute
+                      alias: Setze Limit auf 600 W
+                  else:
+                    - if:
+                        - condition: template
+                          value_template: "{{ altes_limit <= solar_input}}"
+                          alias: Limit <= Solarleistung
+                      then:
+                        - service: number.set_value
+                          data:
+                            value: "{{ solar_input }}"
+                          target:
+                            entity_id: >-
+                              number.hoymiles_hm_600_limit_nonpersistent_absolute
+                          alias: Setze Limit = Solarleistung
+                      alias: "-"
+                  alias: "-"
+              alias: "-"
+              else:
+                - if:
+                    - condition: template
+                      value_template: "{{ pack_level >= minimum_pack }}"
+                      alias: Akkuladestand > 10 %
+                  then:
+                    - variables:
+                        setpoint: "{{ (grid_sum + altes_limit - 5.0) | float(1) }}"
+                      alias: Neues Limit = Aktueller Verbrauch + Altes Limit - 5
+                    - if:
+                        - condition: template
+                          value_template: "{{ setpoint > maximum_wr }}"
+                          alias: Neues Limit > 600 W
+                      then:
+                        - service: number.set_value
+                          data:
+                            value: "{{ maximum_wr }}"
+                          target:
+                            entity_id: >-
+                              number.hoymiles_hm_600_limit_nonpersistent_absolute
+                          alias: Setze Limit auf 600 W
+                      else:
+                        - if:
+                            - condition: template
+                              value_template: "{{ setpoint < minimum_wr}}"
+                              alias: Neues Limit < 50
+                          then:
+                            - service: number.set_value
+                              data:
+                                value: "{{ minimum_wr }}"
+                              target:
+                                entity_id: >-
+                                  number.hoymiles_hm_600_limit_nonpersistent_absolute
+                              alias: Setze Limit auf 50 W
+                          else:
+                            - if:
+                                - condition: template
+                                  value_template: "{{ setpoint != altes_limit }}"
+                                  alias: Neues Limit != Altes Limit
+                              then:
+                                - service: number.set_value
+                                  data:
+                                    value: "{{ setpoint | float(1) }}"
+                                  target:
+                                    entity_id: >-
+                                      number.hoymiles_hm_600_limit_nonpersistent_absolute
+                                  alias: Setzte neues Limit
+                              alias: "-"
+                          alias: "-"
+                      alias: "-"
+                  else:
+                    - if:
+                        - condition: time
+                          before: "12:00:00"
+                          alias: Uhrzeit nach 0400 und vor 1200
+                          after: "04:00:00"
+                      then:
+                        - service: number.set_value
+                          data:
+                            value: "{{ lower_limit_wr }}"
+                          target:
+                            entity_id: >-
+                              number.hoymiles_hm_600_limit_nonpersistent_absolute
+                          alias: Setzte Limit auf 12 W
+                      else:
+                        - service: number.set_value
+                          data:
+                            value: "{{ minimum_wr }}"
+                          target:
+                            entity_id: >-
+                              number.hoymiles_hm_600_limit_nonpersistent_absolute
+                          alias: Setzte Limit auf 50 W
+                      alias: "-"
+                  alias: "-"
+        - delay:
+            hours: 0
+            minutes: 0
+            seconds: 20
+            milliseconds: 0
+          alias: Warte 20 s
+    alias: Solange
+mode: single
+icon: phu:huawei-solar-inverter
 ```
+[^1]: Das Skript basiert auf der Arbeit von Peter F. aus H., welcher die Nulleinspeisung als Python-Skript realisiert hat: https://gitlab.com/p3605/hoymiles-tarnkappe/-/blob/main/hoymiles_setlimiter.py?ref_type=heads
