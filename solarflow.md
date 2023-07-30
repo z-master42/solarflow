@@ -90,7 +90,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
       + Der Anfang ist bei beiden Möglichkeiten gleich.
       + Zunächst muss die Brücke zum Zendure-Broker aufgebaut werden. Hiefür müsst ihr auf das `share`-Verzeichnis eures Home Assistant zugreifen. Über das File Editor-Addon ist dies z. B. nicht möglich. Über dieses habt ihr nämlich nur Zugriff auf das `config`-Verzeichnis. Ich bin daher den Weg über das Samba-Addon gegangen. Möglich ist auch der Weg über SSH, hierfür gibt es auch Addons, und dann das direkte Anlegen über z. B. den Editor _nano_.
       + Erstellt im Verzeichnis eine Datei und nennt diese `zendure.conf`.
-      + Fügt folgenden Inhalt ein:
+      + Fügt folgenden [Inhalt](zendure.conf] ein:
         
         ```
         connection external-bridge
