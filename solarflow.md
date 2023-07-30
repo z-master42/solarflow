@@ -112,7 +112,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
       ```
       topic # in 0 homeassistant/sensor/<appKey>/ <appKey>/sensor/device/
       ```
-      Nun könnt ihr das Addon neustarten.
+      Nun könnt ihr das Addon neustarten. Und dir solltet nun neue Entitäten haben, die vom Namen her alle mit Solar Flow beginnen.
    5. **Manuelle Einfügung**
 
       Das manuelle, also händische, Anlegen von Emtitäten erfolgt in Home Assistant über die `configuration.yaml`. Diese liegt im `config`-Verzeichnis. Auf dieses könnt ihr ebenso via Samba zugreifen. Genau so gut ist aber der Weg über das File Editor Addon. In diesem wird der eingefügte Code zur besseren Lesbarkeit farblich markiert und sollten Formatierungs- oder Syntaxfehler vorliegen wird dies direkt angezeigt. An für sich könnt ihr alles in die `configuration.yaml` schreiben. Mit der Zeit wird diese dann aber etwas unübersichtlich, da alles untereinander in einer quasi Textdatei steht. Schöner ist es hier, entsprechende Konfigurationen in neue Dateien auszulagern.
@@ -221,11 +221,18 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
         ![grafik](https://github.com/z-master42/solarflow/assets/66380371/ac61106b-200e-44ab-bce8-e9c7fc3ff0ef)
       + Nun solltet ihr unter den o. a. Namen die entsprechenden Sensoren findet. Die wenigsten werden von vorne herein bereits einen Wert haben, da wie abfänglich erwähnt der Zendure-Broker nur Werteänderungen ausspielt, wenn sich der jeweilige Wert im Vergleich zu seinem vorherigen Status geändert hat.
       + Abschließend noch ein paar Einlassungen zu den von mir gemachten Anpassungen, in Ergänzung zu der Zendure Sensorbauanleitung:
-        + Ich habe alle Sensoren um einen Default-Wert in der `value_template`-Zeile ergänzt. Durch den Umstand, dass nur Werteänderungen übermittelt werden, schreibt euch Home Assistant für jeden Sensor bei dem beim letzten Datenaustausch kein Wert mit dabei war eine Warning (fehlendes `dict_obj`) in euer Log, da seitens Home Assistant die Erwartung vorhanden ist zu jedem Sensor einen Wert zu erhalten. Alle Power-Sensoren habe ich mit dem Default-Wert `int(0)` versehen, denn Rest nur mit `int`. Dies sorgt dafür, dass Home Assistant weiterhin den letzten Wert angezeigt, bis ein neuer übermittelt wird bzw., dass ein Sensor auch auf 0 gesetzt wird, wenn er nicht mehr aktualisiert wird, z.B. wenn die Batterie von laden auf entladen wechselt.
+        + Ich habe alle Sensoren um einen Default-Wert in der `value_template`-Zeile ergänzt. Durch den Umstand, dass nur Werteänderungen übermittelt werden, schreibt euch Home Assistant für jeden Sensor bei dem beim letzten Datenaustausch kein Wert mit dabei war eine Warning (`Template variable warning: 'dict object' has no attribute 'blablabla' when rendering '{{ value_json.blablabla }}'`) in euer Log, da seitens Home Assistant die Erwartung vorhanden ist zu jedem Sensor einen Wert zu erhalten. Alle Power-Sensoren habe ich mit dem Default-Wert `int(0)` versehen, denn Rest nur mit `int`. Dies sorgt dafür, dass Home Assistant weiterhin den letzten Wert angezeigt, bis ein neuer übermittelt wird bzw., dass ein Sensor auch auf 0 gesetzt wird, wenn er nicht mehr aktualisiert wird, z.B. wenn die Batterie von laden auf entladen wechselt.
         + _Solar Input Power_, _Pack Input Power_, _Output Pack Power_ und _Output Home Power_ habe ich um `state_class: measurement` ergänzt, damit Home Assistant mit diesen auch rechnen kann. Ob das wirklich nötig ist weiß ich gerade gar nicht. Um die Werte aber im Energie Dashboard nutzen zu können müssen sie noch zu einem Verbrauchswert (Leistung mal Zeit) integriert werden. Dafür gibt es in der Helfersektion von Home Assistant den _Riemann Summenintegralsensor_. Die Methode habe ich auf Trapezregel gelassen und das metrische Präfix auf `kilo` gestellt. Wenn dann ein paar Werte durchgelaufen sind könnt ihr diese dann im Energie Dashboard verwenden.
         + _Output Limit_ und _Input Limit_ haben die `unit_of_measurement: "W"` erhalten.
         + _Remain Input Time_ und _Remain Out Time_ haben die `device_class: "duration"` bekommen. Der übermittelte Wert ist die jeweilige Dauer in Minuten, sodass die `unit_of_measurement: "min"` ist. Durch die `device_class` rechnet Home Assistant das automatisch in eine Zeitangabe in h:min:s um.
         + _SOC Set_ ist von Zendure schon mit `unit_of_measurement: "%"` angegeben, allerdings liefert der Sensor dann z.B. 1000 %, wenn die obere Ladegrenze 100 % ist. Keine Ahnung warum das so sein soll. Ich habe den Wert entsprechend noch durch 10 geteilt.
+  4. **Vor- und Nachteile**
+     | Methode | Vorteile | Nachteile |
+     | -------- | -------- | -------- |
+     | (1.) Keine vorherige Nutzung von MQTT in Home Assistant | Schnell hinzugefügt und wenig Aufwand | Nachträgliche Anpassung der Entitäten möglich aber ggf. umständig. Warnings im Log über fehlende `dict object`[^1] |
+     | (2. iii.) Bereits MQTT in der Nutzung. Automatisches Anlegen der Entitäten durch Home Assistant | Geringfügiger Mehraufwand ggü. (1.), aber in Home Assistant nicht anders möglich | Nachträgliche Anpassung der Entitäten möglich aber ggf. umständig. Warings im Log über fehlende `dict object`[^1]|
+     | (2. iv.) Bereits MQTT in der Nutzung. Manuelles Anlegen der Entitäten | Vollständige Anpassungmöglichkeiten gegeben. Ausschließen von Warnings | Ggf. umständlich und aufwendiger als (2. iii.). Nicht selbsterklärend, schwierig nachzuvollziehen für jemanden der nicht so in der Materie steckt |
 
 
 
+[^1]: Als "Lösung" ist mir hier bisher nur bekannt, die entsprechende Warning zu unterdrücken. 
