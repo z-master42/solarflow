@@ -125,7 +125,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
         script: !include scripts.yaml
         scene: !include scenes.yaml
         ```
-      + Erstellt eine neue Datei `mqtt.yaml` und fügt nachstehenden Inhalt ein.
+      + Erstellt eine neue Datei `mqtt.yaml` und fügt nachstehenden [Inhalt](mqtt.yaml) ein.
         
         ```yaml
            sensor:
@@ -235,4 +235,4 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
 
 
 
-[^1]: Als "Lösung" ist mir hier bisher nur bekannt, die entsprechende Warning zu unterdrücken. 
+[^1]: Als "Lösung" ist mir hier bisher nur bekannt, die entsprechende [Warning](warning.yaml) zu unterdrücken. 
