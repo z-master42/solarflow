@@ -97,7 +97,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
         remote_clientid <appKey>
         topic <appKey>/# both 0
         ```
-      + Alles zwischen <> ersetzt ihr natürlich wieder durch eure eigenen Daten.
+      + Alles zwischen <> ersetzt ihr **inklusive der <>** natürlich wieder durch eure eigenen Daten.
       + In der Konfiguration des Mosquitto-Addons überprüft ihr jetzt noch ob unter _Customize_ `active` auf `true` gesetzt ist.
       + Abschließend ist das Addon neu zu starten. Wollt ihr, dass Home Assistant euch die Sensorentitäten automatisch anlegt überspringt diesen Schritt zunächst.
       + Im Log sollte dann ein Eintrag ähnlich `Connecting bridge external-bridge (mqtt.zen-iot.com:1883)` auftauchen. Ggf. müsst ihr das Log mehrmals aktualisieren (Geduld). Sollte hingehen irgendwas mit Timeout oder so kommen, einfach das Addon noch mal neu starten.
