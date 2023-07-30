@@ -9,21 +9,21 @@ Um diese beiden Werte zu erhalten, benötigt ihr, neben der Emailadresse mit der
 Ich habe zum Abruf das Kommandozeilen-Tool _curl_ verwendet.
 
 **Vorgehen auf einem Microsoft Betriebssystem**
-+ Öffnet mit `Windows-Taste + R` die Eingabeaufforderung
-+ Gebt `cmd` ein
++ Öffnet mit `Windows-Taste + R` die Eingabeaufforderung.
++ Gebt `cmd` ein.
 + Gebt folgenden Befehl in der Kommandozeile ein:
   ```
   curl -i -v --json "{'snNumber': 'EureHubSeriennummer', 'account': 'EureEmailadresse'}" https://app.zendure.tech/v2/developer/api/apply
   ```
-+ Zuvor habt ihr natürlich eure Seriennummer und eure verwendete Emailadresse anstelle der Platzhalter eingetragen
++ Zuvor habt ihr natürlich eure Seriennummer und eure verwendete Emailadresse anstelle der Platzhalter eingetragen.
 
 **Vorgehen auf einem Linux Betriebssystem**
-+ Öffnet mit `Strg+Alt+T` ein Terminalfenster
++ Öffnet mit `Strg+Alt+T` ein Terminalfenster.
 + Gebt folgenden Befehl in der Kommandozeile ein:
   ```
   curl -i -X POST -H 'Content-Type: application/json' -d '{"snNumber": "EureHubSeriennummer", "account": "EureEmailadresse"}' https://app.zendure.tech/v2/developer/api/apply
   ```
-+ Zuvor habt ihr natürlich eure Seriennummer und eure verwendete Emailadresse anstelle der Platzhalter eingetragen
++ Zuvor habt ihr natürlich eure Seriennummer und eure verwendete Emailadresse anstelle der Platzhalter eingetragen.
 
 **Antwort**
 
@@ -40,7 +40,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
    
    Wenn dies eure erste Berührung mit MQTT ist geht die Sache recht schnell.
    + Fügt über _Einstellungen - Geräte & Dienste_ eine neue Integration hinzu. Sucht dort nach MQTT und wählt die ohne irgendwelche weiteren Bezeichnungen.
-   + Der Benutzername ist euer `appKey` und das Passwort euer `appSecret`. Die URL des Brokers und der Port wurden euch ebenfalls mit der o.a. Antwort geliefert: `mqtt.zen-iot.com` mit Port `1883`
+   + Der Benutzername ist euer `appKey` und das Passwort euer `appSecret`. Die URL des Brokers und der Port wurden euch ebenfalls mit der o.a. Antwort geliefert: `mqtt.zen-iot.com` mit Port `1883`.
    + Damit auch Daten reinkommen müsst ihr wie eingangs erwähnt, noch ein Topic abonnieren. Dies geschieht hier in dem ihr auf der Konfigurationsseite `Enable Discovery` aktiviert und als `Discovery prefix` euren `appKey` eintragt.
      
    + ![grafik](https://github.com/z-master42/solarflow/assets/66380371/769a98f3-8786-42c3-8cc5-0d761df5aee7)
@@ -50,21 +50,21 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
    Hierbei gibt es zwei Möglichkeiten des weiteren Vorgehens. Entweder ist lasst euch durch Home Assistant alle verfügbaren Sensoren automatisch anlegen oder ihr fügt diese manuell hinzu. Direkt vorweg: Ich habe meine manuell hinzugefügt, so hatte ich die Möglichkeit diese direkt noch anzupassen.
    1. **Check vorweg**
       + Um zu überprüfen, ob seitens des Zendure-Brokers überhaupt Daten eures SolarFlows ausgespielt werden, bietet sich das Programm [MQTT-Explorer](http://mqtt-explorer.com/) an, welches es für die gängisten Betriebssysteme gibt.
-      + Erstellt dort eine neue Connection mit euren Zugangsdaten (`appKey`, `appSecret`) wie im Screenshot
+      + Erstellt dort eine neue Connection mit euren Zugangsdaten (`appKey`, `appSecret`) wie im Screenshot.
 
         ![grafik](https://github.com/z-master42/solarflow/assets/66380371/f4555568-a65c-43a1-8c8a-e6fdbb46bb96)
-      + Unter Advanced (Button) müsst ihr dann noch euren `appKey` als Topic abonnieren, also als neue Subscription hinzufügen --> `appKey/#`
+      + Unter Advanced (Button) müsst ihr dann noch euren `appKey` als Topic abonnieren, also als neue Subscription hinzufügen --> `appKey/#`.
 
         ![grafik](https://github.com/z-master42/solarflow/assets/66380371/59e3ea65-2927-4e6f-9bd9-815e761ed3d9)
       + Es sollten dann ziemlich zeitig Werte reinkommen. Wenn ihr alles aufklappt sieht es ungefähr so aus:
 
         ![grafik](https://github.com/z-master42/solarflow/assets/66380371/cb2d9c67-40ce-4bcb-bd18-054219adf43d)
         Unter der Broker-Adresse erscheint ein Eintrag der wie euer `appKey` lautet (alles in 🔴). Darunter gibt es drei weitere Einträge; `switch`, `sensor`, und einen der euren SolarFlo bezeichnet. Wir nennen ihn daher ab jetzt `deviceID` (alles in 🔵).
-        + `switch` enthält als Einträge die Bauanleitungen für die bisher verfügbaren Schalter
-        + `sensor` enthält als Einträge die Bauanleitungen für die bisher verfügbaren Sensoren
-        + `deviceID` enthält als Eintrag die Status der Sensoren, jedoch immer nur diejenigen, deren Wert sich geändert hat
+        + `switch` enthält als Einträge die Bauanleitungen für die bisher verfügbaren Schalter.
+        + `sensor` enthält als Einträge die Bauanleitungen für die bisher verfügbaren Sensoren.
+        + `deviceID` enthält als Eintrag die Status der Sensoren, jedoch immer nur diejenigen, deren Wert sich geändert hat.
           
-        Aktuell verfügbar sind folgende Sensoren und Schalter
+        Aktuell verfügbar sind folgende Sensoren und Schalter:
 
           | Field | Description | device_class |
           | -------- | ------- | ------- |
@@ -85,22 +85,43 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
 
 
    2. **Gleicher Start**
-      + Der Anfang ist bei beiden Möglichkeiten gleich
-      + Zunächst muss die Brücke zum Zendure-Broker aufgebaut werden. Hiefür müsst ihr auf das `share`-Verzeichnis eures Home Assistant zugreifen. Über das File Editor-Addon ist dies z. B. nicht möglich. Über dieses habt ihr nämlich nur Zugriff auf das `config`-Verzeichnis. Ich bin daher den Weg über das Samba-Addon gegangen. Möglich ist auch der Weg über SSH, hierfür gibt es auch Addons, und dann das direkte Anlegen über z. B. den Editor _nano_
-      + Erstellt im Verzeichnis eine Datei und nennt diese `zendure.conf`
-      + Fügt folgenden Inhalt ein
+      + Der Anfang ist bei beiden Möglichkeiten gleich.
+      + Zunächst muss die Brücke zum Zendure-Broker aufgebaut werden. Hiefür müsst ihr auf das `share`-Verzeichnis eures Home Assistant zugreifen. Über das File Editor-Addon ist dies z. B. nicht möglich. Über dieses habt ihr nämlich nur Zugriff auf das `config`-Verzeichnis. Ich bin daher den Weg über das Samba-Addon gegangen. Möglich ist auch der Weg über SSH, hierfür gibt es auch Addons, und dann das direkte Anlegen über z. B. den Editor _nano_.
+      + Erstellt im Verzeichnis eine Datei und nennt diese `zendure.conf`.
+      + Fügt folgenden Inhalt ein:
         ```
         connection external-bridge
         address mqtt.zen-iot.com:1883
-        remote_username appAppKey
-        remote_password appSecret
-        remote_clientid appKey
-        topic appKey/# both 0
+        remote_username <appKey>
+        remote_password <appSecret>
+        remote_clientid <appKey>
+        topic <appKey>/# both 0
         ```
-      + `appKey` und `appSecret` ersetzt ihr natürlich wieder durch eure eigenen
+      + Alles zwischen <> ersetzt ihr natürlich wieder durch eure eigenen Daten.
       + In der Konfiguration des Mosquitto-Addons überprüft ihr jetzt noch ob unter _Customize_ `active` auf `true` gesetzt ist.
-      + Abschließend ist das Addon neu zu starten.
+      + Abschließend ist das Addon neu zu starten. Wollt ihr, dass Home Assistant euch die Sensorentitäten automatisch anlegt überspringt diesen Schritt zunächst.
       + Im Log sollte dann ein Eintrag ähnlich `Connecting bridge external-bridge (mqtt.zen-iot.com:1883)` auftauchen. Ggf. müsst ihr das Log mehrmals aktualisieren (Geduld). Sollte hingehen irgendwas mit Timeout oder so kommen, einfach das Addon noch mal neu starten.
    3. **Automatische Einfügung**
-   4. **Manuelle Einfügung**
+      
+      Damit Home Assistant die Sensoren und Schalter automatisch erstellt, muss es wissen wie diese aufgebaut sind. Zudem gibt es seitens Home Assistant Vorgaben, wie die Topics aussehen müssen damit dies funktioniert.
+      Ergänzt hiezu in euer zendure.conf einfach noch eine Zeile mit:
+      ```
+      topic # in 0 homeassistant/sensor/<appKey>/ <appKey>/sensor/device/
+      ```
+      Nun könnt ihr das Addon neustarten.
+   5. **Manuelle Einfügung**
+
+      Das manuelle, also händische, Anlegen von Emtitäten erfolgt in Home Assistant über die configuration.yaml. Diese liegt im config-Verzeichnis. Auf dieses könnt ihr ebenso via Samba zugreifen. Genau so gut ist aber der Weg über das File Editor Addon. In diesem wird der eingefügte Code zur besseren Lesbarkeit farblich markiert und sollten Formatierungs- oder Syntaxfehler vorliegen wird dies direkt angezeigt. An für sich könnt ihr alles in die configuration.yaml schreiben. Mit der Zeit wird dies aber etwas unübersichtlich, da alles untereinander in einer quasi Textdatei steht. Schöner ist es hier, entsprechende Konfigurationen in neue Dateien auszulagern.
+      + Öffnet eure configuration.yaml.
+      + Ergänzt unter dem nachstehenden Block, welcher sich ziemlich am Anfang der Datei befindet eine neue Zeile mit mqtt: !include mqtt.yaml.
+        ```
+        group: !include groups.yaml
+        automation: !include automations.yaml
+        script: !include scripts.yaml
+        scene: !include scenes.yaml
+        ```
+      + Erstellt eine neue Datei mqtt.yaml und fügt nachstehenden Inhalt ein.
+        ```
+        
+
 
