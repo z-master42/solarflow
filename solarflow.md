@@ -119,7 +119,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
 
       Das manuelle, also händische, Anlegen von Emtitäten erfolgt in Home Assistant über die `configuration.yaml`. Diese liegt im `config`-Verzeichnis. Auf dieses könnt ihr ebenso via Samba zugreifen. Genau so gut ist aber der Weg über das File Editor Addon. In diesem wird der eingefügte Code zur besseren Lesbarkeit farblich markiert und sollten Formatierungs- oder Syntaxfehler vorliegen wird dies direkt angezeigt. An für sich könnt ihr alles in die `configuration.yaml` schreiben. Mit der Zeit wird diese dann aber etwas unübersichtlich, da alles untereinander in einer Textdatei steht. Schöner ist es hier, entsprechende Konfigurationen in neue Dateien auszulagern.
       + Öffnet eure `configuration.yaml`.
-      + Ergänzt unter dem nachstehenden Block, welcher sich ziemlich am Anfang der Datei befindet eine neue Zeile mit `mqtt: !include mqtt.yaml`.
+      + Ergänzt unter dem nachstehenden Block, welcher sich ziemlich am Anfang der Datei befindet eine neue Zeile mit: `mqtt: !include mqtt.yaml`.
         
         ```yaml
         group: !include groups.yaml
@@ -127,6 +127,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
         script: !include scripts.yaml
         scene: !include scenes.yaml
         ```
+        _Hinweis_: Der Block muss bei euch nicht genau so aussehen. Hier ist das ebenfalls davon abhängig, wie weit ihr euch in Home Assistant schon ausgetobt habt. Wenn ich das richtig in Erinnerung habe, sollte aber wenigstens eine `!include`-Zeile schon vorhanden sein.
       + Erstellt eine neue Datei `mqtt.yaml` und fügt nachstehenden [Inhalt](mqtt.yaml) ein.
         
         ```yaml
