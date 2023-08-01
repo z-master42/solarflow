@@ -127,7 +127,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
         script: !include scripts.yaml
         scene: !include scenes.yaml
         ```
-        _Hinweis_: Der Block muss bei euch nicht genau so aussehen. Hier ist das ebenfalls davon abhängig, wie weit ihr euch in Home Assistant schon ausgetobt habt. Wenn ich das richtig in Erinnerung habe, sollte aber wenigstens eine `!include`-Zeile schon vorhanden sein.
+        **Hinweis**: Der Block muss bei euch nicht genau so aussehen. Hier ist das ebenfalls davon abhängig, wie weit ihr euch in Home Assistant schon ausgetobt habt. Wenn ich das richtig in Erinnerung habe, sollte aber wenigstens eine `!include`-Zeile schon vorhanden sein.
       + Erstellt eine neue Datei `mqtt.yaml` und fügt nachstehenden [Inhalt](mqtt.yaml) ein.
         
         ```yaml
