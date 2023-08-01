@@ -1,7 +1,7 @@
 ## Nulleinspeisung mit einem Hoymiles-Wechselrichter
 Die Nulleinspeisung habe ich für mich als [Skript](script.yaml)[^1] in Home Assistant realisiert, welches über eine [Automatisierung](automation.yaml) automatisch gestartet wird, wenn ich den Home Assistant mal neustarten musste.
 + Geht in Home Assistant auf _Einstellungen_ - _Automatisierungen & Szenen_ - _Skripte_ und legt ein neues leeres Skript an. Wechselt über die drei Punkte oben rechts vom visuellen in den YAML-Bearbeitungsmodus und kopiert meine Vorlage einfach da rein. Ggf. müsst ihr natürlich die von mir verwendeten Entitätennamen auf eure ändern.
-+ Wollt ihr auch die Automatisierung so übernehmen, geht ihr fast genau so vor. Wechselt zu Automatisierungen_ legt eine neue leere Automatisierung an, wechselt über die drei Punkte oben rechts in den YAML-Modus und kopiert meine Vorlage da rein.
++ Wollt ihr auch die Automatisierung so übernehmen, geht ihr fast genau so vor. Wechselt zu _Automatisierungen_ legt eine neue leere Automatisierung an, wechselt über die drei Punkte oben rechts in den YAML-Modus und kopiert meine Vorlage da rein.
 + Bei beidem natürlich Speichern nicht vergessen, aber da erinnert euch Home Assistant auch dran, wenn ihr die Seite verlassen wollt.
 + Das Skript muss dann einmalig noch gestartet werden, geht dazu noch mal auf die _Skripte_-Seite und klickt auf die drei Punkte am entsprechenden Eintrag. Dort dann auf _Ausführen_.
 ```yaml
