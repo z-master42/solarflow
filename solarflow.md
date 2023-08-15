@@ -48,10 +48,12 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
    + ![grafik](https://github.com/z-master42/solarflow/assets/66380371/769a98f3-8786-42c3-8cc5-0d761df5aee7)
 2. **Option: Ihr nutzt bereits einen MQTT-Broker in Home Assistant**
    
-   Wenn ihr bereits Erfahrungen mit MQTT gesammelt habt, weil ihr z. B. Sensoren oder Steckdosen darüber mit Home Assistant verbunden habt, ist die Wahrscheinlichkeit sehr groß, dass ihr das Mosquitto-Addon installiert und die MQTT-Integration für die Verbindung mit diesem konfiguriert habt.
+   Wenn ihr bereits Erfahrungen mit MQTT gesammelt habt, weil ihr z. B. Sensoren oder Steckdosen darüber mit Home Assistant verbunden habt, ist die Wahrscheinlichkeit sehr groß, dass ihr das Mosquitto broker-Addon installiert und die MQTT-Integration für die Verbindung mit diesem konfiguriert habt.
+   
    Problem: In Home Assistant kann nur eine MQTT-Integration installiert werden.
+   
    Lösung: Ihr müsst eine Brücke zum MQTT-Broker von Zendure bauen.
-   Hierbei gibt es zwei Möglichkeiten des weiteren Vorgehens. Entweder ist lasst euch durch Home Assistant alle verfügbaren Sensoren automatisch anlegen oder ihr fügt diese manuell hinzu. Direkt vorweg: Ich habe meine manuell hinzugefügt, so hatte ich die Möglichkeit diese dabei noch anzupassen.
+   Hierbei gibt es dann zudem zwei Möglichkeiten des weiteren Vorgehens. Entweder ist lasst euch durch Home Assistant alle verfügbaren Sensoren automatisch anlegen oder ihr fügt diese manuell hinzu. Direkt vorweg: Ich habe meine manuell hinzugefügt, so hatte ich die Möglichkeit diese dabei noch anzupassen.
    1. **Check vorweg**
       + Um zu überprüfen, ob seitens des Zendure-Brokers überhaupt Daten eures SolarFlows ausgespielt werden, bietet sich das Programm [MQTT-Explorer](http://mqtt-explorer.com/) an, welches es für die gängisten Betriebssysteme gibt.
       + Erstellt dort eine neue Connection mit euren Zugangsdaten (`appKey`, `appSecret`) wie im Screenshot.
@@ -90,8 +92,8 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
 
    2. **Gleicher Start**
       + Der Anfang ist bei beiden Möglichkeiten gleich.
-      + Zunächst muss die Brücke zum Zendure-Broker aufgebaut werden. Hiefür müsst ihr auf das `share`-Verzeichnis eures Home Assistant zugreifen. Über das File Editor-Addon ist dies z. B. nicht möglich. Über dieses habt ihr nämlich nur Zugriff auf das `config`-Verzeichnis. Ich bin daher den Weg über das Samba-Addon gegangen. Möglich ist auch der Weg über SSH, hierfür gibt es auch Addons, und dann das direkte Anlegen über z. B. den Editor _nano_.
-      + Erstellt im Verzeichnis eine Datei und nennt diese `zendure.conf`.
+      + Zunächst muss die Brücke zum Zendure-Broker aufgebaut werden. Hiefür müsst ihr auf das `share`-Verzeichnis eures Home Assistant zugreifen. Über das File Editor-Addon ist dies z. B. nicht möglich. Über dieses habt ihr nämlich nur Zugriff auf das `config`-Verzeichnis. Ihr könnt dies über das Samba-Addon machen. Wir gehen an dieser Stelle aber den Weg über das Terminal & SSH-Addon. Welches ihr hierfür natürlich installieren müsst. Erstellt zunächst eine Datei mit folgendem Inhalt. Wie die Datei heißt ist völlig egal und welchen Editor oder welches Textverarbeitungsprogramm ihr dafür nutzt ebenfalls.
+      + Erstellt eine neue Textdatei.
       + Fügt folgenden [Inhalt](zendure.conf) ein:
         
         ```
@@ -103,8 +105,19 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
         topic <appKey>/# both 0
         ```
       + Alles zwischen <> ersetzt ihr **inklusive der <>** natürlich wieder durch eure eigenen Daten.
+      + Installiert das Terminal & SSH-Addon im Addon-Bereich, startet es danach und öffnet die Benutzeroberfläche.
+      + Wechselt mit dem Befehl `cd share` ins `share`-Verzeichnis.
+      + Überprüft mit `ls` ob es schon einen Ordner `mosquitto` gibt. Erscheint nach dem Befehl einfach eine neue Eingabezeile, existiert der Ordner noch nicht, ansonsten erscheint ein Eintrag `mosquitto`.
+      + Ist der Ordner nicht vorhanden, erstellt ihn mit `mkdir mosquitto`.
+      + Wechselt mit `cd mosquitto` in das Verzeichnis.
+      + Nun erstellen wir eine neue Datei und bearbeiten diese mit dem Editor _nano_. Gebt dazu `nano zendure.conf` ein.
+      + Kopiert nun den Inhalt aus eurer zuvor angelegten Textdatei und fügt ihn in das Terminalfenster ein. **Achtung:** Hierfür müsst ihr die `Umschalttaste` eurer Tastatur gedrückt halten und mit der `rechten Maustaste` ins Terminalfenster klicken und dort _Einfügen_ auswählen. Nun sollte der Inhalt eurer Textdatei im Terminalfenster stehen.
+      + Wollt ihr, dass Home Assistant euch die Sensorentitäten automatisch anlegt überspringt die weiteren Schritte zunächst und macht bei iii. weiter.
+      + Schließt mit `Strg + X` den _nano_-Editor.
+      + Bestätigt die am unteren Terminalrand erscheinende Frage mit `y`.
+      + Bestätigt die nächste Frage mit der `Eingabetaste`.
       + In der Konfiguration des Mosquitto-Addons überprüft ihr jetzt noch ob unter _Customize_ `active` auf `true` gesetzt ist.
-      + Abschließend ist das Addon neu zu starten. Wollt ihr, dass Home Assistant euch die Sensorentitäten automatisch anlegt überspringt diesen und den nächsten Schritt zunächst.
+      + Abschließend ist das Mosquitto-Addon neu zu starten.
       + Im Log sollte dann ein Eintrag ähnlich `Connecting bridge external-bridge (mqtt.zen-iot.com:1883)` auftauchen. Ggf. müsst ihr das Log mehrmals aktualisieren (Geduld). Sollte hingehen irgendwas mit Timeout oder so kommen, einfach das Addon noch mal neu starten.
    3. **Automatische Einfügung**
       
@@ -114,7 +127,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
       ```
       topic # in 0 homeassistant/sensor/<appKey>/ <appKey>/sensor/device/
       ```
-      Nun könnt ihr das Addon neustarten. Und ihr solltet nun neue Entitäten haben, die vom Namen her alle mit SolarFlow beginnen.
+      Macht nun oben da weiter, wo ihr eben hierhin abgesprungen seit.
    5. **Manuelle Einfügung**
 
       Das manuelle, also händische, Anlegen von Emtitäten erfolgt in Home Assistant über die `configuration.yaml`. Diese liegt im `config`-Verzeichnis. Auf dieses könnt ihr ebenso via Samba zugreifen. Genau so gut ist aber der Weg über das File Editor Addon. In diesem wird der eingefügte Code zur besseren Lesbarkeit farblich markiert und sollten Formatierungs- oder Syntaxfehler vorliegen wird dies direkt angezeigt. An für sich könnt ihr alles in die `configuration.yaml` schreiben. Mit der Zeit wird diese dann aber etwas unübersichtlich, da alles untereinander in einer Textdatei steht. Schöner ist es hier, entsprechende Konfigurationen in neue Dateien auszulagern.
