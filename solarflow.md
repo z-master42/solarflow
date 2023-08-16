@@ -151,6 +151,11 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                unique_id: "<deviceID>hubState"
                state_topic: "<appKey>/<deviceID>/state"
                value_template: "{{ value_json.hubState | int }}"
+               device: 
+                 name: "SolarFlow"
+                 identifiers: "<EurePVHubSeriennummer>"
+                 manufacturer: "Zendure"
+                 model: "SmartPV Hub 1200 Controller"
 
              - name: "SolarFlow Solar Input Power"
                unique_id: "<deviceID>solarInputPower"
@@ -159,6 +164,11 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                device_class: "power"
                value_template: "{{ value_json.solarInputPower | int(0) }}"
                state_class: "measurement"
+               device: 
+                 name: "SolarFlow"
+                 identifiers: "<EurePVHubSeriennummer>"
+                 manufacturer: "Zendure"
+                 model: "SmartPV Hub 1200 Controller"
       
              - name: "SolarFlow Pack Input Power"
                unique_id: "<deviceID>packInputPower"
@@ -167,6 +177,11 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                device_class: "power"
                value_template: "{{ value_json.packInputPower | int(0) }}"
                state_class: "measurement"
+               device: 
+                 name: "SolarFlow"
+                 identifiers: "<EurePVHubSeriennummer>"
+                 manufacturer: "Zendure"
+                 model: "SmartPV Hub 1200 Controller"
       
              - name: "SolarFlow Output Pack Power"
                unique_id: "<deviceID>outputPackPower"
@@ -175,6 +190,11 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                device_class: "power"
                value_template: "{{ value_json.outputPackPower | int(0) }}"
                state_class: "measurement"
+               device: 
+                 name: "SolarFlow"
+                 identifiers: "<EurePVHubSeriennummer>"
+                 manufacturer: "Zendure"
+                 model: "SmartPV Hub 1200 Controller"
       
              - name: "SolarFlow Output Home Power"
                unique_id: "<deviceID>outputHomePower"
@@ -183,18 +203,33 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                device_class: "power"
                value_template: "{{ value_json.outputHomePower | int(0) }}"
                state_class: "measurement"
+               device: 
+                 name: "SolarFlow"
+                 identifiers: "<EurePVHubSeriennummer>"
+                 manufacturer: "Zendure"
+                 model: "SmartPV Hub 1200 Controller"
       
              - name: "SolarFlow Output Limit"
                unique_id: "<deviceID>outputLimit"
                state_topic: "<appKey>/<deviceID>/state"
                value_template: "{{ value_json.outputLimit | int }}"
                unit_of_measurement: "W"
+               device: 
+                 name: "SolarFlow"
+                 identifiers: "<EurePVHubSeriennummer>"
+                 manufacturer: "Zendure"
+                 model: "SmartPV Hub 1200 Controller"
     
              - name: "SolarFlow Input Limit"
                unique_id: "<deviceID>inputLimit"
                state_topic: "<appKey>/<deviceID>/state"
                value_template: "{{ value_json.inputLimit | int }}"
                unit_of_measurement: "W"
+               device: 
+                 name: "SolarFlow"
+                 identifiers: "<EurePVHubSeriennummer>"
+                 manufacturer: "Zendure"
+                 model: "SmartPV Hub 1200 Controller"
     
              - name: "SolarFlow Remain Out Time"
                unique_id: "<deviceID>remainOutTime"
@@ -202,6 +237,11 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                value_template: "{{ value_json.remainOutTime | int }}"
                device_class: "duration"
                unit_of_measurement: "min"
+               device: 
+                 name: "SolarFlow"
+                 identifiers: "<EurePVHubSeriennummer>"
+                 manufacturer: "Zendure"
+                 model: "SmartPV Hub 1200 Controller"
     
              - name: "SolarFlow Remain Input Time"
                unique_id: "<deviceID>remainInputTime"
@@ -209,16 +249,31 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                value_template: "{{ value_json.remainInputTime | int }}"
                device_class: "duration"
                unit_of_measurement: "min"
+               device: 
+                 name: "SolarFlow"
+                 identifiers: "<EurePVHubSeriennummer>"
+                 manufacturer: "Zendure"
+                 model: "SmartPV Hub 1200 Controller"
     
              - name: "SolarFlow Pack State"
                unique_id: "<deviceID>packState"
                state_topic: "<appKey>/<deviceID>/state"
                value_template: "{{ value_json.packState | int }}"
+               device: 
+                 name: "SolarFlow"
+                 identifiers: "<EurePVHubSeriennummer>"
+                 manufacturer: "Zendure"
+                 model: "SmartPV Hub 1200 Controller"
     
              - name: "SolarFlow Pack Num"
                unique_id: "<deviceID>packNum"
                state_topic: "<appKey>/<deviceID>/state"
                value_template: "{{ value_json.packNum | int }}"
+               device: 
+                 name: "SolarFlow"
+                 identifiers: "<EurePVHubSeriennummer>"
+                 manufacturer: "Zendure"
+                 model: "SmartPV Hub 1200 Controller"
     
              - name: "SolarFlow Electric Level"
                unique_id: "<deviceID>electricLevel"
@@ -226,12 +281,22 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                unit_of_measurement: "%"
                device_class: "battery"
                value_template: "{{ value_json.electricLevel | int }}"
+               device: 
+                 name: "SolarFlow"
+                 identifiers: "<EurePVHubSeriennummer>"
+                 manufacturer: "Zendure"
+                 model: "SmartPV Hub 1200 Controller"
     
              - name: "SolarFlow SOC Set"
                unique_id: "<deviceID>socSet"
                state_topic: "<appKey>/<deviceID>/state"
                unit_of_measurement: "%"
                value_template: "{{ value_json.socSet | int / 10 }}"
+               device: 
+                 name: "SolarFlow"
+                 identifiers: "<EurePVHubSeriennummer>"
+                 manufacturer: "Zendure"
+                 model: "SmartPV Hub 1200 Controller"
         ```
       + Speichert die Datei.
       + Öffnet die Entwicklerwerkzeuge und überprüft, ob eure Konfiguration fehlerfrei ist, danach startet Home Assistant neu.
