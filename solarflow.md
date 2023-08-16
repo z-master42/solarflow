@@ -88,6 +88,8 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
           | packState | pack state(0:standby 1:input 2:output) | sensor |
           | buzzerSwitch | buzzer switch | switch |
           | masterSwitch | master switch | switch |
+          | wifiState | wifi state | sensor |
+          | inverseMaxPower | inverse max power | sensor |
 
 
    2. **Gleicher Start**
