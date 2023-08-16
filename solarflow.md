@@ -89,7 +89,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
           | buzzerSwitch | buzzer switch | switch |
           | masterSwitch | master switch | switch |
           | wifiState | wifi state | sensor |
-          | inverseMaxPower | inverse max power | sensor |
+          | inverseMaxPower | inverter max power | sensor |
 
 
    2. **Gleicher Start**
@@ -365,7 +365,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
         + _Remain Input Time_ und _Remain Out Time_ haben die `device_class: "duration"` bekommen. Der übermittelte Wert ist die jeweilige Dauer in Minuten, sodass die `unit_of_measurement: "min"` ist. Durch die `device_class` rechnet Home Assistant das automatisch in eine Zeitangabe in h:min:s um.
         + _SOC Set_ ist von Zendure schon mit `unit_of_measurement: "%"` angegeben, allerdings liefert der Sensor dann z.B. 1000 %, wenn die obere Ladegrenze 100 % ist. Keine Ahnung warum das so sein soll. Ich habe den Wert entsprechend noch durch 10 geteilt.
         + Ich habe alle Einträge um einen `device`-Block ergänzt und als eindeutigen `identifier` meine Seriennummer genommen. Durch diesen Block weiß Home Assistant, dass es sich um Entitäten des selben Gerätes handelt und erstellt entsprechend dieses Gerät, sodass ihr es unter _Geräte & Dienste_ auch vorfinden könnt.
-        + Durch den Zendure-Broker werden auch zwei Werte ausgespielt, für die es keine Bauanleitung gibt. Ich habe sie einfach mitangelegt. Dies sind `wifiState` und `inverseMaxPower`. Was der erste darstellt sollte klar sein. Wofür der zweite ist, (bisher) keine Ahnung.
+        + Durch den Zendure-Broker werden auch zwei Werte ausgespielt, für die es keine Bauanleitung gibt. Ich habe sie einfach mitangelegt. Dies sind `wifiState` und `inverseMaxPower`. Was der erste darstellt sollte klar sein. Der zweite stellt die maximal akzeptable Eingangsleistung des Wechselrichters da.
   4. **Vor- und Nachteile**
      | Methode | Vorteile | Nachteile |
      | -------- | -------- | -------- |
