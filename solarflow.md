@@ -366,6 +366,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
         + _SOC Set_ ist von Zendure schon mit `unit_of_measurement: "%"` angegeben, allerdings liefert der Sensor dann z.B. 1000 %, wenn die obere Ladegrenze 100 % ist. Keine Ahnung warum das so sein soll. Ich habe den Wert entsprechend noch durch 10 geteilt.
         + Ich habe alle Einträge um einen `device`-Block ergänzt und als eindeutigen `identifier` meine Seriennummer genommen. Durch diesen Block weiß Home Assistant, dass es sich um Entitäten des selben Gerätes handelt und erstellt entsprechend dieses Gerät, sodass ihr es unter _Geräte & Dienste_ auch vorfinden könnt.
         + Durch den Zendure-Broker werden auch zwei Werte ausgespielt, für die es keine Bauanleitung gibt. Ich habe sie einfach mitangelegt. Dies sind `wifiState` und `inverseMaxPower`. Was der erste darstellt sollte klar sein. Der zweite stellt die maximal akzeptable Eingangsleistung des Wechselrichters da.
+        + Natürlich könnt ihr jeder Entität hier schon ein eigenes Symbol verpassen. Ergänzt dafür für die jeweilige Entität eine `icon`-Zeile, z. B. `icon: mdi:flash`.
   4. **Vor- und Nachteile**
      | Methode | Vorteile | Nachteile |
      | -------- | -------- | -------- |
