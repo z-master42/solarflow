@@ -297,6 +297,60 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                  identifiers: "<EurePVHubSeriennummer>"
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
+        
+            - name: "SolarFlow Inverse Max Power"
+              unique_id: "<deviceID>inverseMaxPower"
+              state_topic: "<appKey>/<deviceID>/state"
+              value_template: "{{ value_json.inverseMaxPower | int }}"
+              unit_of_measurement: "W"
+              device: 
+                name: "SolarFlow"
+                identifiers: "<EurePVHubSeriennummer>"
+                manufacturer: "Zendure"
+                model: "SmartPV Hub 1200 Controller"
+      
+            - name: "SolarFlow WiFi State"
+              unique_id: "<deviceID>wifiState"
+              state_topic: "<appKey>/<deviceID>/state"
+              value_template: "{{ value_json.wifiState | bool }}"
+              device: 
+                name: "SolarFlow"
+                identifiers: "<EurePVHubSeriennummer>"
+                manufacturer: "Zendure"
+                model: "SmartPV Hub 1200 Controller"
+      
+          switch:
+            - unique_id: "<deviceID>masterSwitch"
+              state_topic: "<appKey>/<deviceID>/state"
+              state_off: false
+              command_topic: "<appKey>/<deviceID>/masterSwitch/set"
+              name: "SolarFlow Master Switch"
+              device_class: "switch"
+              value_template: "{{ value_json.masterSwitch }}"
+              payload_on: true
+              payload_off: false
+              state_on: true
+              device: 
+                name: "SolarFlow"
+                identifiers: "<EurePVHubSeriennummer>"
+                manufacturer: "Zendure"
+                model: "SmartPV Hub 1200 Controller"
+
+            - unique_id: "<deviceID>buzzerSwitch"
+              state_topic: "<appKey>/<deviceID>/state"
+              state_off: false
+              command_topic: "<appKey>/<deviceID>/buzzerSwitch/set"
+              name: "SolarFlow Buzzer Switch"
+              device_class: "switch"
+              value_template: "{{ value_json.buzzerSwitch }}"
+              payload_on: true
+              payload_off: false
+              state_on: true
+              device: 
+                name: "SolarFlow"
+                identifiers: "<EurePVHubSeriennummer>"
+                manufacturer: "Zendure"
+                model: "SmartPV Hub 1200 Controller"
         ```
       + Speichert die Datei.
       + Öffnet die Entwicklerwerkzeuge und überprüft, ob eure Konfiguration fehlerfrei ist, danach startet Home Assistant neu.
