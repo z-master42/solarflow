@@ -312,7 +312,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
             - name: "SolarFlow WiFi State"
               unique_id: "<deviceID>wifiState"
               state_topic: "<appKey>/<deviceID>/state"
-              value_template: "{{ value_json.wifiState | bool }}"
+              value_template: "{{ value_json.wifiState | bool('') }}"
               device: 
                 name: "SolarFlow"
                 identifiers: "<EurePVHubSeriennummer>"
@@ -326,7 +326,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
               command_topic: "<appKey>/<deviceID>/masterSwitch/set"
               name: "SolarFlow Master Switch"
               device_class: "switch"
-              value_template: "{{ value_json.masterSwitch }}"
+              value_template: "{{ value_json.masterSwitch | default('') }}"
               payload_on: true
               payload_off: false
               state_on: true
@@ -342,7 +342,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
               command_topic: "<appKey>/<deviceID>/buzzerSwitch/set"
               name: "SolarFlow Buzzer Switch"
               device_class: "switch"
-              value_template: "{{ value_json.buzzerSwitch }}"
+              value_template: "{{ value_json.buzzerSwitch | default('') }}"
               payload_on: true
               payload_off: false
               state_on: true
