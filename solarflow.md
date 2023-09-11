@@ -147,7 +147,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
         
         ```yaml
            sensor:
-             - name: "SolarFlow Hub State"
+             - name: "Hub State"
                unique_id: "<deviceID>hubState"
                state_topic: "<appKey>/<deviceID>/state"
                value_template: "{{ value_json.hubState | int }}"
@@ -157,7 +157,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
 
-             - name: "SolarFlow Solar Input Power"
+             - name: "Solar Input Power"
                unique_id: "<deviceID>solarInputPower"
                state_topic: "<appKey>/<deviceID>/state"
                unit_of_measurement: "W"
@@ -170,7 +170,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
       
-             - name: "SolarFlow Pack Input Power"
+             - name: "Pack Input Power"
                unique_id: "<deviceID>packInputPower"
                state_topic: "<appKey>/<deviceID>/state"
                unit_of_measurement: "W"
@@ -183,7 +183,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
       
-             - name: "SolarFlow Output Pack Power"
+             - name: "Output Pack Power"
                unique_id: "<deviceID>outputPackPower"
                state_topic: "<appKey>/<deviceID>/state"
                unit_of_measurement: "W"
@@ -196,7 +196,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
       
-             - name: "SolarFlow Output Home Power"
+             - name: "Output Home Power"
                unique_id: "<deviceID>outputHomePower"
                state_topic: "<appKey>/<deviceID>/state"
                unit_of_measurement: "W"
@@ -209,7 +209,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
       
-             - name: "SolarFlow Output Limit"
+             - name: "Output Limit"
                unique_id: "<deviceID>outputLimit"
                state_topic: "<appKey>/<deviceID>/state"
                value_template: "{{ value_json.outputLimit | int }}"
@@ -220,7 +220,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
     
-             - name: "SolarFlow Input Limit"
+             - name: "Input Limit"
                unique_id: "<deviceID>inputLimit"
                state_topic: "<appKey>/<deviceID>/state"
                value_template: "{{ value_json.inputLimit | int }}"
@@ -231,7 +231,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
     
-             - name: "SolarFlow Remain Out Time"
+             - name: "Remain Out Time"
                unique_id: "<deviceID>remainOutTime"
                state_topic: "<appKey>/<deviceID>/state"
                value_template: "{{ value_json.remainOutTime | int }}"
@@ -243,7 +243,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
     
-             - name: "SolarFlow Remain Input Time"
+             - name: "Remain Input Time"
                unique_id: "<deviceID>remainInputTime"
                state_topic: "<appKey>/<deviceID>/state"
                value_template: "{{ value_json.remainInputTime | int }}"
@@ -255,7 +255,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
     
-             - name: "SolarFlow Pack State"
+             - name: "Pack State"
                unique_id: "<deviceID>packState"
                state_topic: "<appKey>/<deviceID>/state"
                value_template: "{{ value_json.packState | int }}"
@@ -265,7 +265,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
     
-             - name: "SolarFlow Pack Num"
+             - name: "Pack Num"
                unique_id: "<deviceID>packNum"
                state_topic: "<appKey>/<deviceID>/state"
                value_template: "{{ value_json.packNum | int }}"
@@ -275,7 +275,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
     
-             - name: "SolarFlow Electric Level"
+             - name: "Electric Level"
                unique_id: "<deviceID>electricLevel"
                state_topic: "<appKey>/<deviceID>/state"
                unit_of_measurement: "%"
@@ -287,7 +287,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
     
-             - name: "SolarFlow SOC Set"
+             - name: "SOC Set"
                unique_id: "<deviceID>socSet"
                state_topic: "<appKey>/<deviceID>/state"
                unit_of_measurement: "%"
@@ -298,7 +298,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
         
-            - name: "SolarFlow Inverse Max Power"
+            - name: "Inverse Max Power"
               unique_id: "<deviceID>inverseMaxPower"
               state_topic: "<appKey>/<deviceID>/state"
               value_template: "{{ value_json.inverseMaxPower | int }}"
@@ -309,7 +309,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                 manufacturer: "Zendure"
                 model: "SmartPV Hub 1200 Controller"
       
-            - name: "SolarFlow WiFi State"
+            - name: "WiFi State"
               unique_id: "<deviceID>wifiState"
               state_topic: "<appKey>/<deviceID>/state"
               value_template: "{{ value_json.wifiState | bool('') }}"
@@ -324,7 +324,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
               state_topic: "<appKey>/<deviceID>/state"
               state_off: false
               command_topic: "<appKey>/<deviceID>/masterSwitch/set"
-              name: "SolarFlow Master Switch"
+              name: "Master Switch"
               device_class: "switch"
               value_template: "{{ value_json.masterSwitch | default('') }}"
               payload_on: true
@@ -340,7 +340,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
               state_topic: "<appKey>/<deviceID>/state"
               state_off: false
               command_topic: "<appKey>/<deviceID>/buzzerSwitch/set"
-              name: "SolarFlow Buzzer Switch"
+              name: "Buzzer Switch"
               device_class: "switch"
               value_template: "{{ value_json.buzzerSwitch | default('') }}"
               payload_on: true
