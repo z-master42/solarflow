@@ -187,9 +187,9 @@ sequence:
 mode: single
 icon: phu:huawei-solar-inverter
 ```
-### Anmerkungen
-Neben dem "eigentlichen" Skript zur Anpassung des Wechselrichterlimits an den aktuellen Verbrauch habe ich noch ein paar Bausteine ergänzt:
-+ Ist der Akku voll und übersteigt die aktuelle Photovoltaikleistung die meines Wechselrichters, wird das Limit auf 100 % gesetzt. Ist das aktuelle Limit kleiner als die verfügbare Photovoltaikleistung wird das Limit auf diese erhöht. Wie gut das mit dem Bypass-Modus des PV-Hubs funktioniert habe ich noch nicht testen können.
-+ Ist der Ladestand des Akkus kleiner als 10 % erfolgt eine Begrenzung des Wechselrichterlimits auf 120 W um so erstmal den Akku ein wenig zu laden. Bzw. folgt so auch eine Begrenzung beim Entladen wenn die 10 % wieder unterschritten werden und keine Sonne mehr scheint. Die 120 W entsprechen dabei so ungefähr meiner Grundlast.
-+ In der SolarFlow-App ist kein Energieplan eingestellt. PV-Hub Ausgangsleistung und akzeptable Wechselrichtereingangsleistung stehen auf dem was der Wechselrichter maximal kann.
-[^1]: Das Skript basiert auf der Arbeit von Peter F. aus H., welcher die Nulleinspeisung als Python-Skript realisiert hat: https://gitlab.com/p3605/hoymiles-tarnkappe/-/blob/main/hoymiles_setlimiter.py?ref_type=heads
+### Notes
+In addition to the "actual" script for adjusting the inverter limit to the current consumption, I have added a few more modules:
++ If the battery is full and the current photovoltaic power exceeds that of my inverter, the limit is set to 100 %. If the current limit is less than the available photovoltaic power, the limit is increased to this. I have not yet been able to test how well this works with the PV hub's bypass mode.
++ If the battery charge level is less than 10 %, the inverter limit is set to 120 W in order to charge the battery a little first. This is also followed by a limit when discharging if the battery falls below 10 % again and there is no more sunshine. The 120 W roughly corresponds to my base load.
++ No energy plan is set in the SolarFlow app. PV hub output power and acceptable inverter input power are set to what the inverter can do at maximum.
+[^1]: The script is based on the work of Peter F. from H., who realised the zero feed as a Python script: https://gitlab.com/p3605/hoymiles-tarnkappe/-/blob/main/hoymiles_setlimiter.py?ref_type=heads
