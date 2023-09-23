@@ -168,8 +168,8 @@ sequence:
         - delay:
             hours: 0
             minutes: 0
-            seconds: 9
+            seconds: 5
             milliseconds: 0
-          alias: Warte 9 s
+          alias: Warte 5 s
 mode: single
 icon: phu:huawei-solar-inverter
