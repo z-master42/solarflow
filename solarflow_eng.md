@@ -1,76 +1,76 @@
 ## Integrating SolarFlow into Home Assistant
 ### Introduction
-Zendure betreibt für den Abruf von Informationen für die Produkte SuperBase V, Satellite Battery und SolarFlow einen MQTT-Broker. Dies stellt aktuell auch die einzige offizielle Möglichkeit dar, Informationen außerhalb der von Zendure bereitgestellten App abzugreifen. Da Zendure die Daten über einen eigenen Broker auspielt läuft die Verbindung zwangsweise durchs Internet. Eine rein lokale Steuerung ist aktuell noch nicht möglich.
-[MQTT](https://de.wikipedia.org/wiki/MQTT) ist ein offenes Netzwerkprotokoll für eine Maschine-zu-Maschine-Kommunikation. Dabei stehen in der Regel mehrere Clients in Verbindung zu einem Broker. Die ausgetauschten Nachrichten werden hierachisch abgestuft durch Topics definiert. Um entsprechende Informationen abzugreifen oder Befehle zu senden muss das entprechende Topic abonniert werden.
-### Vorbereitung
-Voraussetzung zur Nutzung ist ein Account bei Zendure (den ja jeder dadurch haben sollte, dass er sich die App zur Steuerung des SolarFlow installiert hat).
-Für den Abruf der MQTT-Daten des eigenen SolarFlow benötigt man im weiteren einen `appKey` und ein `appSecret`.
-Um diese beiden Werte zu erhalten, benötigt ihr, neben der Emailadresse mit der ihr euch bei Zendure registriert habt, die Seriennummer eures PV-Hubs.
-Ich habe zum Abruf das Kommandozeilen-Tool _curl_ verwendet.
+Zendure operates an MQTT broker for retrieving information for the products SuperBase V, Satellite Battery and SolarFlow. This is currently the only official way to access information outside of the app provided by Zendure. Since Zendure plays out the data via its own broker, the connection is forced to run through the internet. Purely local control is not yet possible.
+[MQTT](https://en.wikipedia.org/wiki/MQTT) is an open network protocol for machine-to-machine communication. As a rule, several clients are connected to a broker. The exchanged messages are defined hierarchically by topics. In order to access corresponding information or send commands, the corresponding topic must be subscribed to.
+### Preparation
+The prerequisite for use is an account with Zendure (which everyone should have by installing the app for controlling the SolarFlow).
+To retrieve the MQTT data of your own SolarFlow, you also need an 'appKey' and an 'appSecret'.
+To get these two values, you need the email address you registered with at Zendure and the serial number of your PV hub.
+I used the command line tool _curl_ to retrieve the serial number.
 
-**Vorgehen auf einem Microsoft Betriebssystem**
-+ Öffnet mit `Windows-Taste + R` die Eingabeaufforderung.
-+ Gebt `cmd` ein.
-+ Gebt folgenden Befehl in der Kommandozeile ein:
+**Procedure on a Microsoft operating system**
++ Open the command prompt with `Windows key + R`.
++ Enter `cmd`.
++ Enter the following command in the command line:
   
   ```
-  curl -i -v --json "{'snNumber': 'EureHubSeriennummer', 'account': 'EureEmailadresse'}" https://app.zendure.tech/v2/developer/api/apply
+  curl -i -v --json "{'snNumber': 'YourHubSerialNumber', 'account': 'YourEmailaddress'}" https://app.zendure.tech/v2/developer/api/apply
   ```
-+ Zuvor habt ihr natürlich eure Seriennummer und eure verwendete Emailadresse anstelle der Platzhalter eingetragen.
++ Beforehand, of course, you have entered your serial number and the email address you use instead of the placeholders.
 
-**Vorgehen auf einem Linux Betriebssystem**
-+ Öffnet mit `Strg+Alt+T` ein Terminalfenster.
-+ Gebt folgenden Befehl in der Kommandozeile ein:
+**Proceeding on a Linux operating system**
++ Open a terminal window with `Ctrl+Alt+T`.
++ Enter the following command in the command line:
   
   ```
-  curl -i -X POST -H 'Content-Type: application/json' -d '{"snNumber": "EureHubSeriennummer", "account": "EureEmailadresse"}' https://app.zendure.tech/v2/developer/api/apply
+  curl -i -X POST -H 'Content-Type: application/json' -d '{"snNumber": "YourHubSerialNumber", "account": "YourEmailaddress"}' https://app.zendure.tech/v2/developer/api/apply
   ```
-+ Zuvor habt ihr natürlich eure Seriennummer und eure verwendete Emailadresse anstelle der Platzhalter eingetragen.
++ Beforehand, of course, you have entered your serial number and the email address you use instead of the placeholders.
 
-**Antwort**
+**Reply**
 
-Habt ihr keine Fehler gemacht, sollte eine Antwort wie folgt erscheinen:
+If you have not made any mistakes, an answer should appear as follows:
 ```
-{"code":200,"success":true,"data":{"appKey":"EuerAppKey","secret":"EuerAppSecret","mqttUrl":"mqtt.zen-iot.com","port":1883},"msg":"Successful operation"}
+{"code":200,"success":true,"data":{"appKey":"YourAppKey","secret":"YourAppSecret","mqttUrl":"mqtt.zen-iot.com","port":1883},"msg":"Successful operation"}
 ```
 
-Anstelle der Platzhalter findet ihr dann euren `appKey` und euer `appSecret`. Beides sind Buchstaben-Zahlen-Kombinationen.
-### Einrichtung von MQTT in Home Assistant
-Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun mehrere Wege zum Ziel.
+Instead of the placeholders, you will find your 'appKey' and your 'appSecret'. Both are letter-number combinations.
+### Setting up MQTT in Home Assistant
+Depending on how far you have gone in Home Assistant, there are now several ways to reach your goal.
 
-1. **Option: Noch kein MQTT-Gerät mit Home Assistant verbunden**
+1. **Option: No MQTT device connected to Home Assistant yet**
    
-   Wenn dies eure erste Berührung mit MQTT ist, geht die Sache recht schnell.
-   + Fügt über _Einstellungen - Geräte & Dienste_ eine neue Integration hinzu. Sucht dort nach MQTT und wählt die ohne irgendwelche weiteren Bezeichnungen.
-   + Der Benutzername ist euer `appKey` und das Passwort euer `appSecret`. Die URL des Brokers und der Port wurden euch ebenfalls mit der o.a. Antwort geliefert: `mqtt.zen-iot.com` mit Port `1883`.
-   + Damit auch Daten reinkommen müsst ihr wie eingangs erwähnt, noch ein Topic abonnieren. Dies geschieht hier in dem ihr auf der Konfigurationsseite _Enable Discovery_ aktiviert und als _Discovery prefix_ `appKey` eintragt.
+   If this is your first contact with MQTT, things will go quite quickly.
+   + Add a new integration via _Settings - Devices & Services_. Look for MQTT there and select that without any other designations.
+   + The username is your `appKey` and the password your `appSecret`. The URL of the broker and the port were also delivered to you with the above answer: `mqtt.zen-iot.com` with port `1883`.
+   + In order for data to come in, you have to subscribe to a topic, as mentioned at the beginning. This is done here by activating _Enable Discovery_ on the configuration page and entering `appKey' as _Discovery prefix_..
      
-   + ![grafik](https://github.com/z-master42/solarflow/assets/66380371/769a98f3-8786-42c3-8cc5-0d761df5aee7)
-2. **Option: Ihr nutzt bereits einen MQTT-Broker in Home Assistant**
+     ![grafik](https://github.com/z-master42/solarflow/assets/66380371/769a98f3-8786-42c3-8cc5-0d761df5aee7)
+2. **Option: You already use an MQTT broker in Home Assistant**
    
-   Wenn ihr bereits Erfahrungen mit MQTT gesammelt habt, weil ihr z. B. Sensoren oder Steckdosen darüber mit Home Assistant verbunden habt, ist die Wahrscheinlichkeit sehr groß, dass ihr das Mosquitto broker-Addon installiert und die MQTT-Integration für die Verbindung mit diesem konfiguriert habt.
+   If you have already gained experience with MQTT, e.g. because you have connected sensors or sockets with Home Assistant via it, it is very likely that you have installed the Mosquitto broker add-on and configured the MQTT integration for the connection with it.
    
-   Problem: In Home Assistant kann nur eine MQTT-Integration installiert werden.
+   Problem: Only one MQTT integration can be installed in Home Assistant.
    
-   Lösung: Ihr müsst eine Brücke zum MQTT-Broker von Zendure bauen.
-   Hierbei gibt es dann zudem zwei Möglichkeiten des weiteren Vorgehens. Entweder ist lasst euch durch Home Assistant alle verfügbaren Sensoren automatisch anlegen oder ihr fügt diese manuell hinzu. Direkt vorweg: Ich habe meine manuell hinzugefügt, so hatte ich die Möglichkeit diese dabei noch anzupassen.
-   1. **Check vorweg**
-      + Um zu überprüfen, ob seitens des Zendure-Brokers überhaupt Daten eures SolarFlows ausgespielt werden, bietet sich das Programm [MQTT-Explorer](http://mqtt-explorer.com/) an, welches es für die gängisten Betriebssysteme gibt.
-      + Erstellt dort eine neue Connection mit euren Zugangsdaten (`appKey`, `appSecret`) wie im Screenshot.
+   Solution: You have to build a bridge to the MQTT broker from Zendure.
+   There are two ways to proceed. Either you let Home Assistant create all available sensors automatically or you add them manually. First of all: I added mine manually, so I had the option of adapting them at the same time.
+   1. **Check beforehand**
+      + In order to check whether the Zendure broker is transmitting data from your SolarFlow at all, you can use the programme [MQTT-Explorer](http://mqtt-explorer.com/), which is available for the most common operating systems.
+      + Create a new connection with your access data (`appKey`, `appSecret`) as shown in the screenshot.
 
         ![grafik](https://github.com/z-master42/solarflow/assets/66380371/f4555568-a65c-43a1-8c8a-e6fdbb46bb96)
-      + Unter Advanced (Button) müsst ihr dann noch euren `appKey` als Topic abonnieren, also als neue Subscription hinzufügen --> `appKey/#`.
+      + Under Advanced (button) you must then subscribe to your `appKey` as a topic, i.e. add it as a new subscription --> `appKey/#`.
 
         ![grafik](https://github.com/z-master42/solarflow/assets/66380371/59e3ea65-2927-4e6f-9bd9-815e761ed3d9)
-      + Es sollten dann ziemlich zeitig Werte reinkommen. Wenn ihr alles aufklappt sieht es ungefähr so aus:
+      + The values should then come in at a fairly early stage. When you open everything up, it looks something like this:
 
         ![grafik](https://github.com/z-master42/solarflow/assets/66380371/cb2d9c67-40ce-4bcb-bd18-054219adf43d)
-        Unter der Broker-Adresse erscheint ein Eintrag der wie euer `appKey` lautet (alles in 🔴). Darunter gibt es drei weitere Einträge; `switch`, `sensor`, und einen der euren SolarFlow bezeichnet. Wir nennen ihn daher ab jetzt `deviceID` (alles in 🔵).
-        + `switch` enthält als Einträge die Bauanleitungen für die bisher verfügbaren Schalter.
-        + `sensor` enthält als Einträge die Bauanleitungen für die bisher verfügbaren Sensoren.
-        + `deviceID` enthält als Eintrag die Status der Sensoren, jedoch immer nur diejenigen, deren Wert sich geändert hat.
+        Under the broker address, an entry appears that reads like your `appKey` (all in 🔴). Below that there are three more entries; `switch`, `sensor`, and one that identifies your SolarFlow. We will therefore call it `deviceID` from now on (all in 🔵).
+        + `switch` contains as entries the building instructions for the switches available so far.
+        + `sensor` contains as entries the building instructions for the sensors available so far.
+        + `deviceID` contains the status of the sensors as entries, but only those whose value has changed.
           
-        Aktuell verfügbar sind folgende Sensoren und Schalter:
+        The following sensors and switches are currently available:
 
           | Field | Description | device_class |
           | -------- | ------- | ------- |
@@ -92,11 +92,11 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
           | inverseMaxPower | inverter max power | sensor |
 
 
-   2. **Gleicher Start**
-      + Der Anfang ist bei beiden Möglichkeiten gleich.
-      + Zunächst muss die Brücke zum Zendure-Broker aufgebaut werden. Hiefür müsst ihr auf das `share`-Verzeichnis eures Home Assistant zugreifen. Über das File Editor-Addon ist dies z. B. nicht möglich. Über dieses habt ihr nämlich nur Zugriff auf das `config`-Verzeichnis. Ihr könnt dies über das Samba-Addon machen. Wir gehen an dieser Stelle aber den Weg über das Terminal & SSH-Addon. Welches ihr hierfür natürlich installieren müsst. Erstellt zunächst eine Datei mit folgendem Inhalt. Wie die Datei heißt ist völlig egal und welchen Editor oder welches Textverarbeitungsprogramm ihr dafür nutzt ebenfalls.
-      + Erstellt eine neue Textdatei.
-      + Fügt folgenden [Inhalt](zendure.conf) ein:
+   2. **Same start**
+      + The beginning is the same for both options.
+      + First, the bridge to the Zendure broker must be established. To do this, you must access the `share` directory of your Home Assistant. This is not possible via the File Editor Addon, for example. You only have access to the `config` directory. You can do this via the Samba addon. At this point, however, we will use the Terminal & SSH Addon. Of course, you have to install it for this. First create a file with the following content. It doesn't matter what the file is called and which editor or text processing programme you use for it.
+      + Create a new text file.
+      + Insert the following [content](zendure.conf):
         
         ```
         connection external-bridge
@@ -106,35 +106,35 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
         remote_clientid <appKey>
         topic <appKey>/# both 0
         ```
-      + Alles zwischen <> ersetzt ihr **inklusive der <>** natürlich wieder durch eure eigenen Daten.
-      + Installiert das Terminal & SSH-Addon im Addon-Bereich, startet es danach und öffnet die Benutzeroberfläche.
-      + Wechselt mit dem Befehl `cd share` ins `share`-Verzeichnis.
-      + Überprüft mit `ls` ob es schon einen Ordner `mosquitto` gibt. Erscheint nach dem Befehl einfach eine neue Eingabezeile, existiert der Ordner noch nicht, ansonsten erscheint ein Eintrag `mosquitto`.
-      + Ist der Ordner nicht vorhanden, erstellt ihn mit `mkdir mosquitto`.
-      + Wechselt mit `cd mosquitto` in das Verzeichnis.
-      + Nun erstellen wir eine neue Datei und bearbeiten diese mit dem Editor _nano_. Gebt dazu `nano zendure.conf` ein.
-      + Kopiert nun den Inhalt aus eurer zuvor angelegten Textdatei und fügt ihn in das Terminalfenster ein. **Achtung:** Hierfür müsst ihr die `Umschalttaste` eurer Tastatur gedrückt halten und mit der `rechten Maustaste` ins Terminalfenster klicken und dort _Einfügen_ auswählen. Nun sollte der Inhalt eurer Textdatei im Terminalfenster stehen.
-      + Wollt ihr, dass Home Assistant euch die Sensorentitäten automatisch anlegt überspringt die weiteren Schritte zunächst und macht bei iii. weiter.
-      + Schließt mit `Strg + X` den _nano_-Editor.
-      + Bestätigt die am unteren Terminalrand erscheinende Frage mit `y`.
-      + Bestätigt die nächste Frage mit der `Eingabetaste`.
-      + In der Konfiguration des Mosquitto-Addons überprüft ihr jetzt noch ob unter _Customize_ `active` auf `true` gesetzt ist.
-      + Abschließend ist das Mosquitto-Addon neu zu starten.
-      + Im Log sollte dann ein Eintrag ähnlich `Connecting bridge external-bridge (mqtt.zen-iot.com:1883)` auftauchen. Ggf. müsst ihr das Log mehrmals aktualisieren (Geduld). Sollte hingehen irgendwas mit Timeout oder so kommen, einfach das Addon noch mal neu starten.
-   3. **Automatische Einfügung**
+      + Replace everything between <> **including the <>** with your own data, of course.
+      + Install the Terminal & SSH Addon in the Addon area, then start it and open the user interface.
+      + Change to the `share` directory with the command `cd share`.
+      + Check with `ls` if there is already a folder `mosquitto`. If a new input line simply appears after the command, the folder does not yet exist, otherwise an entry `mosquitto` appears.
+      + If the folder does not exist, create it with `mkdir mosquitto`.
+      + Change to the directory with `cd mosquitto`.
+      + Now create a new file and edit it with the editor _nano_. Enter `nano zendure.conf`.
+      + Now copy the content from your previously created text file and paste it into the terminal window. **To do this**, hold down the `Shift` key on your keyboard and click with the `right mouse button` in the terminal window and select `Paste`. Now the contents of your text file should appear in the terminal window.
+      + If you want Home Assistant to create the sensor entities for you automatically, skip the next steps and continue with iii.
+      + Close the _nano_ editor with `Ctrl + X`.
+      + Confirm the question that appears at the bottom of the terminal with `y`.
+      + Confirms the next question with `Enter`.
+      + In the configuration of the Mosquitto add-on, check whether `active` is set to `true` under _Customize_.
+      + Finally, restart the Mosquitto-Addon.
+      + An entry similar to `Connecting bridge external-bridge (mqtt.zen-iot.com:1883)` should then appear in the log. You may have to refresh the log several times (patience). If something comes up with a timeout or something like that, simply restart the addon.
+   3. **Automatic insertion**
       
-      Damit Home Assistant die Sensoren und Schalter automatisch erstellt, muss es wissen wie diese aufgebaut sind. Zudem gibt es seitens Home Assistant Vorgaben, wie die Topics aussehen müssen damit dies funktioniert.
-      Ergänzt hierzu in euer `zendure.conf` einfach noch eine Zeile mit:
+      In order for Home Assistant to automatically create the sensors and switches, it must know how they are structured. Home Assistant also has specifications as to how the topics must look for this to work.
+      Simply add another line to your `zendure.conf` with:
       
       ```
       topic # in 0 homeassistant/sensor/<appKey>/ <appKey>/sensor/device/
       ```
-      Macht nun oben da weiter, wo ihr eben hierhin abgesprungen seit.
-   5. **Manuelle Einfügung**
+      Now continue upstairs from where you just jumped off.
+   4. **Manual insertion**
 
-      Das manuelle, also händische, Anlegen von Emtitäten erfolgt in Home Assistant über die `configuration.yaml`. Diese liegt im `config`-Verzeichnis. Auf dieses könnt ihr ebenso via Samba zugreifen. Genau so gut ist aber der Weg über das File Editor Addon. In diesem wird der eingefügte Code zur besseren Lesbarkeit farblich markiert und sollten Formatierungs- oder Syntaxfehler vorliegen wird dies direkt angezeigt. An für sich könnt ihr alles in die `configuration.yaml` schreiben. Mit der Zeit wird diese dann aber etwas unübersichtlich, da alles untereinander in einer Textdatei steht. Schöner ist es hier, entsprechende Konfigurationen in neue Dateien auszulagern.
-      + Öffnet eure `configuration.yaml`.
-      + Ergänzt unter dem nachstehenden Block, welcher sich ziemlich am Anfang der Datei befindet eine neue Zeile mit: `mqtt: !include mqtt.yaml`.
+      The manual creation of entities is done in Home Assistant via `configuration.yaml`. This is located in the `config` directory. You can also access this via Samba. However, the way via the File Editor Addon is just as good. In this addon, the inserted code is marked in colour for better readability and if there are formatting or syntax errors, these are displayed directly. In general, you can write everything in the `configuration.yaml`. Over time, however, it becomes a bit confusing, as everything is written one below the other in a text file. It is better to store the corresponding configurations in new files.
+      + Open your `configuration.yaml`.
+      + Add a new line under the following block, which is located at the beginning of the file: `mqtt: !include mqtt.yaml`.
         
         ```yaml
         group: !include groups.yaml
@@ -142,8 +142,8 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
         script: !include scripts.yaml
         scene: !include scenes.yaml
         ```
-        **Hinweis**: Der Block muss bei euch nicht genau so aussehen. Hier ist das ebenfalls davon abhängig, wie weit ihr euch in Home Assistant schon ausgetobt habt. Wenn ich das richtig in Erinnerung habe, sollte aber wenigstens eine `!include`-Zeile schon vorhanden sein.
-      + Erstellt eine neue Datei `mqtt.yaml` und fügt nachstehenden [Inhalt](mqtt.yaml) ein.
+        **Note**: The block does not have to look exactly like this. Here, too, it depends on how far you have already gone in Home Assistant. If I remember correctly, however, at least one `!include` line should already be present.
+      + Create a new file `mqtt.yaml` and insert [content](mqtt.yaml) below.
         
         ```yaml
            sensor:
@@ -153,7 +153,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                value_template: "{{ value_json.hubState | int }}"
                device: 
                  name: "SolarFlow"
-                 identifiers: "<EurePVHubSeriennummer>"
+                 identifiers: "<YourPVHubSerialNumber>"
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
 
@@ -166,7 +166,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                state_class: "measurement"
                device: 
                  name: "SolarFlow"
-                 identifiers: "<EurePVHubSeriennummer>"
+                 identifiers: "<YourPVHubSerialNumber>"
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
       
@@ -179,7 +179,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                state_class: "measurement"
                device: 
                  name: "SolarFlow"
-                 identifiers: "<EurePVHubSeriennummer>"
+                 identifiers: "<YourPVHubSerialNumber>"
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
       
@@ -192,7 +192,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                state_class: "measurement"
                device: 
                  name: "SolarFlow"
-                 identifiers: "<EurePVHubSeriennummer>"
+                 identifiers: "<YourPVHubSerialNumber>"
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
       
@@ -205,7 +205,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                state_class: "measurement"
                device: 
                  name: "SolarFlow"
-                 identifiers: "<EurePVHubSeriennummer>"
+                 identifiers: "<YourPVHubSerialNumber>"
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
       
@@ -216,7 +216,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                unit_of_measurement: "W"
                device: 
                  name: "SolarFlow"
-                 identifiers: "<EurePVHubSeriennummer>"
+                 identifiers: "<YourPVHubSerialNumber>"
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
     
@@ -227,7 +227,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                unit_of_measurement: "W"
                device: 
                  name: "SolarFlow"
-                 identifiers: "<EurePVHubSeriennummer>"
+                 identifiers: "<YourPVHubSerialNumber>"
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
     
@@ -239,7 +239,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                unit_of_measurement: "min"
                device: 
                  name: "SolarFlow"
-                 identifiers: "<EurePVHubSeriennummer>"
+                 identifiers: "<YourPVHubSerialNumber>"
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
     
@@ -251,7 +251,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                unit_of_measurement: "min"
                device: 
                  name: "SolarFlow"
-                 identifiers: "<EurePVHubSeriennummer>"
+                 identifiers: "<YourPVHubSerialNumber>"
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
     
@@ -261,7 +261,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                value_template: "{{ value_json.packState | int }}"
                device: 
                  name: "SolarFlow"
-                 identifiers: "<EurePVHubSeriennummer>"
+                 identifiers: "<YourPVHubSerialNumber>"
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
     
@@ -271,7 +271,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                value_template: "{{ value_json.packNum | int }}"
                device: 
                  name: "SolarFlow"
-                 identifiers: "<EurePVHubSeriennummer>"
+                 identifiers: "<YourPVHubSerialNumber>"
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
     
@@ -283,7 +283,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                value_template: "{{ value_json.electricLevel | int }}"
                device: 
                  name: "SolarFlow"
-                 identifiers: "<EurePVHubSeriennummer>"
+                 identifiers: "<YourPVHubSerialNumber>"
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
     
@@ -294,7 +294,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                value_template: "{{ value_json.socSet | int / 10 }}"
                device: 
                  name: "SolarFlow"
-                 identifiers: "<EurePVHubSeriennummer>"
+                 identifiers: "<YourPVHubSerialNumber>"
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
         
@@ -305,7 +305,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
               unit_of_measurement: "W"
               device: 
                 name: "SolarFlow"
-                identifiers: "<EurePVHubSeriennummer>"
+                identifiers: "<YourPVHubSerialNumber>"
                 manufacturer: "Zendure"
                 model: "SmartPV Hub 1200 Controller"
       
@@ -315,7 +315,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
               value_template: "{{ value_json.wifiState | bool('') }}"
               device: 
                 name: "SolarFlow"
-                identifiers: "<EurePVHubSeriennummer>"
+                identifiers: "<YourPVHubSerialNumber>"
                 manufacturer: "Zendure"
                 model: "SmartPV Hub 1200 Controller"
       
@@ -332,7 +332,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
               state_on: true
               device: 
                 name: "SolarFlow"
-                identifiers: "<EurePVHubSeriennummer>"
+                identifiers: "<YourPVHubSerialNumber>"
                 manufacturer: "Zendure"
                 model: "SmartPV Hub 1200 Controller"
 
@@ -348,32 +348,32 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
               state_on: true
               device: 
                 name: "SolarFlow"
-                identifiers: "<EurePVHubSeriennummer>"
+                identifiers: "<YourPVHubSerialNumber>"
                 manufacturer: "Zendure"
                 model: "SmartPV Hub 1200 Controller"
         ```
-      + Speichert die Datei.
-      + Öffnet die Entwicklerwerkzeuge und überprüft, ob eure Konfiguration fehlerfrei ist, danach startet Home Assistant neu.
-      + Wenn ihr im weiteren Änderungen an dieser Sensoren- und Schalter-Konfiguration vornehmt, etwas hinzufügt oder entfernt, reicht es wenn ihr im Bereich _Neuladen der YAML-Konfiguration_ auf _Manuell konfigurierte MQTT-Entitäten_ klickt.
+      + Save the file.
+      + Open the developer tools and check whether your configuration is error-free, then restart Home Assistant.
+      + If you make further changes to this sensor and switch configuration, add or remove something, it is sufficient to click on _Manually configured MQTT entities_ in the _Reload YAML configuration_ area.
         
         ![grafik](https://github.com/z-master42/solarflow/assets/66380371/ac61106b-200e-44ab-bce8-e9c7fc3ff0ef)
-      + Nun solltet ihr unter _Geräte & Dienste_ in eurer MQTT-Integration ein neues Gerät namens `SolarFlow` vorfinden, welches unter den o. a. Namen die entsprechenden Sensoren und Schalter enthält. Die wenigsten werden von vorne herein bereits einen Wert haben, da wie anfänglich erwähnt der Zendure-Broker nur Werteänderungen ausspielt, sich also der jeweilige Wert im Vergleich zu seinem vorherigen Status geändert haben muss. Um eine Aktualisierung so ziemlich aller Sensoren zu erzwingen, könnt ihr einfach mal kurz in der App die Hauseinspeisung oder das Ladelimit ändern.
-      + Abschließend noch ein paar Einlassungen zu den von mir gemachten Anpassungen, in Ergänzung zu der Zendure Sensorbauanleitung:
-        + Ich habe alle Sensoren um einen Default-Wert in der `value_template`-Zeile ergänzt. Durch den Umstand, dass nur Werteänderungen übermittelt werden, schreibt euch Home Assistant für jeden Sensor bei dem beim letzten Datenaustausch kein Wert mit dabei war eine Warning (`Template variable warning: 'dict object' has no attribute 'blablabla' when rendering '{{ value_json.blablabla }}'`) in euer Log, da seitens Home Assistant die Erwartung vorhanden ist zu jedem Sensor einen Wert zu erhalten. Alle Power-Sensoren habe ich mit dem Default-Wert `int(0)` versehen, denn Rest nur mit `int`. Dies sorgt dafür, dass Home Assistant weiterhin den letzten Wert angezeigt, bis ein neuer übermittelt wird bzw., dass ein Sensor auch auf 0 gesetzt wird, wenn er nicht mehr aktualisiert wird, z.B. wenn die Batterie von laden auf entladen wechselt.
-        + _Solar Input Power_, _Pack Input Power_, _Output Pack Power_ und _Output Home Power_ habe ich um `state_class: measurement` ergänzt, damit Home Assistant mit diesen auch rechnen kann. Ob das wirklich nötig ist weiß ich gerade gar nicht. Um die Werte aber im Energie Dashboard nutzen zu können müssen sie noch zu einem Verbrauchswert (Leistung mal Zeit) integriert werden. Dafür gibt es in der Helfersektion von Home Assistant den _Riemann Summenintegralsensor_. Die Methode habe ich auf `Links` gestellt und das metrische Präfix auf `kilo` gestellt. Wenn dann ein paar Werte durchgelaufen sind könnt ihr diese dann im Energie Dashboard verwenden.
-        + _Output Limit_ und _Input Limit_ haben die `unit_of_measurement: "W"` erhalten.
-        + _Remain Input Time_ und _Remain Out Time_ haben die `device_class: "duration"` bekommen. Der übermittelte Wert ist die jeweilige Dauer in Minuten, sodass die `unit_of_measurement: "min"` ist. Durch die `device_class` rechnet Home Assistant das automatisch in eine Zeitangabe in h:min:s um.
-        + _SOC Set_ ist von Zendure schon mit `unit_of_measurement: "%"` angegeben, allerdings liefert der Sensor dann z.B. 1000 %, wenn die obere Ladegrenze 100 % ist. Keine Ahnung warum das so sein soll. Ich habe den Wert entsprechend noch durch 10 geteilt.
-        + Ich habe alle Einträge um einen `device`-Block ergänzt und als eindeutigen `identifier` meine Seriennummer genommen. Durch diesen Block weiß Home Assistant, dass es sich um Entitäten des selben Gerätes handelt und erstellt entsprechend dieses Gerät, sodass ihr es unter _Geräte & Dienste_ auch vorfinden könnt.
-        + Durch den Zendure-Broker werden auch zwei Werte ausgespielt, für die es keine Bauanleitung gibt. Ich habe sie einfach mitangelegt. Dies sind `wifiState` und `inverseMaxPower`. Was der erste darstellt sollte klar sein. Der zweite stellt die maximal akzeptable Eingangsleistung des Wechselrichters da.
-        + Natürlich könnt ihr jeder Entität hier schon ein eigenes Symbol verpassen. Ergänzt dafür für die jeweilige Entität eine `icon`-Zeile, z. B. `icon: mdi:flash`.
-  4. **Vor- und Nachteile**
-     | Methode | Vorteile | Nachteile |
+      + Now you should find a new device called 'SolarFlow' under _Devices & Services_ in your MQTT integration, which contains the corresponding sensors and switches under the above names. Very few of them will already have a value from the beginning, because as mentioned at the beginning, the Zendure broker only plays out value changes, so the respective value must have changed compared to its previous state. To force an update of pretty much all sensors, you can simply change the house feed or the charge limit in the app.
+      + Finally, a few comments on the adjustments I have made, in addition to the Zendure sensor building instructions:
+        + I added a default value to all sensors in the `value_template` line. Due to the fact that only value changes are transmitted, Home Assistant writes a warning (`Template variable warning: 'dict object' has no attribute 'blablabla' when rendering '{{ value_json.blablabla }}'`) in your log for each sensor for which no value was included in the last data exchange, as Home Assistant expects to receive a value for each sensor. I have provided all power sensors with the default value `int(0)`, the rest only with `int`. This ensures that Home Assistant continues to display the last value until a new one is transmitted or that a sensor is also set to 0 when it is no longer updated, e.g. when the battery changes from charging to discharging.
+        + I have added `state_class: measurement` to _Solar Input Power_, _Pack Input Power_, _Output Pack Power_ and _Output Home Power_ so that Home Assistant can also calculate with these. I don't know if this is really necessary at the moment. However, in order to be able to use the values in the energy dashboard, they still have to be integrated into a consumption value (power times time). For this purpose, there is the _Riemann Sum Integral Sensor_ in the Help section of Home Assistant. I have set the method to `Left` and the metric prefix to `Kilo`. Once you have run through a few values, you can use them in the Energy Dashboard.
+        + _Output Limit_ and _Input Limit_ have been given the `unit_of_measurement: "W"`.
+        + _Remain Input Time_ and _Remain Out Time_ have been given the `device_class: "duration"`. The transmitted value is the respective duration in minutes, so that the `unit_of_measurement: "min"` is. Due to the `device_class`, Home Assistant automatically converts this into a time specification in h:min:s.
+        + _SOC Set_ is already specified by Zendure with `unit_of_measurement: "%"`, but the sensor then delivers e.g. 1000 % if the upper charge limit is 100 %. I have no idea why this should be the case. I have divided the value accordingly by 10.
+        + I have added a `device` block to all entries and used my serial number as a unique `identifier`. Through this block, Home Assistant knows that they are entities of the same device and creates this device accordingly, so that you can also find it under _Devices & Services_.
+        + The Zendure broker also plays out two values for which there are no instructions. I have simply added them. These are `wifiState` and `inverseMaxPower`. What the first one represents should be clear. The second represents the maximum acceptable input power to the inverter.
+        + Of course, you can already give each entity its own symbol here. Add an `icon` line for the respective entity, e.g. `icon: mdi:flash`.
+  4. **Advantages and disadvantages**
+     | Method | Advantages | Disadvantages |
      | -------- | -------- | -------- |
-     | (1.) Keine vorherige Nutzung von MQTT in Home Assistant | Schnell hinzugefügt und wenig Aufwand | Nachträgliche Anpassung der Entitäten möglich aber ggf. umständig. Warnings im Log über fehlende `dict object`[^1] |
-     | (2. iii.) Bereits MQTT in der Nutzung. Automatisches Anlegen der Entitäten durch Home Assistant | Geringfügiger Mehraufwand ggü. (1.), aber in Home Assistant nicht anders möglich | Nachträgliche Anpassung der Entitäten möglich aber ggf. umständig. Warings im Log über fehlende `dict object`[^1]|
-     | (2. iv.) Bereits MQTT in der Nutzung. Manuelles Anlegen der Entitäten | Vollständige Anpassungmöglichkeiten gegeben. Ausschließen von Warnings | Ggf. umständlich und aufwendiger als (2. iii.). Nicht selbsterklärend, schwierig nachzuvollziehen für jemanden der nicht so in der Materie steckt |
+     | (1.) No previous use of MQTT in Home Assistant | Quickly added and little effort | Subsequent adjustment of entities possible but possibly circumstantial. Warnings in log about missing `dict object`[^1] |
+     | (2. iii.) Already MQTT in use. Automatic creation of entities by Home Assistant | Slight additional effort compared to (1.), but not otherwise possible in Home Assistant | Subsequent adjustment of entities possible but possibly awkward. Warings in log about missing `dict object`[^1]|
+     | (2. iv.) Already MQTT in use. Manual creation of entities | Full customisation possibilities given. Exclude warnings | May be more cumbersome and complex than (2. iii.). Not self-explanatory, difficult to comprehend for someone who is not so familiar with the subject |
 
 
 
-[^1]: Als "Lösung" ist mir hier bisher nur bekannt, die entsprechende [Warning](warning.yaml) zu unterdrücken. 
+[^1]: The only "solution" I know of so far is to suppress the corresponding [Warning](warning.yaml). 
