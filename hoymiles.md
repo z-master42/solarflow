@@ -29,19 +29,19 @@ sequence:
                   states('number.hoymiles_hm_600_limit_nonpersistent_absolute')
                   | float(1) }}
                 grid_sum: >-
-                  {{ states('sensor.stromzahler_aktuelle_leistung') | float(1)
-                  }}
+                  {{ states('sensor.volkszaehler_stromzahler_aktuelle_leistung')
+                  | float(1) }}
                 maximum_wr: "{{ 600 | float(1) }}"
                 minimum_wr: "{{ 50 | float(1) }}"
                 minimum_pack: "{{ 10 | int(1) }}"
                 maximum_pack: "{{ 100 | int (1) }}"
-                lower_limit_wr: "{{ 12 | float(1) }}"
+                lower_limit_wr: "{{ 120 | float(1) }}"
                 pack_level: "{{ states('sensor.solarflow_electric_level') | int(1) }}"
                 solar_input: "{{ states('sensor.solarflow_solar_input_power') | float(1) }}"
               alias: Variablen definieren
             - if:
                 - condition: template
-                  value_template: "{{ pack_level == maximum_pack}}"
+                  value_template: "{{ pack_level == maximum_pack }}"
                   alias: Akkustand = 100 %
               then:
                 - if:
@@ -58,7 +58,7 @@ sequence:
                   else:
                     - if:
                         - condition: template
-                          value_template: "{{ altes_limit <= solar_input}}"
+                          value_template: "{{ altes_limit <= solar_input }}"
                           alias: Limit <= Solarleistung
                       then:
                         - service: number.set_value
@@ -69,13 +69,24 @@ sequence:
                               number.hoymiles_hm_600_limit_nonpersistent_absolute
                           alias: Setze Limit = Solarleistung
                       alias: "-"
+                      else:
+                        - variables:
+                            setpoint: "{{ (grid_sum + altes_limit - 5.0) | float(1) }}"
+                          alias: Neues Limit = Aktueller Verbrauch + Altes Limit - 5
+                        - service: number.set_value
+                          data:
+                            value: "{{ setpoint }}"
+                          target:
+                            entity_id: >-
+                              number.hoymiles_hm_600_limit_nonpersistent_absolute
+                          alias: Setze Limit = Verbrauch
                   alias: "-"
               alias: "-"
               else:
                 - if:
                     - condition: template
-                      value_template: "{{ pack_level >= minimum_pack }}"
-                      alias: Akkuladestand > 10 %
+                      value_template: "{{ pack_level >= minimum_pack}}"
+                      alias: Akkustand >= 10 %
                   then:
                     - variables:
                         setpoint: "{{ (grid_sum + altes_limit - 5.0) | float(1) }}"
@@ -95,7 +106,7 @@ sequence:
                       else:
                         - if:
                             - condition: template
-                              value_template: "{{ setpoint < minimum_wr}}"
+                              value_template: "{{ setpoint < minimum_wr }}"
                               alias: Neues Limit < 50
                           then:
                             - service: number.set_value
@@ -122,11 +133,13 @@ sequence:
                           alias: "-"
                       alias: "-"
                   else:
+                    - variables:
+                        setpoint: "{{ (grid_sum + altes_limit - 5.0) | float(1) }}"
+                      alias: Neues Limit = Aktueller Verbrauch + Altes Limit - 5
                     - if:
-                        - condition: time
-                          before: "12:00:00"
-                          alias: Uhrzeit nach 0400 und vor 1200
-                          after: "04:00:00"
+                        - condition: template
+                          value_template: "{{ setpoint > lower_limit_wr }}"
+                          alias: Neues Limit > 120 W
                       then:
                         - service: number.set_value
                           data:
@@ -134,15 +147,35 @@ sequence:
                           target:
                             entity_id: >-
                               number.hoymiles_hm_600_limit_nonpersistent_absolute
-                          alias: Setzte Limit auf 12 W
+                          alias: Setze Limit auf 120 W
                       else:
-                        - service: number.set_value
-                          data:
-                            value: "{{ minimum_wr }}"
-                          target:
-                            entity_id: >-
-                              number.hoymiles_hm_600_limit_nonpersistent_absolute
-                          alias: Setzte Limit auf 50 W
+                        - if:
+                            - condition: template
+                              value_template: "{{ setpoint < minimum_wr }}"
+                              alias: Neues Limit < 50
+                          then:
+                            - service: number.set_value
+                              data:
+                                value: "{{ minimum_wr }}"
+                              target:
+                                entity_id: >-
+                                  number.hoymiles_hm_600_limit_nonpersistent_absolute
+                              alias: Setze Limit auf 50 W
+                          else:
+                            - if:
+                                - condition: template
+                                  value_template: "{{ setpoint != altes_limit }}"
+                                  alias: Neues Limit != Altes Limit
+                              then:
+                                - service: number.set_value
+                                  data:
+                                    value: "{{ setpoint | float(1) }}"
+                                  target:
+                                    entity_id: >-
+                                      number.hoymiles_hm_600_limit_nonpersistent_absolute
+                                  alias: Setzte neues Limit
+                              alias: "-"
+                          alias: "-"
                       alias: "-"
                   alias: "-"
         - delay:
@@ -151,7 +184,6 @@ sequence:
             seconds: 5
             milliseconds: 0
           alias: Warte 5 s
-    alias: Solange
 mode: single
 icon: phu:huawei-solar-inverter
 ```
