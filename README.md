@@ -1,4 +1,4 @@
-# Zendure SolarFlow [(English version)](README_eng.md)
+# Zendure SolarFlow [(klick for English version)](README_eng.md)
 Dies ist mein Versuch, meine gemachten Erfahrungen im Hinblick auf die Einbindung des Zendure SolarFlow-Systems, bestehend aus PV-Hub ZDSPV1200 und Energiespeicher AB1000, in das Heimautomatisierungsökosystem Home Assistant, zugänglich zu machen.
 ### Einbinden in Home Assistant
 Im weiteren Kapitel [hier](solarflow.md), werde ich versuchen euch zu beschreiben, auf welchen Wegen ihr das SolarFlow-System in Home Assistant einbinden könnt.
