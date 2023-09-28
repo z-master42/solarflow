@@ -1,4 +1,4 @@
-# Zendure SolarFlow [(German version)](README.md)
+# Zendure SolarFlow [(Deutsche Version hier klicken)](README.md)
 This is my attempt to make available my made experiences regarding the integration of the Zendure SolarFlow system, consisting of PV hub ZDSPV1200 and energy storage AB1000, into the home automation ecosystem Home Assistant.
 ### Integration with Home Assistant
 In the next chapter [here](solarflow_eng.md), I will try to describe you how to integrate the SolarFlow system into Home Assistant.
