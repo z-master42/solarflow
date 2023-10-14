@@ -12,16 +12,26 @@ I used the command line tool _curl_ to retrieve the serial number.
 + Open the command prompt with `Windows key + R`.
 + Enter `cmd`.
 + Enter the following command in the command line:
-  
+
+  Region setting in the Zendure app to _"Global"_
   ```
   curl -i -v --json "{'snNumber': 'YourHubSerialNumber', 'account': 'YourEmailaddress'}" https://app.zendure.tech/v2/developer/api/apply
+  ```
+  Region setting in the Zendure app on a _"European country"_
+  ```
+  curl -i -v --json "{'snNumber': 'YourHubSerialNumber', 'account': 'YourEmailaddress'}" https://app.zendure.tech/eu/developer/api/apply
   ```
 + Beforehand, of course, you have entered your serial number and the email address you use instead of the placeholders.
 
 **Proceeding on a Linux operating system**
 + Open a terminal window with `Ctrl+Alt+T`.
 + Enter the following command in the command line:
-  
+
+  Region setting in the Zendure app to _"Global"_
+  ```
+  curl -i -X POST -H 'Content-Type: application/json' -d '{"snNumber": "YourHubSerialNumber", "account": "YourEmailaddress"}' https://app.zendure.tech/v2/developer/api/apply
+  ```
+  Region setting in the Zendure app on a _"European country"_
   ```
   curl -i -X POST -H 'Content-Type: application/json' -d '{"snNumber": "YourHubSerialNumber", "account": "YourEmailaddress"}' https://app.zendure.tech/v2/developer/api/apply
   ```
