@@ -13,7 +13,7 @@ Ich habe zum Abruf das Kommandozeilen-Tool _curl_ verwendet.
 + Gebt `cmd` ein.
 + Gebt folgenden Befehl in der Kommandozeile ein:
   
-  Regionseinstellung in der Zendure-App auf _Global_
+  Regionseinstellung in der Zendure-App auf _"Global"_
   ```
   curl -i -v --json "{'snNumber': 'EureHubSeriennummer', 'account': 'EureEmailadresse'}" https://app.zendure.tech/v2/developer/api/apply
   ```
@@ -27,7 +27,7 @@ Ich habe zum Abruf das Kommandozeilen-Tool _curl_ verwendet.
 + Öffnet mit `Strg+Alt+T` ein Terminalfenster.
 + Gebt folgenden Befehl in der Kommandozeile ein:
     
-  Regionseinstellung in der Zendure-App auf _Global_
+  Regionseinstellung in der Zendure-App auf _"Global"_
   ```
   curl -i -X POST -H 'Content-Type: application/json' -d '{"snNumber": "EureHubSeriennummer", "account": "EureEmailadresse"}' https://app.zendure.tech/v2/developer/api/apply
   ```
