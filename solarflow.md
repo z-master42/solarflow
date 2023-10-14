@@ -13,17 +13,27 @@ Ich habe zum Abruf das Kommandozeilen-Tool _curl_ verwendet.
 + Gebt `cmd` ein.
 + Gebt folgenden Befehl in der Kommandozeile ein:
   
+  Regionseinstellung in der Zendure-App auf _Global_
   ```
   curl -i -v --json "{'snNumber': 'EureHubSeriennummer', 'account': 'EureEmailadresse'}" https://app.zendure.tech/v2/developer/api/apply
+  ```
+  Regionseinstellung in der Zendure-App auf einem _"Europäischen Land"_
+  ```
+  curl -i -v --json "{'snNumber': 'EureHubSeriennummer', 'account': 'EureEmailadresse'}" https://app.zendure.tech/eu/developer/api/apply
   ```
 + Zuvor habt ihr natürlich eure Seriennummer und eure verwendete Emailadresse anstelle der Platzhalter eingetragen.
 
 **Vorgehen auf einem Linux Betriebssystem**
 + Öffnet mit `Strg+Alt+T` ein Terminalfenster.
 + Gebt folgenden Befehl in der Kommandozeile ein:
-  
+    
+  Regionseinstellung in der Zendure-App auf _Global_
   ```
   curl -i -X POST -H 'Content-Type: application/json' -d '{"snNumber": "EureHubSeriennummer", "account": "EureEmailadresse"}' https://app.zendure.tech/v2/developer/api/apply
+  ```
+  Regionseinstellung in der Zendure-App auf einem _"Europäischen Land"_
+  ```
+  curl -i -X POST -H 'Content-Type: application/json' -d '{"snNumber": "EureHubSeriennummer", "account": "EureEmailadresse"}' https://app.zendure.tech/eu/developer/api/apply
   ```
 + Zuvor habt ihr natürlich eure Seriennummer und eure verwendete Emailadresse anstelle der Platzhalter eingetragen.
 
