@@ -100,6 +100,11 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
           | masterSwitch | master switch | switch |
           | wifiState | wifi state | sensor |
           | inverseMaxPower | inverter max power | sensor |
+          | packData | pack Data | sensor
+          | solarPower1 | Solar1 Input Power | sensor |
+          | solarPower2 | Solar2 Input Power | sensor |
+          | passMode | Bypass Mode (0: auto 1:always off 2:always on) | sensor |
+          | autoRecover | Automatic recovery of bypass mode settings (0:off 1:on) | sensor |
 
 
    2. **Gleicher Start**
@@ -323,6 +328,52 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
               unique_id: "<deviceID>wifiState"
               state_topic: "<appKey>/<deviceID>/state"
               value_template: "{{ value_json.wifiState | bool('') }}"
+              device: 
+                name: "SolarFlow"
+                identifiers: "<EurePVHubSeriennummer>"
+                manufacturer: "Zendure"
+                model: "SmartPV Hub 1200 Controller"
+
+            - name: "Solar Power 1"
+              unique_id: "<deviceID>solarPower1"
+              state_topic: "<appKey>/<deviceID>/state"
+              value_template: "{{ value_json.solarPower1 | int(0) }}"
+              unit_of_measurement: "W"
+              device_class: "power"
+              state_class: "measurement"
+              device: 
+                name: "SolarFlow"
+                identifiers: "<EurePVHubSeriennummer>"
+                manufacturer: "Zendure"
+                model: "SmartPV Hub 1200 Controller"
+
+            - name: "Solar Power 2"
+              unique_id: "<deviceID>solarPower2"
+              state_topic: "<appKey>/<deviceID>/state"
+              value_template: "{{ value_json.solarPower2 | int(0) }}"
+              unit_of_measurement: "W"
+              device_class: "power"
+              state_class: "measurement"
+              device: 
+                name: "SolarFlow"
+                identifiers: "<EurePVHubSeriennummer>"
+                manufacturer: "Zendure"
+                model: "SmartPV Hub 1200 Controller"
+
+            - name: "Pass Mode"
+              unique_id: "<deviceID>passMode"
+              state_topic: "<appKey>/<deviceID>/state"
+              value_template: "{{ value_json.passMode | int }}"
+              device: 
+                name: "SolarFlow"
+                identifiers: "<EurePVHubSeriennummer>"
+                manufacturer: "Zendure"
+                model: "SmartPV Hub 1200 Controller"
+
+            - name: "Auto Recover"
+              unique_id: "<deviceID>autoRecover"
+              state_topic: "<appKey>/<deviceID>/state"
+              value_template: "{{ value_json.autoRecover | int }}"
               device: 
                 name: "SolarFlow"
                 identifiers: "<EurePVHubSeriennummer>"
