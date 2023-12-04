@@ -370,10 +370,68 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                 manufacturer: "Zendure"
                 model: "SmartPV Hub 1200 Controller"
 
-            - name: "Auto Recover"
-              unique_id: "<deviceID>autoRecover"
+            - name: "Batterie <Nr> maxTemp"
+              unique_id: "<deviceID>Batterie<Nr>maxTemp"
               state_topic: "<appKey>/<deviceID>/state"
-              value_template: "{{ value_json.autoRecover | int }}"
+              value_template: >
+                {% for i in value_json.packData %}
+                  {% if i.sn == "<EureBatterieSeriennummer>" %}
+                    {{ (i.maxTemp | float - 273.15) | round(2) }}
+                  {% endif %}
+                {% endfor %}
+              unit_of_measurement: "°C"
+              device_class: "temperature"
+              device: 
+                name: "SolarFlow"
+                identifiers: "<EurePVHubSeriennummer>"
+                manufacturer: "Zendure"
+                model: "SmartPV Hub 1200 Controller"
+
+            - name: "Batterie <Nr> maxVol"
+              unique_id: "<deviceID>Batterie<Nr>maxVol"
+              state_topic: "<appKey>/<deviceID>/state"
+              value_template: >
+                {% for i in value_json.packData %}
+                  {% if i.sn == "<EureBatterieSeriennummer>" %}
+                    {{ (i.maxVol | float / 100 }}
+                  {% endif %}
+                {% endfor %}
+              unit_of_measurement: "V"
+              device_class: "voltage"
+              device: 
+                name: "SolarFlow"
+                identifiers: "<EurePVHubSeriennummer>"
+                manufacturer: "Zendure"
+                model: "SmartPV Hub 1200 Controller"
+
+            - name: "Batterie <Nr> minVol"
+              unique_id: "<deviceID>Batterie<Nr>minVol"
+              state_topic: "<appKey>/<deviceID>/state"
+              value_template: >
+                {% for i in value_json.packData %}
+                  {% if i.sn == "<EureBatterieSeriennummer>" %}
+                    {{ (i.minVol | float / 100 }}
+                  {% endif %}
+                {% endfor %}
+              unit_of_measurement: "V"
+              device_class: "voltage"
+              device: 
+                name: "SolarFlow"
+                identifiers: "<EurePVHubSeriennummer>"
+                manufacturer: "Zendure"
+                model: "SmartPV Hub 1200 Controller"
+
+            - name: "Batterie <Nr> socLevel"
+              unique_id: "<deviceID>Batterie<Nr>socLevel"
+              state_topic: "<appKey>/<deviceID>/state"
+              value_template: >
+                {% for i in value_json.packData %}
+                  {% if i.sn == "<EureBatterieSeriennummer>" %}
+                    {{ (i.socLevel | int }}
+                  {% endif %}
+                {% endfor %}
+              unit_of_measurement: "%"
+              device_class: "battery"
               device: 
                 name: "SolarFlow"
                 identifiers: "<EurePVHubSeriennummer>"
@@ -404,6 +462,21 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
               name: "Buzzer Switch"
               device_class: "switch"
               value_template: "{{ value_json.buzzerSwitch | default('') }}"
+              payload_on: true
+              payload_off: false
+              state_on: true
+              device: 
+                name: "SolarFlow"
+                identifiers: "<EurePVHubSeriennummer>"
+                manufacturer: "Zendure"
+                model: "SmartPV Hub 1200 Controller"
+            - unique_id: "<deviceID>autoRevover"
+              state_topic: "<appKey>/<deviceID>/state"
+              state_off: false
+              command_topic: "<appKey>/<deviceID>/autoRevover/set"
+              name: "Buzzer Switch"
+              device_class: "switch"
+              value_template: "{{ value_json.autoRevover | default('') }}"
               payload_on: true
               payload_off: false
               state_on: true
