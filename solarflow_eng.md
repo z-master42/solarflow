@@ -100,7 +100,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
           | masterSwitch | master switch | switch |
           | wifiState | wifi state | sensor |
           | inverseMaxPower | inverter max power | sensor |
-          | packData | pack Data | sensor
+          | packData | pack Data (maxVol, minVol, maxTemp, socLevel, sn) | sensor
           | solarPower1 | Solar1 Input Power | sensor |
           | solarPower2 | Solar2 Input Power | sensor |
           | passMode | Bypass Mode (0: auto 1:always off 2:always on) | sensor |
