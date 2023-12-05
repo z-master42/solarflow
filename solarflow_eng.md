@@ -393,7 +393,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               value_template: >
                 {% for i in value_json.packData %}
                   {% if i.sn == "<EureBatterieSeriennummer>" %}
-                    {{ (i.maxVol | float / 100 }}
+                    {{ i.maxVol | float / 100 }}
                   {% endif %}
                 {% endfor %}
               unit_of_measurement: "V"
@@ -410,7 +410,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               value_template: >
                 {% for i in value_json.packData %}
                   {% if i.sn == "<EureBatterieSeriennummer>" %}
-                    {{ (i.minVol | float / 100 }}
+                    {{ i.minVol | float / 100 }}
                   {% endif %}
                 {% endfor %}
               unit_of_measurement: "V"
@@ -427,7 +427,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               value_template: >
                 {% for i in value_json.packData %}
                   {% if i.sn == "<EureBatterieSeriennummer>" %}
-                    {{ (i.socLevel | int }}
+                    {{ i.socLevel | int }}
                   {% endif %}
                 {% endfor %}
               unit_of_measurement: "%"
