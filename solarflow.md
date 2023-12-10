@@ -470,6 +470,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                 identifiers: "<EurePVHubSeriennummer>"
                 manufacturer: "Zendure"
                 model: "SmartPV Hub 1200 Controller"
+        
             - unique_id: "<deviceID>autoRevover"
               state_topic: "<appKey>/<deviceID>/state"
               state_off: false
