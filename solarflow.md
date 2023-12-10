@@ -475,7 +475,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
               state_topic: "<appKey>/<deviceID>/state"
               state_off: false
               command_topic: "<appKey>/<deviceID>/autoRevover/set"
-              name: "Buzzer Switch"
+              name: "Auto Recover"
               device_class: "switch"
               value_template: "{{ value_json.autoRevover | default('') }}"
               payload_on: true
