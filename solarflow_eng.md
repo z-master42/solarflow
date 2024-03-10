@@ -82,29 +82,33 @@ Depending on how far you have gone in Home Assistant, there are now several ways
           
         The following sensors and switches are currently available:
 
-          | Field | Description | device_class |
-          | -------- | ------- | ------- |
-          | electricLevel | Device battery percentage | sensor |
-          | remainOutTime | Remaining discharge time | sensor |
-          | remainInputTime | Remaining charging time | sensor |
-          | socSet | Charge Capacity Limitation | sensor |
-          | inputLimit | input limit | sensor |
-          | outputLimit | output limit | sensor |
-          | solarInputPower | solar input power | sensor |
-          | packInputPower | pack input power | sensor |
-          | outputPackPower | output pack power | sensor |
-          | outputHomePower | output home power | sensor |
-          | packNum | pack num | sensor |
-          | packState | pack state(0:standby 1:input 2:output) | sensor |
-          | buzzerSwitch | buzzer switch | switch |
-          | masterSwitch | master switch | switch |
-          | wifiState | wifi state | sensor |
-          | inverseMaxPower | inverter max power | sensor |
-          | packData | pack Data (maxVol, minVol, maxTemp, socLevel, sn) | sensor
-          | solarPower1 | Solar1 Input Power | sensor |
-          | solarPower2 | Solar2 Input Power | sensor |
-          | passMode | Bypass Mode (0: auto 1:always off 2:always on) | sensor |
-          | autoRecover | Automatic recovery of bypass mode settings (0:off 1:on) | sensor |
+          | Field | Description | device_class | Automatic discovery (2. iii.)
+          | -------- | -------- | -------- | -------- |
+          | electricLevel | Device battery percentage | sensor | yes |
+          | remainOutTime | Remaining discharge time | sensor | yes |
+          | remainInputTime | Remaining charging time | sensor | yes |
+          | socSet | Charge capacity limitation | sensor | yes |
+          | inputLimit | input limit | sensor | no |
+          | outputLimit | output limit | sensor | yes |
+          | solarInputPower | solar input power | sensor | yes |
+          | packInputPower | pack input power | sensor | yes |
+          | outputPackPower | output pack power | sensor | yes |
+          | outputHomePower | output home power | sensor | yes |
+          | packNum | pack num | sensor | yes |
+          | packState | pack state (0: standby 1: input 2: output) | sensor | yes |
+          | buzzerSwitch | buzzer switch | switch | yes |
+          | masterSwitch | master switch | switch | yes |
+          | wifiState | wifi state | sensor | no |
+          | hubState | Hub output status (0: stop output standby 1: stop output and shut down) | sensor | no |
+          | inverseMaxPower | inverter max power | sensor | no |
+          | packData | pack Data (maxVol, minVol, maxTemp, socLevel, sn) | sensor | yes |
+          | solarPower1 | Solar1 Input Power | sensor | yes |
+          | solarPower2 | Solar2 Input Power | sensor | yes |
+          | passMode | Bypass Mode (0: auto 1: always off 2: always on) | sensor | yes |
+          | autoRecover | Automatic recovery of bypass mode settings (0: off 1: on) | switch | yes |
+          | sn | Hub serial number | sensor | no |
+        
+        ***Note**: The sensors that are specified as switches are only used to display information. The function cannot be switched on or off via the switch.
 
 
    2. **Same start**
