@@ -3,7 +3,7 @@ I have implemented the zero feed for myself as a [script](script.yaml)[^1] in Ho
 
 For the whole thing to work, the script needs to know your home consumption, i.e. what your electricity meter measures. Some use a [Shelly EM 3](https://www.shelly.com/de/products/shop/shelly-3em-1) for this. But there are several other sensors that work on the same principle. The main thing is that you can integrate them into Home Assistant.
 
-Since I already had a modern electricity meter with an infrared interface, I decided to try [Volkzszaehler](https://wiki.volkszaehler.org/) at the time. In the meantime, however, I only use the _vzlogger_ and pull the read-out data into my Home Assistant via _RESTful_. MQTT would also work. But I haven't yet managed to reconnect it in such a way that my history isn't lost. Here, too, there are various other sensors that make use of the infrared interface.
+Since I already had a modern electricity meter with an infrared interface, I decided to try [Volkzszaehler](https://wiki.volkszaehler.org/) at the time. In the meantime, however, I only use the _vzlogger_ and pull the read-out data into my Home Assistant via  MQTT. Here, too, there are various other sensors that could make use of the infrared interface.
 + In Home Assistant, go to _Settings_ - _Automations & Scenes_ - _Scripts_ and create a new empty script. Use the three dots at the top right to switch from visual to YAML editing mode and simply copy my template into it. Of course, you may have to change the entity names I used to yours.
   
   **Note**: I have adapted the script a bit for myself. See the notes below the code block. You can find a script that only implements the pure zero feed [here](script_nulleinspeisung.yaml).
