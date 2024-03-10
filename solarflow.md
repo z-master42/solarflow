@@ -95,7 +95,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
           | outputPackPower | output pack power | sensor | yes |
           | outputHomePower | output home power | sensor | yes |
           | packNum | pack num | sensor | yes |
-          | packState | pack state(0:standby 1:input 2:output) | sensor | yes |
+          | packState | pack state(0: standby 1: input 2: output) | sensor | yes |
           | buzzerSwitch | buzzer switch | switch | yes |
           | masterSwitch | master switch | switch | yes |
           | wifiState | wifi state | sensor | no |
@@ -105,7 +105,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
           | solarPower1 | Solar1 Input Power | sensor | yes |
           | solarPower2 | Solar2 Input Power | sensor | yes |
           | passMode | Bypass Mode (0: auto 1: always off 2: always on) | sensor | yes |
-          | autoRecover | Automatic recovery of bypass mode settings (0:off 1:on) | switch | yes |
+          | autoRecover | Automatic recovery of bypass mode settings (0: off 1: on) | switch | yes |
           | sn | Hub serial number | sensor | no |
         
         **Hinweis**: Die Sensoren, welche als Schalter angeben sind, nutzen dies nur zur Informationsdarstellung. Über den Schalter lässt sich die Funktion nicht ein- oder ausschalten.
