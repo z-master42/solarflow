@@ -1,6 +1,6 @@
 ## Integrating SolarFlow into Home Assistant
 ### Introduction
-Zendure operates an MQTT broker for retrieving information for the products SuperBase V, Satellite Battery and SolarFlow. This is currently the only official way to access information outside of the app provided by Zendure. Since Zendure plays out the data via its own broker, the connection is forced to run through the internet. Purely local control is not yet possible.
+Zendure operates an MQTT broker for retrieving information for the products SuperBase V, Satellite Battery and SolarFlow. This is currently the only official way to access information outside of the app provided by Zendure. Since Zendure plays out the data via its own broker, the connection is forced to run through the internet. Purely local control is currently and officially not yet possible.
 [MQTT](https://en.wikipedia.org/wiki/MQTT) is an open network protocol for machine-to-machine communication. As a rule, several clients are connected to a broker. The exchanged messages are defined hierarchically by topics. In order to access corresponding information or send commands, the corresponding topic must be subscribed to.
 ### Preparation
 The prerequisite for use is an account with Zendure (which everyone should have by installing the app for controlling the SolarFlow).
