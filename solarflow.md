@@ -123,7 +123,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
         remote_username <appKey>
         remote_password <appSecret>
         remote_clientid <appKey>
-        topic <appKey>/# both 0
+        topic <appKey>/# in
         ```
       + Alles zwischen <> ersetzt ihr **inklusive, der <>** natürlich wieder durch eure eigenen Daten. Es dürfen keine <> mehr vorhanden sein.
       + Installiert das Terminal & SSH-Addon im Addon-Bereich, startet es danach und öffnet die Benutzeroberfläche.
