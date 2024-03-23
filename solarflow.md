@@ -125,7 +125,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
         remote_clientid <appKey>
         topic <appKey>/# both 0
         ```
-      + Alles zwischen <> ersetzt ihr **inklusive der <>** natürlich wieder durch eure eigenen Daten.
+      + Alles zwischen <> ersetzt ihr **inklusive, der <>** natürlich wieder durch eure eigenen Daten. Es dürfen keine <> mehr vorhanden sein.
       + Installiert das Terminal & SSH-Addon im Addon-Bereich, startet es danach und öffnet die Benutzeroberfläche.
       + Wechselt mit dem Befehl `cd share` ins `share`-Verzeichnis.
       + Überprüft mit `ls` ob es schon einen Ordner `mosquitto` gibt. Erscheint nach dem Befehl einfach eine neue Eingabezeile, existiert der Ordner noch nicht, ansonsten erscheint ein Eintrag `mosquitto`.
