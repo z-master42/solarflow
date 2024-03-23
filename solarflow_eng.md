@@ -125,7 +125,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
         remote_clientid <appKey>
         topic <appKey>/# both 0
         ```
-      + Replace everything between <> **including the <>** with your own data, of course.
+      + Replace everything between <> **including the <>** with your own data, of course. There must be no <> left.
       + Install the Terminal & SSH Addon in the Addon area, then start it and open the user interface.
       + Change to the `share` directory with the command `cd share`.
       + Check with `ls` if there is already a folder `mosquitto`. If a new input line simply appears after the command, the folder does not yet exist, otherwise an entry `mosquitto` appears.
