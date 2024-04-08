@@ -331,7 +331,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
             - name: "WiFi State"
               unique_id: "<deviceID>wifiState"
               state_topic: "<appKey>/<deviceID>/state"
-              value_template: "{{ value_json.wifiState | bool('') }}"
+              value_template: "{{ value_json.wifiState | abs }}"
               device: 
                 name: "SolarFlow"
                 identifiers: "<EurePVHubSeriennummer>"
@@ -475,13 +475,13 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                 manufacturer: "Zendure"
                 model: "SmartPV Hub 1200 Controller"
 
-            - unique_id: "<deviceID>autoRevover"
+            - unique_id: "<deviceID>autoRecover"
               state_topic: "<appKey>/<deviceID>/state"
               state_off: false
-              command_topic: "<appKey>/<deviceID>/autoRevover/set"
+              command_topic: "<appKey>/<deviceID>/autoRecover/set"
               name: "Auto Recover"
               device_class: "switch"
-              value_template: "{{ value_json.autoRevover | default('') }}"
+              value_template: "{{ value_json.autoRecover | default('') }}"
               payload_on: true
               payload_off: false
               state_on: true
