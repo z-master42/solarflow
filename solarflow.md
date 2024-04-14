@@ -194,7 +194,12 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                state_topic: "<appKey>/<deviceID>/state"
                unit_of_measurement: "W"
                device_class: "power"
-               value_template: "{% if states('sensor.solarflow_pack_input_power') not in ['unknown'] %}{{ int(value_json.packInputPower, 0) }}{% else %}{{ int(0) }}{% endif %}"
+               value_template: >
+                 {% if states('sensor.solarflow_pack_input_power') not in ['unknown'] %}
+                   {{ int(value_json.packInputPower, 0) }}
+                 {% else %}
+                   {{ int(0) }}
+                 {% endif %}
                state_class: "measurement"
                expire_after: 120
                device: 
@@ -208,7 +213,12 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                state_topic: "<appKey>/<deviceID>/state"
                unit_of_measurement: "W"
                device_class: "power"
-               value_template: "{% if states('sensor.solarflow_output_pack_power') not in ['unknown'] %}{{ int(value_json.outputPackPower, 0) }}{% else %}{{ int(0) }}{% endif %}"
+               value_template: >
+                 {% if states('sensor.solarflow_output_pack_power') not in ['unknown'] %}
+                   {{ int(value_json.outputPackPower, 0) }}
+                 {% else %}
+                   {{ int(0) }}
+                 {% endif %}
                state_class: "measurement"
                expire_after: 120
                device: 
