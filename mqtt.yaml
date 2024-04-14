@@ -27,8 +27,14 @@
       state_topic: "<appKey>/<deviceID>/state"
       unit_of_measurement: "W"
       device_class: "power"
-      value_template: "{{ value_json.packInputPower | int(0) }}"
+      value_template: >
+        {% if states('sensor.solarflow_pack_input_power') not in ['unknown'] %}
+          {{ int(value_json.packInputPower, 0) }}
+        {% else %}
+          {{ int(0) }}
+        {% endif %}
       state_class: "measurement"
+      expire_after: 120
       device: 
         name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
@@ -40,8 +46,14 @@
       state_topic: "<appKey>/<deviceID>/state"
       unit_of_measurement: "W"
       device_class: "power"
-      value_template: "{{ value_json.outputPackPower | int(0) }}"
+      value_template: >
+        {% if states('sensor.solarflow_output_pack_power') not in ['unknown'] %}
+          {{ int(value_json.outputPackPower, 0) }}
+        {% else %}
+          {{ int(0) }}
+        {% endif %}
       state_class: "measurement"
+      expire_after: 120
       device: 
         name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
