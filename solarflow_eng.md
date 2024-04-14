@@ -194,11 +194,17 @@ Depending on how far you have gone in Home Assistant, there are now several ways
                state_topic: "<appKey>/<deviceID>/state"
                unit_of_measurement: "W"
                device_class: "power"
-               value_template: "{{ value_json.packInputPower | int(0) }}"
+               value_template: >
+                 {% if states('sensor.solarflow_pack_input_power') not in ['unknown'] %}
+                   {{ int(value_json.packInputPower, 0) }}
+                 {% else %}
+                   {{ int(0) }}
+                 {% endif %}
                state_class: "measurement"
+               expire_after: 120
                device: 
                  name: "SolarFlow"
-                 identifiers: "<YourPVHubSerialNumber>"
+                 identifiers: "<EurePVHubSeriennummer>"
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
       
@@ -207,11 +213,17 @@ Depending on how far you have gone in Home Assistant, there are now several ways
                state_topic: "<appKey>/<deviceID>/state"
                unit_of_measurement: "W"
                device_class: "power"
-               value_template: "{{ value_json.outputPackPower | int(0) }}"
+               value_template: >
+                 {% if states('sensor.solarflow_output_pack_power') not in ['unknown'] %}
+                   {{ int(value_json.outputPackPower, 0) }}
+                 {% else %}
+                   {{ int(0) }}
+                 {% endif %}
                state_class: "measurement"
+               expire_after: 120
                device: 
                  name: "SolarFlow"
-                 identifiers: "<YourPVHubSerialNumber>"
+                 identifiers: "<EurePVHubSeriennummer>"
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
       
@@ -496,9 +508,9 @@ Depending on how far you have gone in Home Assistant, there are now several ways
       + If you make further changes to this sensor and switch configuration, add or remove something, it is sufficient to click on _Manually configured MQTT entities_ in the _Reload YAML configuration_ area.
         
         ![grafik](https://github.com/z-master42/solarflow/assets/66380371/ac61106b-200e-44ab-bce8-e9c7fc3ff0ef)
-      + Now you should find a new device called 'SolarFlow' under _Devices & Services_ in your MQTT integration, which contains the corresponding sensors and switches under the above names. Very few of them will already have a value from the beginning, because as mentioned at the beginning, the Zendure broker only plays out value changes, so the respective value must have changed compared to its previous state. To force an update of pretty much all sensors, you can simply change the house feed or the charge limit in the app.
+      + You should now find a new device called 'SolarFlow' under _Devices & Services_ in your MQTT integration, which contains the corresponding sensors and switches under the above-mentioned names. Very few of them will already have a value from the outset because, as mentioned at the beginning, the Zendure broker only outputs value changes, i.e. the respective value must have changed compared to its previous status. To force an update of all sensors, you can simply pause for a few moments in the Zendure app on the detailed view of the batteries, where you can also see the temperatures.
       + Finally, a few comments on the adjustments I have made, in addition to the Zendure sensor building instructions:
-        + I added a default value to all sensors in the `value_template` line. Due to the fact that only value changes are transmitted, Home Assistant writes a warning (`Template variable warning: 'dict object' has no attribute 'blablabla' when rendering '{{ value_json.blablabla }}'`) in your log for each sensor for which no value was included in the last data exchange, as Home Assistant expects to receive a value for each sensor. I have provided all power sensors with the default value `int(0)`, the rest only with `int`. This ensures that Home Assistant continues to display the last value until a new one is transmitted or that a sensor is also set to 0 when it is no longer updated, e.g. when the battery changes from charging to discharging.
+        + I added a default value to all sensors in the `value_template` line. Due to the fact that only value changes are transmitted, Home Assistant writes a warning (`Template variable warning: 'dict object' has no attribute 'blablabla' when rendering '{{ value_json.blablabla }}'`) in your log for each sensor for which no value was included in the last data exchange, as Home Assistant expects to receive a value for each sensor. I have added an additional check to all power sensors to see whether the sensor has a value. If this is not the case, the sensor is set to 0 W. In addition, the sensor now loses its status after two minutes without a change in value and is then also set to 0 W. This hopefully ensures that the last value transmitted by the broker does not simply "stand still". Previously, I had only given these sensors the default value `int(0)`. This ensured that Home Assistant continued to display the last value until a new one was transmitted or that a sensor was also set to 0 if it was no longer updated. However, this no longer works, which is particularly annoying for battery sensors. Hence the new approach mentioned above.
         + I have added `state_class: measurement` to _Solar Input Power_, _Pack Input Power_, _Output Pack Power_ and _Output Home Power_ so that Home Assistant can also calculate with these. I don't know if this is really necessary at the moment. However, in order to be able to use the values in the energy dashboard, they still have to be integrated into a consumption value (power times time). For this purpose, there is the _Riemann Sum Integral Sensor_ in the Help section of Home Assistant. I have set the method to `Left` and the metric prefix to `Kilo`. Once you have run through a few values, you can use them in the Energy Dashboard.
         + _Output Limit_ and _Input Limit_ have been given the `unit_of_measurement: "W"`.
         + _Remain Input Time_ and _Remain Out Time_ have been given the `device_class: "duration"`. The transmitted value is the respective duration in minutes, so that the `unit_of_measurement: "min"` is. Due to the `device_class`, Home Assistant automatically converts this into a time specification in h:min:s.
