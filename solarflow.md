@@ -346,7 +346,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
               value_template: >
                 {% if (value_json.wifiState | is_defined) %}
                   {{ value_json.wifiState | abs() }}
-                {% endif 
+                {% endif %}
               device: 
                 name: "SolarFlow"
                 identifiers: "<EurePVHubSeriennummer>"
