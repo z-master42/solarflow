@@ -343,12 +343,15 @@ Depending on how far you have gone in Home Assistant, there are now several ways
             - name: "WiFi State"
               unique_id: "<deviceID>wifiState"
               state_topic: "<appKey>/<deviceID>/state"
-              value_template: "{{ value_json.wifiState | bool('') }}"
+              value_template: >
+                {% if (value_json.wifiState | is_defined) %}
+                  {{ value_json.wifiState | abs() }}
+                {% endif 
               device: 
                 name: "SolarFlow"
-                identifiers: "<YourPVHubSerialNumber>"
+                identifiers: "<EurePVHubSeriennummer>"
                 manufacturer: "Zendure"
-                model: "SmartPV Hub 1200 Controller"
+                model: "SmartPV Hub 1200 Controller
 
             - name: "Solar Power 1"
               unique_id: "<deviceID>solarPower1"
@@ -390,11 +393,13 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               unique_id: "<deviceID>Batterie<Nr>maxTemp"
               state_topic: "<appKey>/<deviceID>/state"
               value_template: >
-                {% for i in value_json.packData %}
-                  {% if i.sn == "<EureBatterieSeriennummer>" %}
-                    {{ (i.maxTemp | float - 273.15) | round(2) }}
-                  {% endif %}
-                {% endfor %}
+                {% if (value_json.packData | is_defined) %}
+                  {% for i in value_json.packData %}
+                    {% if i.sn == "<EureBatterieSeriennummer>" %}
+                      {{ (i.maxTemp | float - 273.15) | round(2) }}
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
               unit_of_measurement: "°C"
               device_class: "temperature"
               device: 
@@ -407,11 +412,13 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               unique_id: "<deviceID>Batterie<Nr>maxVol"
               state_topic: "<appKey>/<deviceID>/state"
               value_template: >
-                {% for i in value_json.packData %}
-                  {% if i.sn == "<EureBatterieSeriennummer>" %}
-                    {{ i.maxVol | float / 100 }}
-                  {% endif %}
-                {% endfor %}
+                {% if (value_json.packData | is_defined) %}
+                  {% for i in value_json.packData %}
+                    {% if i.sn == "<EureBatterieSeriennummer>" %}
+                      {{ i.maxVol | float / 100 }}
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
               unit_of_measurement: "V"
               device_class: "voltage"
               device: 
@@ -424,11 +431,13 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               unique_id: "<deviceID>Batterie<Nr>minVol"
               state_topic: "<appKey>/<deviceID>/state"
               value_template: >
-                {% for i in value_json.packData %}
-                  {% if i.sn == "<EureBatterieSeriennummer>" %}
-                    {{ i.minVol | float / 100 }}
-                  {% endif %}
-                {% endfor %}
+                {% if (value_json.packData | is_defined) %}
+                  {% for i in value_json.packData %}
+                    {% if i.sn == "<EureBatterieSeriennummer>" %}
+                      {{ i.minVol | float / 100 }}
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
               unit_of_measurement: "V"
               device_class: "voltage"
               device: 
@@ -441,11 +450,13 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               unique_id: "<deviceID>Batterie<Nr>socLevel"
               state_topic: "<appKey>/<deviceID>/state"
               value_template: >
-                {% for i in value_json.packData %}
-                  {% if i.sn == "<EureBatterieSeriennummer>" %}
-                    {{ i.socLevel | int }}
-                  {% endif %}
-                {% endfor %}
+                {% if (value_json.packData | is_defined) %}
+                  {% for i in value_json.packData %}
+                    {% if i.sn == "<EureBatterieSeriennummer>" %}
+                      {{ i.socLevel | int }}
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
               unit_of_measurement: "%"
               device_class: "battery"
               device: 
