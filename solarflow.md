@@ -521,7 +521,54 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
         ![grafik](https://github.com/z-master42/solarflow/assets/66380371/ac61106b-200e-44ab-bce8-e9c7fc3ff0ef)
       + Nun solltet ihr unter _Geräte & Dienste_ in eurer MQTT-Integration ein neues Gerät namens `SolarFlow` vorfinden, welches unter den o. a. Namen die entsprechenden Sensoren und Schalter enthält. Die wenigsten werden von vorne herein bereits einen Wert haben, da wie anfänglich erwähnt der Zendure-Broker nur Werteänderungen ausspielt, sich also der jeweilige Wert im Vergleich zu seinem vorherigen Status geändert haben muss. Um eine Aktualisierung aller Sensoren zu erzwingen, könnt ihr einfach mal für ein paar Augenblicke in der Zendure-App auf der Detailansicht der Batterien, dort wo ihr auch die Temperaturen sehen könnt, verweilen.
       + Abschließend noch ein paar Einlassungen zu den von mir gemachten Anpassungen, in Ergänzung zu der Zendure Sensorbauanleitung:
-        + Ich habe alle Sensoren um einen Default-Wert in der `value_template`-Zeile ergänzt. Durch den Umstand, dass nur Werteänderungen übermittelt werden, schreibt euch Home Assistant für jeden Sensor bei dem beim letzten Datenaustausch kein Wert mit dabei war eine Warning (`Template variable warning: 'dict object' has no attribute 'blablabla' when rendering '{{ value_json.blablabla }}'`) in euer Log, da seitens Home Assistant die Erwartung vorhanden ist zu jedem Sensor einen Wert zu erhalten. Alle Power-Sensoren habe ich mit einer zuzätzlichen Überprüfung versehen, ob der Sensor auch ein Wert hat. Ist dem nämlich nicht so, wird der Sensor auf 0 W gesetzt. Zudem verliert der Sensor nun nach zwei Minuten ohne Werteändrung seinen Zustand und wird dann ebenfalls auf 0 W gesetzt. So ist hoffentlich sichergestellt, dass der letzte vom Broker übermittelte Wert nicht einfach "stehen" bleibt. Vorher hatte ich diese Sensoren nur mit dem Default-Wert `int(0)` versehen. Dies sorgte dafür, dass Home Assistant weiterhin den letzten Wert angezeigte, bis ein neuer übermittelt wurde bzw., dass ein Sensor auch auf 0 gesetzt wurde, wenn er nicht mehr aktualisiert wurde. Dies klappt aber mittlerweile nicht mehr, was gerade bei den Batteriesensoren stört. Daher der o. a. neue Ansatz.
+        + Ich habe alle Sensoren um einen Default-Wert in der `value_template`-Zeile ergänzt. Durch den Umstand, dass nur Werteänderungen übermittelt werden, schreibt euch Home Assistant für jeden Sensor bei dem beim letzten Datenaustausch kein Wert mit dabei war eine Warning (`Template variable warning: 'dict object' has no attribute 'blablabla' when rendering '{{ value_json.blablabla }}'`) in euer Log, da seitens Home Assistant die Erwartung vorhanden ist zu jedem Sensor einen Wert zu erhalten. Alle Power-Sensoren habe ich mit einer zuzätzlichen Überprüfung versehen, ob der Sensor auch ein Wert hat. Ist dem nämlich nicht so, wird der Sensor initial auf 0 W gesetzt. Da gerade die Batteriesensoren aktuell nicht definiert auf 0 W gesetzt werden, habe ich zwei kleine Automatisierungen erstellt, die dies umsetzen, da die Batterien ja nur geladen oder entladen werden können. Zuvor hatte ich diese Sensoren nur mit dem Default-Wert `int(0)` versehen. Dies sorgte dafür, dass Home Assistant weiterhin den letzten Wert angezeigte, bis ein neuer übermittelt wurde bzw., dass ein Sensor auch auf 0 gesetzt wurde, wenn er nicht mehr aktualisiert wurde. Dies klappt aber mittlerweile nicht mehr, was gerade bei den Batteriesensoren stört. Daher der u. a. neue Ansatz mit den beiden Automatisierungen. Sicherlich nicht das Ende der Fahnenstange.
+          
+          ```yaml
+          alias: Batterieentladung
+          description: ""
+          trigger:
+            - platform: numeric_state
+              entity_id:
+                - sensor.solarflow_pack_input_power
+                  above: 0
+          condition:
+            - condition: not
+              conditions:
+                - condition: state
+                  entity_id: sensor.solarflow_output_pack_power
+                  state: "0"
+          action:
+            - service: mqtt.publish
+              metadata: {}
+              data:
+                qos: "0"
+                topic: <appKey>/<deviceID>/state
+                payload: "{\"outputpackPower\":0}"
+          mode: single
+          ```
+          ```yaml
+          alias: Batterieladung
+          description: ""
+          trigger:
+            - platform: numeric_state
+              entity_id:
+                - sensor.solarflow_output_pack_power
+              above: 0
+          condition:
+            - condition: not
+              conditions:
+                - condition: state
+                  entity_id: sensor.solarflow_pack_input_amount
+                  state: "0"
+          action:
+            - service: mqtt.publish
+              metadata: {}
+              data:
+                qos: "0"
+                topic: <appKey>/<deviceID>/state
+                payload: "{\"packInputPower\":0}"
+          mode: single
+          ```
         + _Solar Input Power_, _Pack Input Power_, _Output Pack Power_ und _Output Home Power_ habe ich um `state_class: measurement` ergänzt, damit Home Assistant mit diesen auch rechnen kann. Ob das wirklich nötig ist weiß ich gerade gar nicht. Um die Werte aber im Energie Dashboard nutzen zu können müssen sie noch zu einem Verbrauchswert (Leistung mal Zeit) integriert werden. Dafür gibt es in der Helfersektion von Home Assistant den _Riemann Summenintegralsensor_. Die Methode habe ich auf `Links` gestellt und das metrische Präfix auf `kilo` gestellt. Wenn dann ein paar Werte durchgelaufen sind könnt ihr diese dann im Energie Dashboard verwenden.
         + _Output Limit_ und _Input Limit_ haben die `unit_of_measurement: "W"` erhalten.
         + _Remain Input Time_ und _Remain Out Time_ haben die `device_class: "duration"` bekommen. Der übermittelte Wert ist die jeweilige Dauer in Minuten, sodass die `unit_of_measurement: "min"` ist. Durch die `device_class` rechnet Home Assistant das automatisch in eine Zeitangabe in h:min:s um.
