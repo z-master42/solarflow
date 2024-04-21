@@ -1,4 +1,4 @@
-alias: Anpassung Wechselrichter Leistung (Duplizieren)
+alias: Anpassung Wechselrichter Leistung
 sequence:
   - repeat:
       while: []
