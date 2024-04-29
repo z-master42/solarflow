@@ -558,7 +558,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
             - condition: not
               conditions:
                 - condition: state
-                  entity_id: sensor.solarflow_pack_input_amount
+                  entity_id: sensor.solarflow_pack_input_power
                   state: "0"
           action:
             - service: mqtt.publish
