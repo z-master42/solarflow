@@ -1,71 +1,61 @@
 alias: Anpassung Wechselrichter Leistung
 sequence:
-  - repeat:
-      while: []
-      sequence:
-        - if:
-            - condition: state
-              entity_id: binary_sensor.wechselrichter_reachable
-              state: "on"
-              alias: Wechselrichter erreichbar
-          alias: "-"
-          then:
-            - variables:
-                altes_limit: >-
-                  {{
-                  states('number.wechselrichter_limit_nonpersistent_absolute') |
-                  float(1) }}
-                grid_sum: >-
-                  {{ states('sensor.stromzahler_aktuelle_leistung') | float(1)
-                  }}
-                maximum_wr: "{{ 600 | float(1) }}"
-                minimum_wr: "{{ 50 | float(1) }}"
-                setpoint: "{{ (grid_sum + altes_limit - 5.0) | float(1) }}"
-              alias: Variablen definieren
-            - if:
-                - condition: template
-                  value_template: "{{ setpoint > maximum_wr }}"
-                  alias: Neues Limit > 600 W
-              then:
-                - service: number.set_value
-                  data:
-                    value: "{{ maximum_wr }}"
-                  target:
-                    entity_id: number.wechselrichter_limit_nonpersistent_absolute
-                  alias: Setze Limit auf 600 W
-              else:
-                - if:
-                    - condition: template
-                      value_template: "{{ setpoint < minimum_wr}}"
-                      alias: Neues Limit < 50
-                  then:
-                    - service: number.set_value
-                      data:
-                        value: "{{ minimum_wr }}"
-                      target:
-                        entity_id: number.wechselrichter_limit_nonpersistent_absolute
-                      alias: Setze Limit auf 50 W
-                  else:
-                    - if:
-                        - condition: template
-                          value_template: "{{ setpoint != altes_limit }}"
-                          alias: Neues Limit != Altes Limit
-                      then:
-                        - service: number.set_value
-                          data:
-                            value: "{{ setpoint | float(1) }}"
-                          target:
-                            entity_id: number.wechselrichter_limit_nonpersistent_absolute
-                          alias: Setzte neues Limit
-                      alias: "-"
-                  alias: "-"
-              alias: "-"
-        - delay:
-            hours: 0
-            minutes: 0
-            seconds: 5
-            milliseconds: 0
-          alias: Warte 5 s
-    alias: Solange
+  - if:
+      - condition: state
+        entity_id: binary_sensor.wechselrichter_reachable
+        state: "on"
+        alias: Wechselrichter erreichbar
+    alias: "-"
+    then:
+      - variables:
+          altes_limit: >-
+            {{
+            states('number.wechselrichter_limit_nonpersistent_absolute') |
+            float(1) }}
+          grid_sum: >-
+            {{ states('sensor.stromzahler_aktuelle_leistung') | float(1)
+            }}
+          maximum_wr: "{{ 600 | float(1) }}"
+          minimum_wr: "{{ 50 | float(1) }}"
+          setpoint: "{{ (grid_sum + altes_limit - 5.0) | float(1) }}"
+        alias: Variablen definieren
+      - if:
+          - condition: template
+            value_template: "{{ setpoint > maximum_wr }}"
+            alias: Neues Limit > 600 W
+        then:
+          - service: number.set_value
+            data:
+              value: "{{ maximum_wr }}"
+            target:
+              entity_id: number.wechselrichter_limit_nonpersistent_absolute
+            alias: Setze Limit auf 600 W
+        else:
+          - if:
+              - condition: template
+                value_template: "{{ setpoint < minimum_wr}}"
+                alias: Neues Limit < 50
+            then:
+              - service: number.set_value
+                data:
+                  value: "{{ minimum_wr }}"
+                target:
+                  entity_id: number.wechselrichter_limit_nonpersistent_absolute
+                alias: Setze Limit auf 50 W
+            else:
+              - if:
+                  - condition: template
+                    value_template: "{{ setpoint != altes_limit }}"
+                    alias: Neues Limit != Altes Limit
+                then:
+                  - service: number.set_value
+                    data:
+                      value: "{{ setpoint | float(1) }}"
+                    target:
+                      entity_id: number.wechselrichter_limit_nonpersistent_absolute
+                    alias: Setzte neues Limit
+                alias: "-"
+            alias: "-"
+        alias: "-"
 mode: single
-icon: phu:huawei-solar-inverter
+icon: mdi:vector-link
