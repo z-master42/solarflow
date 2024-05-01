@@ -6,7 +6,6 @@ trigger:
 condition: []
 action:
   - service: script.turn_on
-    data: {}
     target:
       entity_id: script.anpassung_wechselrichter_leistung
 mode: single
