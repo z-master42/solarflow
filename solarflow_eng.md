@@ -118,7 +118,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
       + Insert the following [content](zendure.conf):
         
         ```
-        connection external-bridge
+        connection zendure-broker
         address mqtt.zen-iot.com:1883
         remote_username <appKey>
         remote_password <appSecret>
