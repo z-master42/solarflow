@@ -2,29 +2,7 @@ alias: Skript Wechselrichter Leistung anpassen ausführen
 description: ""
 trigger:
   - platform: time_pattern
-    seconds: "5"
-  - platform: time_pattern
-    seconds: "10"
-  - platform: time_pattern
-    seconds: "15"
-  - platform: time_pattern
-    seconds: "20"
-  - platform: time_pattern
-    seconds: "25"
-  - platform: time_pattern
-    seconds: "30"
-  - platform: time_pattern
-    seconds: "35"
-  - platform: time_pattern
-    seconds: "40"
-  - platform: time_pattern
-    seconds: "45"
-  - platform: time_pattern
-    seconds: "50"
-  - platform: time_pattern
-    seconds: "55"
-  - platform: time_pattern
-    seconds: "0"
+    seconds: /5
 condition: []
 action:
   - service: script.turn_on
