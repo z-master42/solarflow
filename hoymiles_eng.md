@@ -1,6 +1,6 @@
 ## Zero feed with a Hoymiles inverter
-I have implemented the zero feed for myself as a [script](script.yaml)[^1] in Home Assistant, which is started automatically via an [automation](automation_start.yaml) if I have to restart Home Assistant.
-Due to limitations in Home Assistant regarding "headless" endless loops, a second [automation](automation_repeat.yaml) is necessary, which starts the script at periodic intervals. At the interval at which you want to adjust the limitation of your inverter. Five seconds has proven to be a good interval. There are certainly better and more elegant solutions for implementing the whole thing, but this one works for now.
+I realised the zero feed for myself as a [script](script.yaml)[^1] in Home Assistant, which is called via an [automation](automation.yaml) at a set interval.
+Five seconds has proven to be a good interval.
 
 For the whole thing to work, the script needs to know your home consumption, i.e. what your electricity meter is measuring. Some use a [Shelly EM 3](https://www.shelly.com/de/products/shop/shelly-3em-1) for this. However, there are various other sensors that work on the same principle. The main thing is that you can integrate them into Home Assistant.
 
