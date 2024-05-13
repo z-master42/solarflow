@@ -1,6 +1,6 @@
 ## Nulleinspeisung mit einem Hoymiles-Wechselrichter
-Die Nulleinspeisung habe ich für mich als [Skript](script.yaml)[^1] in Home Assistant realisiert, welches über eine [Automatisierung](automation_start.yaml) automatisch gestartet wird, wenn ich den Home Assistant mal neustarten musste.
-Auf Grund von Limitierungen in Home Assistant, was "kopflose" Endlosschleifen angeht, ist noch eine zweite [Automatiserung](automation_repeat.yaml) nötig, die das Skript in periodischen Abständen startet. In dem Intervall halt, in dem ihr die Begrenzung eures Wechselrichters anpassen wollt. Fünf Sekunden haben sie als gutes Intervall bewiesen. Sicherlich gibt es schönere und elegantere Lösungen, das Ganze umzusetzten, aber diese funktioniert erstmal.
+Die Nulleinspeisung habe ich für mich als [Skript](script.yaml)[^1] in Home Assistant realisiert, welches über eine [Automatisierung](automation.yaml) in einem festgelegten Intervall aufgerufen wird.
+Fünf Sekunden haben sich hierbei als gutes Intervall bewiesen.
 
 Damit das ganze funktioniert, muss das Skript euren Hausverbrauch kennen, spich das, was euer Stromzähler misst. Einige nutzen hierfür einen [Shelly EM 3](https://www.shelly.com/de/products/shop/shelly-3em-1). Es gibt aber noch diverse weitere Sensoren die nach dem gleichen Prinzip arbeiten. Hauptsache ist, ihr könnt sie in Home Assistant integrieren.
 
