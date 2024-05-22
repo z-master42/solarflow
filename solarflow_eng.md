@@ -543,7 +543,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               data:
                 qos: "0"
                 topic: <appKey>/<deviceID>/state
-                payload: "{\"outputpackPower\":0}"
+                payload: "{\"outputPackPower\":0}"
           mode: single
           ```
           ```yaml
