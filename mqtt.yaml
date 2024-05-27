@@ -34,7 +34,6 @@
           {{ int(0) }}
         {% endif %}
       state_class: "measurement"
-      expire_after: 120
       device: 
         name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
@@ -53,7 +52,6 @@
           {{ int(0) }}
         {% endif %}
       state_class: "measurement"
-      expire_after: 120
       device: 
         name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
