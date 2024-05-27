@@ -163,6 +163,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
         ```
         **Hinweis**: Der Block muss bei euch nicht genau so aussehen. Hier ist das ebenfalls davon abhängig, wie weit ihr euch in Home Assistant schon ausgetobt habt. Wenn ich das richtig in Erinnerung habe, sollte aber wenigstens eine `!include`-Zeile schon vorhanden sein.
       + Erstellt eine neue Datei `mqtt.yaml` und fügt nachstehenden [Inhalt](mqtt.yaml) ein.
+      + Alles zwischen <> ersetzt ihr **inklusive, der <>** natürlich wieder durch eure eigenen Daten. Es dürfen keine <> mehr vorhanden sein.
         
         ```yaml
            sensor:
