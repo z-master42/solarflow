@@ -202,7 +202,6 @@ Depending on how far you have gone in Home Assistant, there are now several ways
                    {{ int(0) }}
                  {% endif %}
                state_class: "measurement"
-               expire_after: 120
                device: 
                  name: "SolarFlow"
                  identifiers: "<EurePVHubSeriennummer>"
@@ -221,7 +220,6 @@ Depending on how far you have gone in Home Assistant, there are now several ways
                    {{ int(0) }}
                  {% endif %}
                state_class: "measurement"
-               expire_after: 120
                device: 
                  name: "SolarFlow"
                  identifiers: "<EurePVHubSeriennummer>"
