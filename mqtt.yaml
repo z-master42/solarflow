@@ -14,7 +14,12 @@
       state_topic: "<appKey>/<deviceID>/state"
       unit_of_measurement: "W"
       device_class: "power"
-      value_template: "{{ value_json.solarInputPower | int(0) }}"
+      value_template: >
+        {% if states('sensor.solarflow_solar_input_power') not in ['unknown'] %}
+          {{ int(value_json.solarInputPower, 0) }}
+        {% else %}
+          {{ int(0) }}
+        {% endif %}
       state_class: "measurement"
       device: 
         name: "SolarFlow"
@@ -63,7 +68,12 @@
       state_topic: "<appKey>/<deviceID>/state"
       unit_of_measurement: "W"
       device_class: "power"
-      value_template: "{{ value_json.outputHomePower | int(0) }}"
+      value_template: >
+        {% if states('sensor.solarflow_output_home_power') not in ['unknown'] %}
+          {{ int(value_json.outputHomePower, 0) }}
+        {% else %}
+          {{ int(0) }}
+        {% endif %}
       state_class: "measurement"
       device: 
         name: "SolarFlow"
@@ -187,7 +197,12 @@
     - name: "Solar Power 1"
       unique_id: "<deviceID>solarPower1"
       state_topic: "<appKey>/<deviceID>/state"
-      value_template: "{{ value_json.solarPower1 | int(0) }}"
+      value_template: >
+        {% if states('sensor.solarflow_solar_power_1') not in ['unknown'] %}
+          {{ int(value_json.solarPower1, 0) }}
+        {% else %}
+          {{ int(0) }}
+        {% endif %}
       unit_of_measurement: "W"
       device_class: "power"
       state_class: "measurement"
@@ -200,7 +215,12 @@
     - name: "Solar Power 2"
       unique_id: "<deviceID>solarPower2"
       state_topic: "<appKey>/<deviceID>/state"
-      value_template: "{{ value_json.solarPower2 | int(0) }}"
+      value_template: >
+        {% if states('sensor.solarflow_solar_power_2') not in ['unknown'] %}
+          {{ int(value_json.solarPower2, 0) }}
+        {% else %}
+          {{ int(0) }}
+        {% endif %}
       unit_of_measurement: "W"
       device_class: "power"
       state_class: "measurement"
