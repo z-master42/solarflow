@@ -53,7 +53,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
    If this is your first contact with MQTT, things will go quite quickly.
    + Add a new integration via _Settings - Devices & Services_. Look for MQTT there and select that without any other designations.
    + The username is your `appKey` and the password your `appSecret`. The URL of the broker and the port were also delivered to you with the above answer: `mqtt.zen-iot.com` with port `1883`.
-   + In order for data to come in, you have to subscribe to a topic, as mentioned at the beginning. This is done here by activating _Enable Discovery_ on the configuration page and entering `appKey' as _Discovery prefix_..
+   + In order for data to come in, you have to subscribe to a topic, as mentioned at the beginning. This is done here by activating _Enable Discovery_ on the configuration page and entering your `appKey` as _Discovery prefix_..
      
      ![grafik](https://github.com/z-master42/solarflow/assets/66380371/769a98f3-8786-42c3-8cc5-0d761df5aee7)
 2. **Option: You already use an MQTT broker in Home Assistant**
