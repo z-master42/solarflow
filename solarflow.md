@@ -166,6 +166,8 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
       + Alles zwischen <> ersetzt ihr **inklusive, der <>** natürlich wieder durch eure eigenen Daten. Es dürfen keine <> mehr vorhanden sein.
         
         ```yaml
+           # Die finalen Entitätsnamen setzen sich aus dem Sensornamen und dem Gerätenamen zusammen
+           # Beim ersten Sensor hier also SolarFlow Hub State (sensor.solarflow_hub_state)
            sensor:
              - name: "Hub State"
                unique_id: "<deviceID>hubState"
@@ -183,7 +185,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                unit_of_measurement: "W"
                device_class: "power"
                value_template: >
-                 {% if states('sensor.solarflow_solar_input_power') not in ['unknown'] %}
+                 {% if states('sensor.solarflow_solar_input_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden
                    {{ int(value_json.solarInputPower, 0) }}
                  {% else %}
                    {{ int(0) }}
@@ -201,7 +203,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                unit_of_measurement: "W"
                device_class: "power"
                value_template: >
-                 {% if states('sensor.solarflow_pack_input_power') not in ['unknown'] %}
+                 {% if states('sensor.solarflow_pack_input_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden
                    {{ int(value_json.packInputPower, 0) }}
                  {% else %}
                    {{ int(0) }}
@@ -219,7 +221,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                unit_of_measurement: "W"
                device_class: "power"
                value_template: >
-                 {% if states('sensor.solarflow_output_pack_power') not in ['unknown'] %}
+                 {% if states('sensor.solarflow_output_pack_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden
                    {{ int(value_json.outputPackPower, 0) }}
                  {% else %}
                    {{ int(0) }}
@@ -237,7 +239,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
                unit_of_measurement: "W"
                device_class: "power"
                value_template: >
-                 {% if states('sensor.solarflow_output_home_power') not in ['unknown'] %}
+                 {% if states('sensor.solarflow_output_home_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden
                    {{ int(value_json.outputHomePower, 0) }}
                  {% else %}
                    {{ int(0) }}
@@ -548,13 +550,13 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
           trigger:
             - platform: numeric_state
               entity_id:
-                - sensor.solarflow_pack_input_power
+                - sensor.solarflow_pack_input_power # Muss ggf. an euren Entitätsnamen angepasst werden
                   above: 0
           condition:
             - condition: not
               conditions:
                 - condition: state
-                  entity_id: sensor.solarflow_output_pack_power
+                  entity_id: sensor.solarflow_output_pack_power # Muss ggf. an euren Entitätsnamen angepasst werden
                   state: "0"
           action:
             - service: mqtt.publish
@@ -571,13 +573,13 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
           trigger:
             - platform: numeric_state
               entity_id:
-                - sensor.solarflow_output_pack_power
+                - sensor.solarflow_output_pack_power # Muss ggf. an euren Entitätsnamen angepasst werden
               above: 0
           condition:
             - condition: not
               conditions:
                 - condition: state
-                  entity_id: sensor.solarflow_pack_input_power
+                  entity_id: sensor.solarflow_pack_input_power # Muss ggf. an euren Entitätsnamen angepasst werden
                   state: "0"
           action:
             - service: mqtt.publish
