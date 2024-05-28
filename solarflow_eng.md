@@ -166,6 +166,8 @@ Depending on how far you have gone in Home Assistant, there are now several ways
       + Replace everything between <> **including the <>** with your own data. There must be no more <>.
         
         ```yaml
+           # The final entity names are made up of the sensor name and the device name
+           # For the first sensor here: SolarFlow Hub State (sensor.solarflow_hub_state)
            sensor:
              - name: "Hub State"
                unique_id: "<deviceID>hubState"
@@ -183,7 +185,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
                unit_of_measurement: "W"
                device_class: "power"
                value_template: >
-                 {% if states('sensor.solarflow_solar_input_power') not in ['unknown'] %}
+                 {% if states('sensor.solarflow_solar_input_power') not in ['unknown'] %} # Must be adapted to your entity name if necessary
                    {{ int(value_json.solarInputPower, 0) }}
                  {% else %}
                    {{ int(0) }}
@@ -201,7 +203,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
                unit_of_measurement: "W"
                device_class: "power"
                value_template: >
-                 {% if states('sensor.solarflow_pack_input_power') not in ['unknown'] %}
+                 {% if states('sensor.solarflow_pack_input_power') not in ['unknown'] %} # Must be adapted to your entity name if necessary
                    {{ int(value_json.packInputPower, 0) }}
                  {% else %}
                    {{ int(0) }}
@@ -209,7 +211,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
                state_class: "measurement"
                device: 
                  name: "SolarFlow"
-                 identifiers: "<EurePVHubSeriennummer>"
+                 identifiers: "<YourPVHubSerialNumber>"
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
       
@@ -219,7 +221,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
                unit_of_measurement: "W"
                device_class: "power"
                value_template: >
-                 {% if states('sensor.solarflow_output_pack_power') not in ['unknown'] %}
+                 {% if states('sensor.solarflow_output_pack_power') not in ['unknown'] %} # Must be adapted to your entity name if necessary
                    {{ int(value_json.outputPackPower, 0) }}
                  {% else %}
                    {{ int(0) }}
@@ -227,7 +229,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
                state_class: "measurement"
                device: 
                  name: "SolarFlow"
-                 identifiers: "<EurePVHubSeriennummer>"
+                 identifiers: "<YourPVHubSerialNumber>"
                  manufacturer: "Zendure"
                  model: "SmartPV Hub 1200 Controller"
       
@@ -237,7 +239,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
                unit_of_measurement: "W"
                device_class: "power"
                value_template: >
-                 {% if states('sensor.solarflow_output_home_power') not in ['unknown'] %}
+                 {% if states('sensor.solarflow_output_home_power') not in ['unknown'] %} # Must be adapted to your entity name if necessary
                    {{ int(value_json.outputHomePower, 0) }}
                  {% else %}
                    {{ int(0) }}
@@ -358,7 +360,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
                 {% endif %}
               device: 
                 name: "SolarFlow"
-                identifiers: "<EurePVHubSeriennummer>"
+                identifiers: "<YourPVHubSerialNumber>"
                 manufacturer: "Zendure"
                 model: "SmartPV Hub 1200 Controller
 
@@ -376,7 +378,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               state_class: "measurement"
               device: 
                 name: "SolarFlow"
-                identifiers: "<EurePVHubSeriennummer>"
+                identifiers: "<YourPVHubSerialNumber>"
                 manufacturer: "Zendure"
                 model: "SmartPV Hub 1200 Controller"
 
@@ -394,7 +396,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               state_class: "measurement"
               device: 
                 name: "SolarFlow"
-                identifiers: "<EurePVHubSeriennummer>"
+                identifiers: "<YourPVHubSerialNumber>"
                 manufacturer: "Zendure"
                 model: "SmartPV Hub 1200 Controller"
 
@@ -404,7 +406,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               value_template: "{{ value_json.passMode | int }}"
               device: 
                 name: "SolarFlow"
-                identifiers: "<EurePVHubSeriennummer>"
+                identifiers: "<YourPVHubSerialNumber>"
                 manufacturer: "Zendure"
                 model: "SmartPV Hub 1200 Controller"
 
@@ -414,7 +416,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               value_template: >
                 {% if (value_json.packData | is_defined) %}
                   {% for i in value_json.packData %}
-                    {% if i.sn == "<EureBatterieSeriennummer>" %}
+                    {% if i.sn == "<YourBatterySerialNumber>" %}
                       {{ (i.maxTemp | float - 273.15) | round(2) }}
                     {% endif %}
                   {% endfor %}
@@ -423,7 +425,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               device_class: "temperature"
               device: 
                 name: "SolarFlow"
-                identifiers: "<EurePVHubSeriennummer>"
+                identifiers: "<YourPVHubSerialNumber>"
                 manufacturer: "Zendure"
                 model: "SmartPV Hub 1200 Controller"
 
@@ -433,7 +435,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               value_template: >
                 {% if (value_json.packData | is_defined) %}
                   {% for i in value_json.packData %}
-                    {% if i.sn == "<EureBatterieSeriennummer>" %}
+                    {% if i.sn == "<YourBatterySerialNumber>" %}
                       {{ i.maxVol | float / 100 }}
                     {% endif %}
                   {% endfor %}
@@ -442,7 +444,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               device_class: "voltage"
               device: 
                 name: "SolarFlow"
-                identifiers: "<EurePVHubSeriennummer>"
+                identifiers: "<YourPVHubSerialNumber>"
                 manufacturer: "Zendure"
                 model: "SmartPV Hub 1200 Controller"
 
@@ -452,7 +454,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               value_template: >
                 {% if (value_json.packData | is_defined) %}
                   {% for i in value_json.packData %}
-                    {% if i.sn == "<EureBatterieSeriennummer>" %}
+                    {% if i.sn == "<YourBatterySerialNumber>" %}
                       {{ i.minVol | float / 100 }}
                     {% endif %}
                   {% endfor %}
@@ -461,7 +463,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               device_class: "voltage"
               device: 
                 name: "SolarFlow"
-                identifiers: "<EurePVHubSeriennummer>"
+                identifiers: "<YourPVHubSerialNumber>"
                 manufacturer: "Zendure"
                 model: "SmartPV Hub 1200 Controller"
 
@@ -471,7 +473,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               value_template: >
                 {% if (value_json.packData | is_defined) %}
                   {% for i in value_json.packData %}
-                    {% if i.sn == "<EureBatterieSeriennummer>" %}
+                    {% if i.sn == "<YourBatterySerialNumber>" %}
                       {{ i.socLevel | int }}
                     {% endif %}
                   {% endfor %}
@@ -480,7 +482,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               device_class: "battery"
               device: 
                 name: "SolarFlow"
-                identifiers: "<EurePVHubSeriennummer>"
+                identifiers: "<YourPVHubSerialNumber>"
                 manufacturer: "Zendure"
                 model: "SmartPV Hub 1200 Controller"
       
@@ -497,7 +499,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               state_on: true
               device: 
                 name: "SolarFlow"
-                identifiers: "<EurePVHubSeriennummer>"
+                identifiers: "<YourPVHubSerialNumber>"
                 manufacturer: "Zendure"
                 model: "SmartPV Hub 1200 Controller"
 
@@ -513,7 +515,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               state_on: true
               device: 
                 name: "SolarFlow"
-                identifiers: "<EurePVHubSeriennummer>"
+                identifiers: "<YourPVHubSerialNumber>"
                 manufacturer: "Zendure"
                 model: "SmartPV Hub 1200 Controller"
 
@@ -529,7 +531,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
               state_on: true
               device: 
                 name: "SolarFlow"
-                identifiers: "<EurePVHubSeriennummer>"
+                identifiers: "<YourPVHubSerialNumber>"
                 manufacturer: "Zendure"
                 model: "SmartPV Hub 1200 Controller"
         ```
@@ -548,13 +550,13 @@ Depending on how far you have gone in Home Assistant, there are now several ways
           trigger:
             - platform: numeric_state
               entity_id:
-                - sensor.solarflow_pack_input_power
+                - sensor.solarflow_pack_input_power # Must be adapted to your entity name if necessary
                   above: 0
           condition:
             - condition: not
               conditions:
                 - condition: state
-                  entity_id: sensor.solarflow_output_pack_power
+                  entity_id: sensor.solarflow_output_pack_power # Must be adapted to your entity name if necessary
                   state: "0"
           action:
             - service: mqtt.publish
@@ -571,13 +573,13 @@ Depending on how far you have gone in Home Assistant, there are now several ways
           trigger:
             - platform: numeric_state
               entity_id:
-                - sensor.solarflow_output_pack_power
+                - sensor.solarflow_output_pack_power # Must be adapted to your entity name if necessary
               above: 0
           condition:
             - condition: not
               conditions:
                 - condition: state
-                  entity_id: sensor.solarflow_pack_input_amount
+                  entity_id: sensor.solarflow_pack_input_amount # Must be adapted to your entity name if necessary
                   state: "0"
           action:
             - service: mqtt.publish
