@@ -1,3 +1,5 @@
+  # Die finalen Entitätsnamen setzen sich aus dem Sensornamen und dem Gerätenamen zusammen
+  # Beim ersten Sensor hier also SolarFlow Hub State (sensor.solarflow_hub_state)
   sensor:
     - name: "Hub State"
       unique_id: "<deviceID>hubState"
@@ -15,7 +17,7 @@
       unit_of_measurement: "W"
       device_class: "power"
       value_template: >
-        {% if states('sensor.solarflow_solar_input_power') not in ['unknown'] %}
+        {% if states('sensor.solarflow_solar_input_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden
           {{ int(value_json.solarInputPower, 0) }}
         {% else %}
           {{ int(0) }}
@@ -33,7 +35,7 @@
       unit_of_measurement: "W"
       device_class: "power"
       value_template: >
-        {% if states('sensor.solarflow_pack_input_power') not in ['unknown'] %}
+        {% if states('sensor.solarflow_pack_input_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden
           {{ int(value_json.packInputPower, 0) }}
         {% else %}
           {{ int(0) }}
@@ -51,7 +53,7 @@
       unit_of_measurement: "W"
       device_class: "power"
       value_template: >
-        {% if states('sensor.solarflow_output_pack_power') not in ['unknown'] %}
+        {% if states('sensor.solarflow_output_pack_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden
           {{ int(value_json.outputPackPower, 0) }}
         {% else %}
           {{ int(0) }}
@@ -69,7 +71,7 @@
       unit_of_measurement: "W"
       device_class: "power"
       value_template: >
-        {% if states('sensor.solarflow_output_home_power') not in ['unknown'] %}
+        {% if states('sensor.solarflow_output_home_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden
           {{ int(value_json.outputHomePower, 0) }}
         {% else %}
           {{ int(0) }}
