@@ -168,6 +168,7 @@ Depending on how far you have gone in Home Assistant, there are now several ways
         ```yaml
            # The final entity names are made up of the sensor name and the device name
            # For the first sensor here: SolarFlow Hub State (sensor.solarflow_hub_state)
+           # NOTE: The following comments must be removed before use!
            sensor:
              - name: "Hub State"
                unique_id: "<deviceID>hubState"
