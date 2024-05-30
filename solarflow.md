@@ -552,7 +552,7 @@ Je nachdem wie weit ihr euch in Home Assistant schon ausgetobt habt, gibt es nun
             - platform: numeric_state
               entity_id:
                 - sensor.solarflow_pack_input_power # Muss ggf. an euren Entitätsnamen angepasst werden
-                  above: 0
+              above: 0
           condition:
             - condition: not
               conditions:
