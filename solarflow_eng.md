@@ -543,54 +543,17 @@ Depending on how far you have gone in Home Assistant, there are now several ways
         ![grafik](https://github.com/z-master42/solarflow/assets/66380371/ac61106b-200e-44ab-bce8-e9c7fc3ff0ef)
       + You should now find a new device called `SolarFlow` under _Devices & Services_ in your MQTT integration, which contains the corresponding sensors and switches under the above-mentioned names. Very few of them will already have a value from the outset because, as mentioned at the beginning, the Zendure broker only outputs value changes, i.e. the respective value must have changed compared to its previous status. To force an update of all sensors, you can simply pause for a few moments in the Zendure app on the detailed view of the batteries, where you can also see the temperatures.
       + Finally, a few comments on the adjustments I have made, in addition to the Zendure sensor building instructions:
-        + I added a default value to all sensors in the `value_template` line. Due to the fact that only value changes are transmitted, Home Assistant writes a warning (`Template variable warning: 'dict object' has no attribute 'blablabla' when rendering '{{ value_json.blablabla }}'`) in your log for each sensor for which no value was included in the last data exchange, as Home Assistant expects to receive a value for each sensor. I have provided all power sensors with an additional check to see whether the sensor also has a value. If this is not the case, the sensor is initially set to 0 W. As the battery sensors in particular are not currently set to 0 W, I have created two small automations that implement this, as the batteries can only be charged or discharged. Previously, I had only set these sensors to the default value `int(0)`. This ensured that Home Assistant continued to display the last value until a new one was transmitted or that a sensor was also set to 0 if it was no longer updated. However, this no longer works, which is particularly annoying for battery sensors. Hence the new approach with the two automations. Certainly not the end of the line.
+        + I added a default value to all sensors in the `value_template` line. Due to the fact that only value changes are transmitted, Home Assistant writes a warning (`Template variable warning: 'dict object' has no attribute 'blablabla' when rendering '{{ value_json.blablabla }}'`) in your log for each sensor for which no value was included in the last data exchange, as Home Assistant expects to receive a value for each sensor. I have provided all power sensors with an additional check to see whether the sensor also has a value. If this is not the case, the sensor is initially set to 0 W. As the battery sensors in particular are not currently set to 0 W, I have created two small automations that implement this, as the batteries can only be charged or discharged. Previously, I had only set these sensors to the default value `int(0)`. This ensured that Home Assistant continued to display the last value until a new one was transmitted or that a sensor was also set to 0 if it was no longer updated. However, this no longer works, which is particularly annoying for battery sensors. Hence the new approach with automation, among other things. Certainly not the end of the line. I have also created an automation that sets a respective power sensor to 0 W after three minutes without a value change.
+        + You can also find the automations as individual files in the overview bar on the left.
+        + Please also note that I use the "standard entity names" there. So if you name your sensors differently, you will have to adapt this accordingly in the automation, otherwise it will not work.
           
-          ```yaml
-          alias: battery discharging
-          description: ""
-          trigger:
-            - platform: numeric_state
-              entity_id:
-                - sensor.solarflow_pack_input_power # Must be adapted to your entity name if necessary
-              above: 0
-          condition:
-            - condition: not
-              conditions:
-                - condition: state
-                  entity_id: sensor.solarflow_output_pack_power # Must be adapted to your entity name if necessary
-                  state: "0"
-          action:
-            - service: mqtt.publish
-              metadata: {}
-              data:
-                qos: "0"
-                topic: <appKey>/<deviceID>/state
-                payload: "{\"outputPackPower\":0}"
-          mode: single
-          ```
-          ```yaml
-          alias: battery charging
-          description: ""
-          trigger:
-            - platform: numeric_state
-              entity_id:
-                - sensor.solarflow_output_pack_power # Must be adapted to your entity name if necessary
-              above: 0
-          condition:
-            - condition: not
-              conditions:
-                - condition: state
-                  entity_id: sensor.solarflow_pack_input_amount # Must be adapted to your entity name if necessary
-                  state: "0"
-          action:
-            - service: mqtt.publish
-              metadata: {}
-              data:
-                qos: "0"
-                topic: <appKey>/<deviceID>/state
-                payload: "{\"packInputPower\":0}"
-          mode: single
-          ```
+          Battery charging
+          https://github.com/z-master42/solarflow/blob/269ed142c047246bf4079e2a69490e6f63022656/automation_charging_to_discharging.yaml#L1-L21
+          Battery discharge
+          https://github.com/z-master42/solarflow/blob/269ed142c047246bf4079e2a69490e6f63022656/automation_discharging_to_charging.yaml#L1-L21
+          Zeroing power sensors
+          https://github.com/z-master42/solarflow/blob/486cacf589003cc239ca24f2bceea673e3126e97/automation_reset_power_sensors.yaml#L1-L121
+          
         + I have added `state_class: measurement` to _Solar Input Power_, _Pack Input Power_, _Output Pack Power_ and _Output Home Power_ so that Home Assistant can also calculate with these. I don't know if this is really necessary at the moment. However, in order to be able to use the values in the energy dashboard, they still have to be integrated into a consumption value (power times time). For this purpose, there is the _Riemann Sum Integral Sensor_ in the Help section of Home Assistant. I have set the method to `Left` and the metric prefix to `Kilo`. Once you have run through a few values, you can use them in the Energy Dashboard.
         + _Output Limit_ and _Input Limit_ have been given the `unit_of_measurement: "W"`.
         + _Remain Input Time_ and _Remain Out Time_ have been given the `device_class: "duration"`. The transmitted value is the respective duration in minutes, so that the `unit_of_measurement: "min"` is. Due to the `device_class`, Home Assistant automatically converts this into a time specification in h:min:s.
