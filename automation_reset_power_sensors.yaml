@@ -1,0 +1,103 @@
+alias: SolarFlow Power-Sensoren nullen
+description: >-
+  Wenn sich der Wert eines Power-Sensors innerhalb der letzten drei Minuten
+  nicht geändert hat, wird er auf 0 W gesetzt.
+trigger:
+  - platform: template
+    value_template: >-
+      {{ (as_timestamp(now()) -
+      as_timestamp(states.sensor.solarflow_pack_input_power.last_changed)) > 3
+      }}
+    id: packInputPower
+  - platform: template
+    value_template: >-
+      {{ (as_timestamp(now()) -
+      as_timestamp(states.sensor.solarflow_output_pack_power.last_changed)) > 3
+      }}
+    id: outputPackPower
+  - platform: template
+    value_template: >-
+      {{ (as_timestamp(now()) -
+      as_timestamp(states.sensor.solarflow_solar_input_power_input_power.last_changed))
+      > 3 }}
+    id: solarInputPower
+  - platform: template
+    value_template: >-
+      {{ (as_timestamp(now()) -
+      as_timestamp(states.sensor.solarflow_output_home_power.last_changed)) > 3
+      }}
+    id: outputHomePower
+  - platform: template
+    value_template: >-
+      {{ (as_timestamp(now()) -
+      as_timestamp(states.sensor.solarflow_solar_power_1.last_changed)) > 3 }}
+    id: solarPower1
+  - platform: template
+    value_template: >-
+      {{ (as_timestamp(now()) -
+      as_timestamp(states.sensor.solarflow_solar_power_2.last_changed)) > 3 }}
+    id: solarPower2
+condition: []
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - packInputPower
+        sequence:
+          - service: mqtt.publish
+            data:
+              qos: "0"
+              topic: <appKey>/<deviceID>/state
+              payload: "{\"packInputPower\":0}"
+      - conditions:
+          - condition: trigger
+            id:
+              - outputPackPower
+        sequence:
+          - service: mqtt.publish
+            data:
+              qos: "0"
+              topic: <appKey>/<deviceID>/state
+              payload: "{\"outputPackPower\":0}"
+      - conditions:
+          - condition: trigger
+            id:
+              - solarInputPower
+        sequence:
+          - service: mqtt.publish
+            data:
+              qos: "0"
+              topic: <appKey>/<deviceID>/state
+              payload: "{\"solarInputPower\":0}"
+      - conditions:
+          - condition: trigger
+            id:
+              - outputHomePower
+        sequence:
+          - service: mqtt.publish
+            data:
+              qos: "0"
+              topic: <appKey>/<deviceID>/state
+              payload: "{\"outputHomePower\":0}"
+      - conditions:
+          - condition: trigger
+            id:
+              - solarPower1
+        sequence:
+          - service: mqtt.publish
+            data:
+              qos: "0"
+              topic: <appKey>/<deviceID>/state
+              payload: "{\"solarPower1\":0}"
+      - conditions:
+          - condition: trigger
+            id:
+              - solarPower2
+        sequence:
+          - service: mqtt.publish
+            data:
+              qos: "0"
+              topic: <appKey>/<deviceID>/state
+              payload: "{\"solarPower2\":0}"
+mode: single
