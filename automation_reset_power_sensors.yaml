@@ -44,6 +44,9 @@ action:
           - condition: trigger
             id:
               - packInputPower
+          - condition: numeric_state
+            entity_id: sensor.solarflow_pack_input_power
+            above: 0
         sequence:
           - service: mqtt.publish
             data:
@@ -54,6 +57,9 @@ action:
           - condition: trigger
             id:
               - outputPackPower
+          - condition: numeric_state
+            entity_id: sensor.solarflow_output_pack_power
+            above: 0
         sequence:
           - service: mqtt.publish
             data:
@@ -64,6 +70,9 @@ action:
           - condition: trigger
             id:
               - solarInputPower
+          - condition: numeric_state
+            entity_id: sensor.solarflow_solar_input_power
+            above: 0
         sequence:
           - service: mqtt.publish
             data:
@@ -74,6 +83,9 @@ action:
           - condition: trigger
             id:
               - outputHomePower
+          - condition: numeric_state
+            entity_id: sensor.solarflow_output_home_power
+            above: 0
         sequence:
           - service: mqtt.publish
             data:
@@ -84,6 +96,9 @@ action:
           - condition: trigger
             id:
               - solarPower1
+          - condition: numeric_state
+            entity_id: sensor.solarflow_solar_power_1
+            above: 0
         sequence:
           - service: mqtt.publish
             data:
@@ -94,6 +109,9 @@ action:
           - condition: trigger
             id:
               - solarPower2
+          - condition: numeric_state
+            entity_id: sensor.solarflow_solar_power_2
+            above: 0
         sequence:
           - service: mqtt.publish
             data:
