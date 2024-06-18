@@ -18,7 +18,7 @@ trigger:
   - platform: template
     value_template: >-
       {{ (as_timestamp(now()) -
-      as_timestamp(states.sensor.solarflow_solar_input_power_input_power.last_changed))
+      as_timestamp(states.sensor.solarflow_solar_input_power.last_changed))
       > 3 }}
     id: solarInputPower
   - platform: template
