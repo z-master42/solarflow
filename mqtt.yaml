@@ -318,6 +318,63 @@
         identifiers: "<EurePVHubSeriennummer>"
         manufacturer: "Zendure"
         model: "SmartPV Hub 1200 Controller"
+        
+    # Nur Hyper 2000 und Ace 1500
+    - name: "Grid Input Power"
+      unique_id: "<deviceID>gridInputPower"
+      state_topic: "<appKey>/<deviceID>/state"
+      value_template: >
+        {% if states('sensor.solarflow_grid_input_power') not in ['unknown'] %}
+          {{ int(value_json.gridInputPower, 0) }}
+        {% else %}
+          {{ int(0) }}
+        {% endif %}
+      unit_of_measurement: "W"
+      device_class: "power"
+      state_class: "measurement"
+      device: 
+        name: "SolarFlow"
+        identifiers: "<YourPVHubSerialNumber>"
+        manufacturer: "Zendure"
+        model: "SmartPV Hub 1200 Controller"
+            
+    # Nur Hyper 2000
+    - name: "AC Output Power"
+      unique_id: "<deviceID>acOutputPower"
+      state_topic: "<appKey>/<deviceID>/state"
+        value_template: >
+          {% if states('sensor.solarflow_ac_output_power') not in ['unknown'] %}
+            {{ int(value_json.acOutputPower, 0) }}
+          {% else %}
+            {{ int(0) }}
+          {% endif %}
+      unit_of_measurement: "W"
+      device_class: "power"
+      state_class: "measurement"
+      device: 
+        name: "SolarFlow"
+        identifiers: "<YourPVHubSerialNumber>"
+        manufacturer: "Zendure"
+        model: "SmartPV Hub 1200 Controller"
+
+    # Nur Ace 1500
+    - name: "DC Output Power"
+      unique_id: "<deviceID>dcOutputPower"
+      state_topic: "<appKey>/<deviceID>/state"
+      value_template: >
+        {% if states('sensor.solarflow_dc_output_power') not in ['unknown'] %}
+          {{ int(value_json.dcOutputPower, 0) }}
+        {% else %}
+          {{ int(0) }}
+        {% endif %}
+      unit_of_measurement: "W"
+      device_class: "power"
+      state_class: "measurement"
+      device: 
+        name: "SolarFlow"
+        identifiers: "<YourPVHubSerialNumber>"
+        manufacturer: "Zendure"
+        model: "SmartPV Hub 1200 Controller"
       
   switch:
     - unique_id: "<deviceID>masterSwitch"
@@ -359,6 +416,40 @@
       name: "Auto Recover"
       device_class: "switch"
       value_template: "{{ value_json.autoRecover | default('') }}"
+      payload_on: true
+      payload_off: false
+      state_on: true
+      device: 
+        name: "SolarFlow"
+        identifiers: "<EurePVHubSeriennummer>"
+        manufacturer: "Zendure"
+        model: "SmartPV Hub 1200 Controller"
+
+    # Nur Hyper 2000 und Ace 1500
+    - unique_id: "<deviceID>acSwitch"
+      state_topic: "<appKey>/<deviceID>/state"
+      state_off: false
+      command_topic: "<appKey>/<deviceID>/acSwitch/set"
+      name: "AC Switch"
+      device_class: "switch"
+      value_template: "{{ value_json.acSwitch | default('') }}"
+      payload_on: true
+      payload_off: false
+      state_on: true
+      device: 
+        name: "SolarFlow"
+        identifiers: "<EurePVHubSeriennummer>"
+        manufacturer: "Zendure"
+        model: "SmartPV Hub 1200 Controller"
+
+    # Nur Ace 1500
+    - unique_id: "<deviceID>dcSwitch"
+      state_topic: "<appKey>/<deviceID>/state"
+      state_off: false
+      command_topic: "<appKey>/<deviceID>/dcSwitch/set"
+      name: "DC Switch"
+      device_class: "switch"
+      value_template: "{{ value_json.dcSwitch | default('') }}"
       payload_on: true
       payload_off: false
       state_on: true
