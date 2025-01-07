@@ -118,4 +118,4 @@ action:
               qos: "0"
               topic: <appKey>/<deviceID>/state
               payload: "{\"solarPower2\":0}"
-mode: single
+mode: parallel
