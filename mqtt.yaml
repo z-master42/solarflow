@@ -243,6 +243,26 @@
         manufacturer: "Zendure"
         model: "SmartPV Hub 1200 Controller"
 
+    - name: "Heat State"
+      unique_id: "<deviceID>heatState"
+      state_topic: "<appKey>/<deviceID>/state"
+      value_template: "{{ value_json.heatState | int }}"
+      device: 
+        name: "SolarFlow"
+        identifiers: "<EurePVHubSeriennummer>"
+        manufacturer: "Zendure"
+        model: "SmartPV Hub 1200 Controller"
+		
+    - name: "AC Mode"
+      unique_id: "<deviceID>acMode"
+      state_topic: "<appKey>/<deviceID>/state"
+      value_template: "{{ value_json.acMode | int }}"
+      device: 
+        name: "SolarFlow"
+        identifiers: "<EurePVHubSeriennummer>"
+        manufacturer: "Zendure"
+        model: "SmartPV Hub 1200 Controller"
+
     - name: "Batterie <Nr> maxTemp"
       unique_id: "<deviceID>Batterie<Nr>maxTemp"
       state_topic: "<appKey>/<deviceID>/state"
@@ -356,6 +376,18 @@
         identifiers: "<YourPVHubSerialNumber>"
         manufacturer: "Zendure"
         model: "SmartPV Hub 1200 Controller"
+
+    - name: "Hyper Tmp"
+      unique_id: "<deviceID>hyperTmp"
+      state_topic: "<appKey>/<deviceID>/state"
+      unit_of_measurement: "°C"
+      value_template: "{{ value_json.hyperTmp | float / 10 - 273.15 }}"
+      device: 
+        name: "SolarFlow"
+        identifiers: "<EurePVHubSeriennummer>"
+        manufacturer: "Zendure"
+        model: "SmartPV Hub 1200 Controller"
+
 
     # Nur Ace 1500
     - name: "DC Output Power"
