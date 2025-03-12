@@ -18,7 +18,7 @@
       unit_of_measurement: "W"
       device_class: "power"
       value_template: >
-        {% if states('sensor.solarflow_solar_input_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden
+        {% if states('sensor.solarflow_solar_input_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden. Kommentar danach entfernen
           {{ int(value_json.solarInputPower, 0) }}
         {% else %}
           {{ int(0) }}
@@ -36,7 +36,7 @@
       unit_of_measurement: "W"
       device_class: "power"
       value_template: >
-        {% if states('sensor.solarflow_pack_input_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden
+        {% if states('sensor.solarflow_pack_input_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden. Kommentar danach entfernen
           {{ int(value_json.packInputPower, 0) }}
         {% else %}
           {{ int(0) }}
@@ -54,7 +54,7 @@
       unit_of_measurement: "W"
       device_class: "power"
       value_template: >
-        {% if states('sensor.solarflow_output_pack_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden
+        {% if states('sensor.solarflow_output_pack_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden. Kommentar danach entfernen
           {{ int(value_json.outputPackPower, 0) }}
         {% else %}
           {{ int(0) }}
@@ -72,7 +72,7 @@
       unit_of_measurement: "W"
       device_class: "power"
       value_template: >
-        {% if states('sensor.solarflow_output_home_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden
+        {% if states('sensor.solarflow_output_home_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden. Kommentar danach entfernen
           {{ int(value_json.outputHomePower, 0) }}
         {% else %}
           {{ int(0) }}
@@ -201,7 +201,7 @@
       unique_id: "<deviceID>solarPower1"
       state_topic: "<appKey>/<deviceID>/state"
       value_template: >
-        {% if states('sensor.solarflow_solar_power_1') not in ['unknown'] %}
+        {% if states('sensor.solarflow_solar_power_1') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden. Kommentar danach entfernen
           {{ int(value_json.solarPower1, 0) }}
         {% else %}
           {{ int(0) }}
@@ -219,7 +219,7 @@
       unique_id: "<deviceID>solarPower2"
       state_topic: "<appKey>/<deviceID>/state"
       value_template: >
-        {% if states('sensor.solarflow_solar_power_2') not in ['unknown'] %}
+        {% if states('sensor.solarflow_solar_power_2') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden. Kommentar danach entfernen
           {{ int(value_json.solarPower2, 0) }}
         {% else %}
           {{ int(0) }}
