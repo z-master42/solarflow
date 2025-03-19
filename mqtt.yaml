@@ -202,7 +202,7 @@
       icon: mdi:auto-mode
       device: 
         identifiers: "<EurePVHubSeriennummer>"
-		
+
     - name: "AC Mode"
       unique_id: "<deviceID>acMode"
       state_topic: "<appKey>/<deviceID>/state"
