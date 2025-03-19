@@ -1,15 +1,19 @@
   # Die finalen Entitätsnamen setzen sich aus dem Sensornamen und dem Gerätenamen zusammen
   # Beim ersten Sensor hier also SolarFlow Hub State (sensor.solarflow_hub_state)
-  # HINWEIS: Die u. a. weiteren Kommentare müssen vor Benutzung wieder entfernt werden! 
   sensor:
     - name: "Hub State"
       unique_id: "<deviceID>hubState"
       state_topic: "<appKey>/<deviceID>/state"
-      value_template: "{{ value_json.hubState | int }}"
+      value_template: "{% if value_json.hubState == 0 %}Standby{%elif value_json.hubState == 1 %}Ausschalten{%endif%}"
+      icon: mdi:vector-link
+      device_class: "enum"
+      options: ['Standby','Ausschalten']
+      # Der gesamte device-Block muss nur einmal angegeben werden, daher ist bei den nachfolgenden Entitäten nur noch indetifiers vorhanden
       device: 
-        name: "SolarFlow"
+        name: "SolarFlow" 
         identifiers: "<EurePVHubSeriennummer>"
         manufacturer: "Zendure"
+	# Ggf. an euer Modell anpassen
         model: "SmartPV Hub 1200 Controller"
 
     - name: "Solar Input Power"
@@ -18,17 +22,15 @@
       unit_of_measurement: "W"
       device_class: "power"
       value_template: >
-        {% if states('sensor.solarflow_solar_input_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden. Kommentar danach entfernen
+        {% if states('sensor.solarflow_solar_input_power') not in ['unknown'] %}  {# Muss ggf. an euren Entitätsnamen angepasst werden. #}
           {{ int(value_json.solarInputPower, 0) }}
         {% else %}
           {{ int(0) }}
         {% endif %}
       state_class: "measurement"
+      icon: mdi:solar-panel
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
       
     - name: "Pack Input Power"
       unique_id: "<deviceID>packInputPower"
@@ -36,17 +38,15 @@
       unit_of_measurement: "W"
       device_class: "power"
       value_template: >
-        {% if states('sensor.solarflow_pack_input_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden. Kommentar danach entfernen
+        {% if states('sensor.solarflow_pack_input_power') not in ['unknown'] %} {# Muss ggf. an euren Entitätsnamen angepasst werden. #}
           {{ int(value_json.packInputPower, 0) }}
         {% else %}
           {{ int(0) }}
         {% endif %}
       state_class: "measurement"
+      icon: mdi:battery-arrow-down-outline
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
       
     - name: "Output Pack Power"
       unique_id: "<deviceID>outputPackPower"
@@ -54,17 +54,15 @@
       unit_of_measurement: "W"
       device_class: "power"
       value_template: >
-        {% if states('sensor.solarflow_output_pack_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden. Kommentar danach entfernen
+        {% if states('sensor.solarflow_output_pack_power') not in ['unknown'] %} {# Muss ggf. an euren Entitätsnamen angepasst werden. #}
           {{ int(value_json.outputPackPower, 0) }}
         {% else %}
           {{ int(0) }}
         {% endif %}
       state_class: "measurement"
+      icon: mdi:battery-arrow-up-outline
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
       
     - name: "Output Home Power"
       unique_id: "<deviceID>outputHomePower"
@@ -72,39 +70,32 @@
       unit_of_measurement: "W"
       device_class: "power"
       value_template: >
-        {% if states('sensor.solarflow_output_home_power') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden. Kommentar danach entfernen
+        {% if states('sensor.solarflow_output_home_power') not in ['unknown'] %} {# Muss ggf. an euren Entitätsnamen angepasst werden. #}
           {{ int(value_json.outputHomePower, 0) }}
         {% else %}
           {{ int(0) }}
         {% endif %}
       state_class: "measurement"
+      icon: mdi:home-import-outline
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
       
     - name: "Output Limit"
       unique_id: "<deviceID>outputLimit"
       state_topic: "<appKey>/<deviceID>/state"
       value_template: "{{ value_json.outputLimit | int }}"
       unit_of_measurement: "W"
+      icon: mdi:home-lightning-bolt-outline
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
-    
+        
     - name: "Input Limit"
       unique_id: "<deviceID>inputLimit"
       state_topic: "<appKey>/<deviceID>/state"
       value_template: "{{ value_json.inputLimit | int }}"
       unit_of_measurement: "W"
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
     
     - name: "Remain Out Time"
       unique_id: "<deviceID>remainOutTime"
@@ -113,10 +104,7 @@
       device_class: "duration"
       unit_of_measurement: "min"
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
     
     - name: "Remain Input Time"
       unique_id: "<deviceID>remainInputTime"
@@ -125,30 +113,25 @@
       device_class: "duration"
       unit_of_measurement: "min"
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
     
     - name: "Pack State"
       unique_id: "<deviceID>packState"
       state_topic: "<appKey>/<deviceID>/state"
-      value_template: "{{ value_json.packState | int }}"
+      value_template: "{% if value_json.packState == 0 %}Standby{%elif value_json.packState == 1 %}Laden{%elif value_json.packState == 2 %}Entladen{%endif%}"
+      device_class: "enum"
+      options: ['Standby','Laden','Entladen']
+      icon: mdi:battery-sync-outline
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
     
     - name: "Pack Num"
       unique_id: "<deviceID>packNum"
       state_topic: "<appKey>/<deviceID>/state"
       value_template: "{{ value_json.packNum | int }}"
+      icon: mdi:battery-check-outline
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
     
     - name: "Electric Level"
       unique_id: "<deviceID>electricLevel"
@@ -157,51 +140,31 @@
       device_class: "battery"
       value_template: "{{ value_json.electricLevel | int }}"
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
     
     - name: "SOC Set"
       unique_id: "<deviceID>socSet"
       state_topic: "<appKey>/<deviceID>/state"
       unit_of_measurement: "%"
       value_template: "{{ value_json.socSet | int / 10 }}"
+      icon: mdi:battery-plus
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
         
     - name: "Inverse Max Power"
       unique_id: "<deviceID>inverseMaxPower"
       state_topic: "<appKey>/<deviceID>/state"
       value_template: "{{ value_json.inverseMaxPower | int }}"
       unit_of_measurement: "W"
+      icon: mdi:flash-alert
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
-      
-    - name: "WiFi State"
-      unique_id: "<deviceID>wifiState"
-      state_topic: "<appKey>/<deviceID>/state"
-      value_template: >
-        {% if (value_json.wifiState | is_defined) %}
-          {{ value_json.wifiState | abs() }}
-        {% endif %}
-      device: 
-        name: "SolarFlow"
-        identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
 
     - name: "Solar Power 1"
       unique_id: "<deviceID>solarPower1"
       state_topic: "<appKey>/<deviceID>/state"
       value_template: >
-        {% if states('sensor.solarflow_solar_power_1') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden. Kommentar danach entfernen
+        {% if states('sensor.solarflow_solar_power_1') not in ['unknown'] %} {# Muss ggf. an euren Entitätsnamen angepasst werden. #}
           {{ int(value_json.solarPower1, 0) }}
         {% else %}
           {{ int(0) }}
@@ -209,17 +172,15 @@
       unit_of_measurement: "W"
       device_class: "power"
       state_class: "measurement"
+      icon: mdi:solar-panel
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
 
     - name: "Solar Power 2"
       unique_id: "<deviceID>solarPower2"
       state_topic: "<appKey>/<deviceID>/state"
       value_template: >
-        {% if states('sensor.solarflow_solar_power_2') not in ['unknown'] %} # Muss ggf. an euren Entitätsnamen angepasst werden. Kommentar danach entfernen
+        {% if states('sensor.solarflow_solar_power_2') not in ['unknown'] %} {# Muss ggf. an euren Entitätsnamen angepasst werden. #}
           {{ int(value_json.solarPower2, 0) }}
         {% else %}
           {{ int(0) }}
@@ -227,41 +188,30 @@
       unit_of_measurement: "W"
       device_class: "power"
       state_class: "measurement"
+      icon: mdi:solar-panel
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
 
     - name: "Pass Mode"
       unique_id: "<deviceID>passMode"
       state_topic: "<appKey>/<deviceID>/state"
       value_template: "{{ value_json.passMode | int }}"
+      value_template: "{% if value_json.passMode == 0 %}Automatisch{%elif value_json.passMode == 1 %}Immer aus{%elif value_json.passMode == 2 %}Immer ein{%endif%}"
+      device_class: "enum"
+      options: ['Automatisch','Immer aus','Immer ein']
+      icon: mdi:auto-mode
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
-
-    - name: "Heat State"
-      unique_id: "<deviceID>heatState"
-      state_topic: "<appKey>/<deviceID>/state"
-      value_template: "{{ value_json.heatState | int }}"
-      device: 
-        name: "SolarFlow"
-        identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
 		
     - name: "AC Mode"
       unique_id: "<deviceID>acMode"
       state_topic: "<appKey>/<deviceID>/state"
-      value_template: "{{ value_json.acMode | int }}"
+      value_template: "{% if value_json.acMode == 2 %}Entladen{%elif value_json.acMode == 1 %}Laden{%endif%}"
+      options: ['Entladen','Laden']
+      device_class: "enum"
+      icon: mdi:current-ac
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
 
     - name: "Batterie <Nr> maxTemp"
       unique_id: "<deviceID>Batterie<Nr>maxTemp"
@@ -277,10 +227,7 @@
       unit_of_measurement: "°C"
       device_class: "temperature"
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
 
     - name: "Batterie <Nr> maxVol"
       unique_id: "<deviceID>Batterie<Nr>maxVol"
@@ -295,11 +242,9 @@
         {% endif %}
       unit_of_measurement: "V"
       device_class: "voltage"
+      icon: mdi:alpha-v-circle-outline
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
 
     - name: "Batterie <Nr> minVol"
       unique_id: "<deviceID>Batterie<Nr>minVol"
@@ -314,11 +259,9 @@
         {% endif %}
       unit_of_measurement: "V"
       device_class: "voltage"
+      icon: mdi:alpha-v-circle-outline
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
 
     - name: "Batterie <Nr> socLevel"
       unique_id: "<deviceID>Batterie<Nr>socLevel"
@@ -334,11 +277,8 @@
       unit_of_measurement: "%"
       device_class: "battery"
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
-        
+
     # Nur Hyper 2000 und Ace 1500
     - name: "Grid Input Power"
       unique_id: "<deviceID>gridInputPower"
@@ -353,10 +293,7 @@
       device_class: "power"
       state_class: "measurement"
       device: 
-        name: "SolarFlow"
-        identifiers: "<YourPVHubSerialNumber>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
+        identifiers: "<EurePVHubSeriennummer>"
             
     # Nur Hyper 2000
     - name: "AC Output Power"
@@ -372,22 +309,16 @@
       device_class: "power"
       state_class: "measurement"
       device: 
-        name: "SolarFlow"
-        identifiers: "<YourPVHubSerialNumber>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
+        identifiers: "<EurePVHubSeriennummer>"
 
     - name: "Hyper Tmp"
       unique_id: "<deviceID>hyperTmp"
       state_topic: "<appKey>/<deviceID>/state"
       unit_of_measurement: "°C"
+      device_class: "temperature"
       value_template: "{{ value_json.hyperTmp | float / 10 - 273.15 }}"
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
-
 
     # Nur Ace 1500
     - name: "DC Output Power"
@@ -403,10 +334,32 @@
       device_class: "power"
       state_class: "measurement"
       device: 
-        name: "SolarFlow"
-        identifiers: "<YourPVHubSerialNumber>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
+        identifiers: "<EurePVHubSeriennummer>"
+        
+  binary_sensor:
+    - name: "WiFi State"
+      unique_id: "<deviceID>wifiState"
+      state_topic: "<appKey>/<deviceID>/state"
+      value_template: >
+        {% if (value_json.wifiState | is_defined) %}
+          {{ value_json.wifiState | abs() }}
+        {% endif %}
+      payload_on: '1'
+      payload_off: '0'
+      device_class: "connectivity"
+      entity_category: diagnostic
+      device: 
+        identifiers: "<EurePVHubSeriennummer>"
+          
+    - name: "Heat State"
+      unique_id: "<deviceID>heatState"
+      state_topic: "<appKey>/<deviceID>/state"
+      value_template: "{{ value_json.heatState | int }}"
+      payload_on: '1'
+      payload_off: '0'
+      icon: mdi:heating-coil
+      device: 
+        identifiers: "<EurePVHubSeriennummer>"
       
   switch:
     - unique_id: "<deviceID>masterSwitch"
@@ -415,15 +368,13 @@
       command_topic: "<appKey>/<deviceID>/masterSwitch/set"
       name: "Master Switch"
       device_class: "switch"
+      icon: mdi:gesture-tap-button
       value_template: "{{ value_json.masterSwitch | default('') }}"
       payload_on: true
       payload_off: false
       state_on: true
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
 
     - unique_id: "<deviceID>buzzerSwitch"
       state_topic: "<appKey>/<deviceID>/state"
@@ -431,15 +382,13 @@
       command_topic: "<appKey>/<deviceID>/buzzerSwitch/set"
       name: "Buzzer Switch"
       device_class: "switch"
+      icon: mdi:bullhorn-outline
       value_template: "{{ value_json.buzzerSwitch | default('') }}"
       payload_on: true
       payload_off: false
       state_on: true
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
 
     - unique_id: "<deviceID>autoRecover"
       state_topic: "<appKey>/<deviceID>/state"
@@ -447,15 +396,13 @@
       command_topic: "<appKey>/<deviceID>/autoRecover/set"
       name: "Auto Recover"
       device_class: "switch"
+      icon: mdi:restore
       value_template: "{{ value_json.autoRecover | default('') }}"
       payload_on: true
       payload_off: false
       state_on: true
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
 
     # Nur Hyper 2000 und Ace 1500
     - unique_id: "<deviceID>acSwitch"
@@ -464,15 +411,13 @@
       command_topic: "<appKey>/<deviceID>/acSwitch/set"
       name: "AC Switch"
       device_class: "switch"
+      icon: mdi:current-ac
       value_template: "{{ value_json.acSwitch | default('') }}"
       payload_on: true
       payload_off: false
       state_on: true
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
 
     # Nur Ace 1500
     - unique_id: "<deviceID>dcSwitch"
@@ -481,12 +426,10 @@
       command_topic: "<appKey>/<deviceID>/dcSwitch/set"
       name: "DC Switch"
       device_class: "switch"
+      icon: mdi:current-dc
       value_template: "{{ value_json.dcSwitch | default('') }}"
       payload_on: true
       payload_off: false
       state_on: true
       device: 
-        name: "SolarFlow"
         identifiers: "<EurePVHubSeriennummer>"
-        manufacturer: "Zendure"
-        model: "SmartPV Hub 1200 Controller"
