@@ -13,7 +13,7 @@
         name: "SolarFlow" 
         identifiers: "<EurePVHubSeriennummer>"
         manufacturer: "Zendure"
-	# Ggf. an euer Modell anpassen
+        # Ggf. an euer Modell anpassen
         model: "SmartPV Hub 1200 Controller"
 
     - name: "Solar Input Power"
