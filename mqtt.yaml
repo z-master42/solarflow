@@ -195,7 +195,6 @@
     - name: "Pass Mode"
       unique_id: "<deviceID>passMode"
       state_topic: "<appKey>/<deviceID>/state"
-      value_template: "{{ value_json.passMode | int }}"
       value_template: "{% if value_json.passMode == 0 %}Automatisch{%elif value_json.passMode == 1 %}Immer aus{%elif value_json.passMode == 2 %}Immer ein{%endif%}"
       device_class: "enum"
       options: ['Automatisch','Immer aus','Immer ein']
