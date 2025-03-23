@@ -8,7 +8,7 @@
       icon: mdi:vector-link
       device_class: "enum"
       options: ['Standby','Ausschalten']
-      # Der gesamte device-Block muss nur einmal angegeben werden, daher ist bei den nachfolgenden Entitäten nur noch indetifiers vorhanden
+      # Der gesamte device-Block muss nur einmal angegeben werden, daher ist bei den nachfolgenden Entitäten nur noch identifiers vorhanden
       device: 
         name: "SolarFlow" 
         identifiers: "<EurePVHubSeriennummer>"
