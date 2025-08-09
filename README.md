@@ -6,5 +6,5 @@
 
 Quelle/Source: [Official Zendure Repository](https://github.com/Zendure/developer-device-data-report)
 
-Weitere Projekte/Further Projects: [Solarflow Statuspage](https://github.com/reinhard-brandstaedter/solarflow-statuspage), [Solarflow Control](https://github.com/reinhard-brandstaedter/solarflow-control), [Zendure ioBroker](https://github.com/nograx/ioBroker.zendure-solarflow)
+Weitere Projekte/Further Projects: [Zendure Home Assistant Integration](https://github.com/Zendure/Zendure-HA), [Solarflow Statuspage](https://github.com/reinhard-brandstaedter/solarflow-statuspage), [Solarflow Control](https://github.com/reinhard-brandstaedter/solarflow-control), [Zendure ioBroker](https://github.com/nograx/ioBroker.zendure-solarflow)
 
